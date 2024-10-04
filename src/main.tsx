@@ -9,6 +9,7 @@ import App from './App.tsx'
 import './index.css'
 import ErrorPage from './ErrorPage.tsx'
 import Index from './routes/Index.tsx'
+import Show from './routes/Show.tsx'
 
 
 const router = createBrowserRouter([{
@@ -23,6 +24,10 @@ const router = createBrowserRouter([{
     {
       path: "elephants",
       element: <Index />
+    },
+    {
+      path: "elephants/:id",
+      element: <Show />
     }
   ]
 }])
