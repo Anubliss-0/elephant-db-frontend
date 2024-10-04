@@ -34,6 +34,7 @@ function App() {
         <button onClick={() => setTestCount(testCount + 1)}>{testCount}</button>
         <Link to={'/login'}>Login</Link>
         <Link to={'/new_elephant'}>Add Elephant</Link>
+        <Link to={'/elephants'}>Elephants</Link>
       </div>
       <Outlet />
     </>
