@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react"
-import axios from "axios"
 import { Link } from "react-router-dom";
+import { getAllElephants } from "../utils/api";
 
 function Index() {
     const [elephants, setElephants] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/elephants') // Assuming Rails runs on port 3000
+        getAllElephants()
             .then(response => {
                 setElephants(response.data.data);
             })

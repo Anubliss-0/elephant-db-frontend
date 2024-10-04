@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { getElephantById, deleteElephant } from '../utils/api';
 
 function Show() {
   const { id } = useParams();  // Get the elephant id from the route
@@ -8,7 +8,7 @@ function Show() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/elephants/${id}`)
+    getElephantById(id as string)
       .then(response => {
         setElephant(response.data.data);  // Access the elephant data
       })
@@ -21,8 +21,8 @@ function Show() {
     e.preventDefault()
 
     try {
-      await axios.delete(`http://localhost:3000/elephants/${id}`)
-      navigate('/elephants')
+      await deleteElephant(id as string);
+      navigate('/elephants');  // Navigate back to the elephants list
     } catch (err) {
       console.error('Error deleting Elephant', err);
     }
