@@ -10,6 +10,8 @@ import './index.css'
 import ErrorPage from './ErrorPage.tsx'
 import Index from './routes/Index.tsx'
 import Show from './routes/Show.tsx'
+import Login from './routes/Login.tsx'
+import New from './routes/New.tsx'
 
 
 const router = createBrowserRouter([{
@@ -28,6 +30,14 @@ const router = createBrowserRouter([{
     {
       path: "elephants/:id",
       element: <Show />
+    },
+    {
+      path: "login",
+      element: <Login />
+    },
+    {
+      path: "new_elephant",
+      element: <New />
     }
   ]
 }])
