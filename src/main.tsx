@@ -6,7 +6,7 @@ import {
   Navigate,
   redirect
 } from "react-router-dom"
-import { getElephantById, deleteElephant } from './utils/api.ts'
+import { getElephantById, deleteElephant, createElephant, getAllElephants } from './utils/api.ts'
 import App from './App.tsx'
 import './index.css'
 import ErrorPage from './ErrorPage.tsx'
@@ -27,7 +27,16 @@ const router = createBrowserRouter([{
     },
     {
       path: "elephants",
-      element: <Index />
+      element: <Index />,
+      loader: async () => {
+        try {
+          const response = await getAllElephants()
+          return response.data.data
+        } catch (error) {
+          console.log(error)
+          return null
+        }
+      }
     },
     {
       path: "elephants/:id",
@@ -57,7 +66,27 @@ const router = createBrowserRouter([{
     },
     {
       path: "new_elephant",
-      element: <New />
+      element: <New />,
+      action: async ({ request }) => {
+        const formData = await request.formData();
+
+        const name = formData.get("name");
+        const bio = formData.get("bio");
+
+        if (typeof name !== "string" || typeof bio !== "string") {
+          throw new Error("Invalid form data")
+        }
+
+        try {
+          const response = await createElephant({ name, bio });
+          const newElephantId = response.data.data.id;
+
+          return redirect(`/elephants/${newElephantId}`);
+        } catch (error) {
+          console.error("Error creating elephant:", error);
+          return null;
+        }
+      }
     }
   ]
 }])
