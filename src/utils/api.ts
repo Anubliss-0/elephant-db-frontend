@@ -6,33 +6,33 @@ const baseURL:string = 'http://localhost:3000'
 // Get all elephants
 export const getAllElephants = async () => {
   return axios.get(`${baseURL}/elephants`);
-};
+}
 
 // Get elephant by ID
 export const getElephantById = async (id: string) => {
   return axios.get(`${baseURL}/elephants/${id}`);
-};
+}
 
 // Delete elephant by ID
 export const deleteElephant = async (id: string) => {
-  return axios.delete(`${baseURL}/elephants/${id}`);
-};
+  return axios.delete(`${baseURL}/elephants/${id}`)
+}
 
 // Create new elephant
 export const createElephant = async (elephantData: { name: string; bio: string }) => {
   return axios.post(`${baseURL}/elephants`, {
     elephant: elephantData,
-  });
-};
+  })
+}
 
 // Log in User
 export const loginUser = async (email: string, password: string) => {
   const response = await axios.post(`${baseURL}/login`, {
     user: { email, password }
-  });
+  })
 
-  const jwtToken = response.headers.authorization.split(' ')[1];
-  storeToken(jwtToken);
+  const jwtToken = response.headers.authorization.split(' ')[1]
+  storeToken(jwtToken)
 
-  return response;
+  return response
 };

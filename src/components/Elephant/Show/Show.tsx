@@ -28,7 +28,7 @@ function Show() {
         <button type="submit">Delete</button>
       </Form>
     </div>
-  );
-};
+  )
+}
 
-export default Show;
+export default Show

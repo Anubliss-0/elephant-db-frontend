@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
 import ErrorPage from '../ErrorPage'
 import elephantRoutes from './elephantRoutes'
@@ -16,4 +16,4 @@ const router = createBrowserRouter([
     }
 ])
 
-export default router;
+export default router

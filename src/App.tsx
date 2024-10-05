@@ -6,24 +6,24 @@ import './App.css'
 const getCookie = (name: string): string | null => {
   const cookieArr = document.cookie.split(';');
   for (const cookie of cookieArr) {
-    const [cookieName, cookieValue] = cookie.trim().split('=');
+    const [cookieName, cookieValue] = cookie.trim().split('=')
     if (cookieName === name) {
-      return cookieValue;
+      return cookieValue
     }
   }
-  return null;
+  return null
 };
 
 function App() {
   useEffect(() => {
     // Retrieve the token from cookies when the app loads
-    const token = getCookie('token');
+    const token = getCookie('token')
     
     if (token) {
       // Set Axios defaults with the token if it exists
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
     }
-  }, []); // Runs only on app/component mount
+  }, []) // Runs only on app/component mount
 
   const [testCount, setTestCount] = useState(0)
 
