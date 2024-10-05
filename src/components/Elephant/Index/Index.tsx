@@ -1,7 +1,7 @@
 import { Link, useLoaderData } from "react-router-dom";
 
 function Index() {
-    const elephants = useLoaderData() as Array<{ id: string; attributes: { name: string; bio: string } }>
+    const elephants = useLoaderData() as Array<{ id: string; attributes: { name: string } }>
 
     return (
         <div>
