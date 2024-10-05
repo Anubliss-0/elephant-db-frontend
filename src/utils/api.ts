@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { storeToken } from './auth'
+import { setToken } from './auth'
 
 const baseURL:string = 'http://localhost:3000'
 
@@ -32,7 +32,7 @@ export const loginUser = async (email: string, password: string) => {
   })
 
   const jwtToken = response.headers.authorization.split(' ')[1]
-  storeToken(jwtToken)
+  setToken(jwtToken, true)
 
   return response
-};
+}
