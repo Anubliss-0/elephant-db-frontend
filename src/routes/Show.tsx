@@ -1,45 +1,32 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getElephantById, deleteElephant } from '../utils/api';
+import { useLoaderData, Form } from 'react-router-dom'
 
 function Show() {
-  const { id } = useParams();  // Get the elephant id from the route
-  const [elephant, setElephant] = useState(null);
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    getElephantById(id as string)
-      .then(response => {
-        setElephant(response.data.data);  // Access the elephant data
-      })
-      .catch(error => {
-        console.error('Error fetching the elephant details:', error);
-      });
-  }, [id]);
-
-  const handleDelete = async (e: React.MouseEvent) => {
-    e.preventDefault()
-
-    try {
-      await deleteElephant(id as string);
-      navigate('/elephants');  // Navigate back to the elephants list
-    } catch (err) {
-      console.error('Error deleting Elephant', err);
+  const { elephant } = useLoaderData() as {
+    elephant: {
+      data: {
+        id: string
+        type: string
+        attributes: {
+          id: number
+          name: string
+          bio: string
+          user_id: number
+        }
+      }
     }
-
   }
 
-  if (!elephant) {
-    return <div>Loading...</div>;
-  }
+  const { id, name, bio } = elephant.data.attributes
 
   return (
     <div>
-      <h1>{elephant.attributes.name}</h1>
-      <p>Age: {elephant.attributes.age}</p>
-      <p>ID: {elephant.id}</p>
+      <h1>{name}</h1>
+      <p>ID: {id}</p>
+      <p>Bio: {bio}</p>
 
-      <button onClick={handleDelete}>Delete</button>
+      <Form method="delete">
+        <button type="submit">Delete</button>
+      </Form>
     </div>
   );
 };

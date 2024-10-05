@@ -3,8 +3,10 @@ import { createRoot } from 'react-dom/client'
 import {
   createBrowserRouter,
   RouterProvider,
-  Navigate
+  Navigate,
+  redirect
 } from "react-router-dom"
+import { getElephantById, deleteElephant } from './utils/api.ts'
 import App from './App.tsx'
 import './index.css'
 import ErrorPage from './ErrorPage.tsx'
@@ -29,7 +31,25 @@ const router = createBrowserRouter([{
     },
     {
       path: "elephants/:id",
-      element: <Show />
+      element: <Show />,
+      loader: async ({ params }) => {
+        try {
+          const response = await getElephantById(params.id as string)
+          return { elephant: response.data }
+        } catch (error) {
+          console.log(error)
+          throw redirect("/elephants");
+        }
+      },
+      action: async ({ params }) => {
+        try {
+          await deleteElephant(params.id as string)
+          return redirect("/elephants")
+        } catch (error) {
+          console.error("Error deleting elephant:", error)
+          return null;
+        }
+      }
     },
     {
       path: "login",

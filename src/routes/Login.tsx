@@ -1,9 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault(); // Prevent form submission refresh
@@ -27,7 +29,7 @@ function Login() {
             document.cookie = `token=${jwtToken}; path=/; Secure; SameSite=Strict`;
 
             // Redirect to a protected route, for example, to the elephants page
-            window.location.href = '/elephants';
+            navigate(`/elephants`)
         } catch (err) {
             console.error('Error logging in:', err);
         }
