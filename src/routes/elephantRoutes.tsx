@@ -1,10 +1,12 @@
-import { getAllElephants, getElephantById, createElephant, deleteElephant } from '../utils/api'
+import { getAllElephants, getElephantById, createElephant, deleteElephant, editElephantById } from '../utils/api'
+import { redirect, LoaderFunctionArgs, ActionFunctionArgs } from 'react-router-dom'
 import Index from '../components/Elephant/Index/Index'
 import Show from '../components/Elephant/Show/Show'
 import New from '../components/Elephant/New/New'
-import { redirect, LoaderFunctionArgs, ActionFunctionArgs } from 'react-router-dom'
 
 const elephantRoutes = [
+
+  // Elephant Index
   {
     path: "elephants",
     element: <Index />,
@@ -18,6 +20,8 @@ const elephantRoutes = [
       }
     }
   },
+
+  // Elephant Show
   {
     path: "elephants/:id",
     element: <Show />,
@@ -30,16 +34,39 @@ const elephantRoutes = [
         throw redirect("/elephants")
       }
     },
-    action: async ({ params }: LoaderFunctionArgs) => {
-      try {
-        await deleteElephant(params.id as string)
-        return redirect("/elephants")
-      } catch (error) {
-        console.error("Error deleting elephant:", error)
-        return null
+    action: async ({ request, params }: ActionFunctionArgs) => {
+      const id = params.id as string;
+  
+      if (request.method === "DELETE") {
+        // Delete Elephant
+        try {
+          await deleteElephant(id)
+          return redirect("/elephants")
+        } catch (error) {
+          console.error("Error deleting elephant:", error)
+          return null
+        }
+      } else if (request.method === "PATCH" || request.method === "PUT") {
+        // Update Elephant
+        const formData = await request.formData()
+        const name = formData.get("name")
+        const bio = formData.get("bio")
+  
+        if (typeof name !== "string" || typeof bio !== "string") {
+          throw new Error("Invalid form data")
+        }
+  
+        try {
+          await editElephantById(id, { name, bio })
+          return redirect(`/elephants/${id}`)
+        } catch (error) {
+          console.error("Error editing elephant:", error)
+        }
       }
     }
   },
+
+  // Create Elephant
   {
     path: "new_elephant",
     element: <New />,

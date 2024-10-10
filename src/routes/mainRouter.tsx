@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { getCookie, setToken } from '../utils/auth'
-import App from '../App'
-import ErrorPage from '../ErrorPage'
 import elephantRoutes from './elephantRoutes'
 import authRoutes from './authRoutes'
+import App from '../App'
+import ErrorPage from '../ErrorPage'
 
 const router = createBrowserRouter([
     {

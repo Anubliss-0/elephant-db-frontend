@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { setToken } from './auth'
 
-const baseURL:string = 'http://localhost:3000'
+const baseURL: string = 'http://localhost:3000'
 
 // Get all elephants
 export const getAllElephants = async () => {
@@ -11,6 +11,13 @@ export const getAllElephants = async () => {
 // Get elephant by ID
 export const getElephantById = async (id: string) => {
   return axios.get(`${baseURL}/elephants/${id}`);
+}
+
+// Edit elephant by ID
+export const editElephantById = async (id: string, elephantData: { name: string; bio: string }) => {
+  return axios.patch(`${baseURL}/elephants/${id}`, {
+    elephant: elephantData
+  })
 }
 
 // Delete elephant by ID

@@ -27,6 +27,19 @@ function Show() {
       <Form method="delete">
         <button type="submit">Delete</button>
       </Form>
+
+      <Form method="PATCH">
+        <label>
+          Name:
+          <input type="text" name="name" required />
+        </label>
+        <label>
+          Bio:
+          <input type="text" name="bio" required />
+        </label>
+
+        <button type="submit">Edit Elephant</button>
+      </Form>
     </div>
   )
 }
