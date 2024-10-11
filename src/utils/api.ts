@@ -5,12 +5,12 @@ const baseURL: string = 'http://localhost:3000'
 
 // Get all elephants
 export const getAllElephants = async () => {
-  return axios.get(`${baseURL}/elephants`);
+  return axios.get(`${baseURL}/elephants`)
 }
 
 // Get elephant by ID
 export const getElephantById = async (id: string) => {
-  return axios.get(`${baseURL}/elephants/${id}`);
+  return axios.get(`${baseURL}/elephants/${id}`)
 }
 
 // Edit elephant by ID
