@@ -1,4 +1,5 @@
 import { useLoaderData, Form } from 'react-router-dom'
+import styles from "./Show.module.scss"
 
 function Show() {
   const { elephant } = useLoaderData() as {
@@ -27,7 +28,7 @@ function Show() {
 
       
       {elephant.data.attributes.photos.length > 0 ? (
-        <div>
+        <div className={styles.photos}>
           {elephant.data.attributes.photos.map((photoUrl, index) => (
             <img key={index} src={photoUrl} alt={`Elephant photo ${index + 1}`} />
           ))}
