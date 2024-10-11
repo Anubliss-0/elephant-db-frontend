@@ -26,9 +26,20 @@ export const deleteElephant = async (id: string) => {
 }
 
 // Create new elephant
-export const createElephant = async (elephantData: { name: string; bio: string }) => {
-  return axios.post(`${baseURL}/elephants`, {
-    elephant: elephantData,
+export const createElephant = async (elephantData: { name: string; bio: string; photos: File[] }) => {
+  const formData = new FormData()
+  
+  formData.append('elephant[name]', elephantData.name)
+  formData.append('elephant[bio]', elephantData.bio)
+  
+  elephantData.photos.forEach((photo) => {
+    formData.append('elephant[photos][]', photo)
+  })
+
+  return axios.post(`${baseURL}/elephants`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
   })
 }
 

@@ -6,5 +6,5 @@ import router from './routes/mainRouter.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>,
+  </StrictMode>
 )

@@ -74,13 +74,14 @@ const elephantRoutes = [
       const formData = await request.formData()
       const name = formData.get("name")
       const bio = formData.get("bio")
+      const photos = formData.getAll("photos") as File[]
 
       if (typeof name !== "string" || typeof bio !== "string") {
         throw new Error("Invalid form data")
       }
 
       try {
-        const response = await createElephant({ name, bio })
+        const response = await createElephant({ name, bio, photos })
         const newElephantId = response.data.data.id
         return redirect(`/elephants/${newElephantId}`)
       } catch (error) {
@@ -89,6 +90,6 @@ const elephantRoutes = [
       }
     }
   }
-];
+]
 
 export default elephantRoutes
