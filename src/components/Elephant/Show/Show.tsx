@@ -24,6 +24,8 @@ function Show() {
       <h1>{name}</h1>
       <p>ID: {id}</p>
       <p>Bio: {bio}</p>
+
+      
       {elephant.data.attributes.photos.length > 0 ? (
         <div>
           {elephant.data.attributes.photos.map((photoUrl, index) => (
