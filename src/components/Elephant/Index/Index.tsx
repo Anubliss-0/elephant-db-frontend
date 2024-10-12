@@ -1,18 +1,15 @@
-import { Link, useLoaderData } from "react-router-dom"
+import { useLoaderData } from "react-router-dom"
+import ElephantCard from "../ElephantCard/ElephantCard";
 
 function Index() {
-    const elephants = useLoaderData() as Array<{ id: string; attributes: { name: string } }>
+    const elephants = useLoaderData() as Array<{ id: string; attributes: { name: string, photo: string } }>
 
     return (
         <div>
             <h1>Elephants</h1>
-            <ul>
                 {elephants.map((elephant) => (
-                    <li key={elephant.id}>
-                        <Link to={`/elephants/${elephant.id}`}>{elephant.attributes.name}</Link>
-                    </li>
+                    <ElephantCard key={elephant.id} elephant={elephant} />
                 ))}
-            </ul>
         </div>
     )
 }

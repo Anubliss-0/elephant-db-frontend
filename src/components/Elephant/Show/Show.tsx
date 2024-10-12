@@ -12,7 +12,7 @@ function Show() {
           name: string
           bio: string
           user_id: number
-          photos: string[]
+          photo: string[]
         }
       }
     }
@@ -27,9 +27,9 @@ function Show() {
       <p>Bio: {bio}</p>
 
       
-      {elephant.data.attributes.photos.length > 0 ? (
-        <div className={styles.photos}>
-          {elephant.data.attributes.photos.map((photoUrl, index) => (
+      {elephant.data.attributes.photo.length > 0 ? (
+        <div className={styles.photo}>
+          {elephant.data.attributes.photo.map((photoUrl, index) => (
             <img key={index} src={photoUrl} alt={`Elephant photo ${index + 1}`} />
           ))}
         </div>
