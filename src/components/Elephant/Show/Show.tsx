@@ -21,7 +21,7 @@ function Show() {
     }
   }
 
-  const { name, bio } = elephant.data.attributes
+  const { name, bio, photos } = elephant.data.attributes
 
   return (
     <div>
@@ -50,7 +50,7 @@ function Show() {
         {isEditing && <button type="submit">Update Elephant</button>}
       </Form>
       
-      <ElephantPhotos photos={elephant.data.attributes.photos} />
+      <ElephantPhotos photos={photos} />
 
       <Form method="delete">
         <button type="submit">Delete</button>

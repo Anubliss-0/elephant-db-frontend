@@ -61,6 +61,7 @@ const elephantRoutes = [
           return redirect(`/elephants/${id}`)
         } catch (error) {
           console.error("Error editing elephant:", error)
+          return null
         }
       }
     }
