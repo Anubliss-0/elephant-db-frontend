@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import { useLoaderData, Form } from 'react-router-dom'
 import styles from "./Show.module.scss"
+import ElephantPhotos from '../ElephantPhotos/ElephantPhotos'
 
 function Show() {
+  const [isEditing, setIsEditing] = useState(false)
   const { elephant } = useLoaderData() as {
     elephant: {
       data: {
@@ -12,47 +15,47 @@ function Show() {
           name: string
           bio: string
           user_id: number
-          photo: string[]
+          photos: string[]
         }
       }
     }
   }
 
-  const { id, name, bio } = elephant.data.attributes
-  console.log(elephant)
+  const { name, bio } = elephant.data.attributes
+
   return (
     <div>
-      <h1>{name}</h1>
-      <p>ID: {id}</p>
-      <p>Bio: {bio}</p>
+      <button onClick={() => setIsEditing(!isEditing)}>
+        {isEditing ? "Stop Editing" : "Start Editing"}
+      </button>
 
-      
-      {elephant.data.attributes.photo.length > 0 ? (
-        <div className={styles.photo}>
-          {elephant.data.attributes.photo.map((photoUrl, index) => (
-            <img key={index} src={photoUrl} alt={`Elephant photo ${index + 1}`} />
-          ))}
+      <Form method="PATCH" onSubmit={() => setIsEditing(false)}>
+        <div>
+          <label htmlFor="name">Name:</label>
+          {isEditing ? (
+            <input type="text" id="name" name="name" defaultValue={name} required />
+          ) : (
+            <span>{name}</span>
+          )}
         </div>
-      ) : (
-        <p>No photos available</p>
-      )}
+        <div>
+          <label htmlFor="bio">Bio:</label>
+          {isEditing ? (
+            <input type="text" id="bio" name="bio" defaultValue={bio} required />
+          ) : (
+            <span>{bio}</span>
+          )}
+        </div>
+
+        {isEditing && <button type="submit">Update Elephant</button>}
+      </Form>
+      
+      <ElephantPhotos photos={elephant.data.attributes.photos} />
 
       <Form method="delete">
         <button type="submit">Delete</button>
       </Form>
 
-      <Form method="PATCH">
-        <label>
-          Name:
-          <input type="text" name="name" required />
-        </label>
-        <label>
-          Bio:
-          <input type="text" name="bio" required />
-        </label>
-
-        <button type="submit">Edit Elephant</button>
-      </Form>
     </div>
   )
 }
