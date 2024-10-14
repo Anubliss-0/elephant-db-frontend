@@ -18,7 +18,6 @@ const router = createBrowserRouter([
 
             return null
         },
-        errorElement: <ErrorPage />,
         children: [
             ...elephantRoutes,
             ...authRoutes
