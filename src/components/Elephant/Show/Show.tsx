@@ -6,7 +6,7 @@ import ElephantPhotos from '../ElephantPhotos/ElephantPhotos'
 function Show() {
   const [isEditing, setIsEditing] = useState(false)
   const [removedPhotoIds, setRemovedPhotoIds] = useState<string[]>([])
-  
+
   const { elephant } = useLoaderData() as {
     elephant: {
       data: {
@@ -62,6 +62,10 @@ function Show() {
           isEditing={isEditing}
           onSelectPhoto={handleRemovePhoto}
         />
+
+        {removedPhotoIds.map((photoId) => (
+          <input key={photoId} type="hidden" name="remove_photo_ids[]" value={photoId} />
+        ))}
 
         {isEditing && <button type="submit">Update Elephant</button>}
       </Form>

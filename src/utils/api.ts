@@ -14,7 +14,7 @@ export const getElephantById = async (id: string) => {
 }
 
 // Edit elephant by ID
-export const editElephantById = async (id: string, elephantData: { name: string; bio: string }) => {
+export const editElephantById = async (id: string, elephantData: { name: string; bio: string; remove_photo_ids?: string[] }) => {
   return axios.patch(`${baseURL}/elephants/${id}`, {
     elephant: elephantData
   })

@@ -38,12 +38,14 @@ const elephantRoutes = [
         const formData = await request.formData()
         const name = formData.get("name") as string | null
         const bio = formData.get("bio") as string | null
+        const remove_photo_ids = formData.getAll("remove_photo_ids[]") as string[]
+
   
         if (!name || !bio) {
           throw new Error("Invalid form data: name and bio must be provided")
         }
   
-        await editElephantById(id, { name, bio })
+        await editElephantById(id, { name, bio, remove_photo_ids })
         return redirect(`/elephants/${id}`)
       }
     },
