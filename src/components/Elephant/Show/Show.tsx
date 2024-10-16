@@ -5,6 +5,8 @@ import ElephantPhotos from '../ElephantPhotos/ElephantPhotos'
 
 function Show() {
   const [isEditing, setIsEditing] = useState(false)
+  const [removedPhotoIds, setRemovedPhotoIds] = useState<string[]>([])
+  
   const { elephant } = useLoaderData() as {
     elephant: {
       data: {
@@ -15,13 +17,22 @@ function Show() {
           name: string
           bio: string
           user_id: number
-          photos: string[]
+          photos: {
+            id: string
+            url: string
+          }[]
         }
       }
     }
   }
 
   const { name, bio, photos } = elephant.data.attributes
+
+  const handleRemovePhoto = (photoId: string) => {
+    setRemovedPhotoIds((prev) =>
+      prev.includes(photoId) ? prev.filter((id) => id !== photoId) : [...prev, photoId]
+    )
+  }
 
   return (
     <div>
@@ -46,11 +57,15 @@ function Show() {
             <span>{bio}</span>
           )}
         </div>
+        <ElephantPhotos
+          photos={photos}
+          isEditing={isEditing}
+          onSelectPhoto={handleRemovePhoto}
+        />
 
         {isEditing && <button type="submit">Update Elephant</button>}
       </Form>
-      
-      <ElephantPhotos photos={photos} />
+
 
       <Form method="delete">
         <button type="submit">Delete</button>
