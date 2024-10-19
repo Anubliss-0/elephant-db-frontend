@@ -13,6 +13,7 @@ function Show() {
         id: string
         type: string
         attributes: {
+          can_edit: boolean
           id: number
           name: string
           bio: string
@@ -26,6 +27,8 @@ function Show() {
     }
   }
 
+  console.log(elephant)
+
   const { name, bio, photos } = elephant.data.attributes
 
   const handleRemovePhoto = (photoId: string) => {
@@ -36,9 +39,11 @@ function Show() {
 
   return (
     <div>
-      <button onClick={() => setIsEditing(!isEditing)}>
-        {isEditing ? "Stop Editing" : "Start Editing"}
-      </button>
+      {elephant.data.attributes.can_edit && (
+        <button onClick={() => setIsEditing(!isEditing)}>
+          {isEditing ? "Stop Editing" : "Start Editing"}
+        </button>
+      )}
 
       <Form method="PATCH" onSubmit={() => setIsEditing(false)}>
         <div>
@@ -70,10 +75,11 @@ function Show() {
         {isEditing && <button type="submit">Update Elephant</button>}
       </Form>
 
-
-      <Form method="delete">
-        <button type="submit">Delete</button>
-      </Form>
+      {isEditing && (
+        <Form method="delete">
+          <button type="submit">Delete</button>
+        </Form>
+      )}
 
     </div>
   )
