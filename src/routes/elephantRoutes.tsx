@@ -28,24 +28,37 @@ const elephantRoutes = [
     },
     action: async ({ request, params }: ActionFunctionArgs) => {
       const id = params.id as string
-  
+
       if (request.method === "DELETE") {
         await deleteElephant(id)
         return redirect("/elephants")
       }
-  
+
       if (request.method === "PATCH" || request.method === "PUT") {
         const formData = await request.formData()
         const name = formData.get("name") as string | null
         const bio = formData.get("bio") as string | null
-        const remove_photo_ids = formData.getAll("remove_photo_ids[]") as string[]
+        const removePhotoIds = formData.getAll("photos[deleted][]") as string[]
 
-  
+        const newPhotos: File[] = [];
+        formData.forEach((value, key) => {
+          if (key.startsWith("photos[new]") && value instanceof File) {
+            newPhotos.push(value); // Collect new photos as File objects
+          }
+        })
+
         if (!name || !bio) {
           throw new Error("Invalid form data: name and bio must be provided")
         }
-  
-        await editElephantById(id, { name, bio, remove_photo_ids })
+
+        const elephantData: any = {
+          name,
+          bio,
+          remove_photo_ids: removePhotoIds, // Send deleted photo IDs
+          new_photos: newPhotos, // This contains the new photo files
+        };
+
+        await editElephantById(id, elephantData)
         return redirect(`/elephants/${id}`)
       }
     },
@@ -61,11 +74,11 @@ const elephantRoutes = [
       const name = formData.get("name") as string | null
       const bio = formData.get("bio") as string | null
       const photos = formData.getAll("photos") as File[]
-  
+
       if (!name || !bio) {
         throw new Error("Invalid form data: name and bio must be provided")
       }
-  
+
       const response = await createElephant({ name, bio, photos })
       const newElephantId = response.data.data.id
       return redirect(`/elephants/${newElephantId}`)

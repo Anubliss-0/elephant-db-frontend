@@ -14,11 +14,30 @@ export const getElephantById = async (id: string) => {
 }
 
 // Edit elephant by ID
-export const editElephantById = async (id: string, elephantData: { name: string; bio: string; remove_photo_ids?: string[] }) => {
-  return axios.patch(`${baseURL}/elephants/${id}`, {
-    elephant: elephantData
-  })
-}
+export const editElephantById = async (id: string, elephantData: any) => {
+  const formData = new FormData();
+  
+  // Append name and bio
+  formData.append("name", elephantData.name);
+  formData.append("bio", elephantData.bio);
+
+  // Append deleted photo IDs
+  elephantData.remove_photo_ids.forEach((id: string) => {
+    formData.append("remove_photo_ids[]", id);
+  });
+
+  // Append new photos
+  elephantData.new_photos.forEach((photo: File, index: number) => {
+    formData.append(`photos[new][${index}]`, photo);
+  });
+
+  // Send FormData to Rails API via Axios
+  return axios.patch(`${baseURL}/elephants/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
 
 // Delete elephant by ID
 export const deleteElephant = async (id: string) => {

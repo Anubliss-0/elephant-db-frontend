@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useLoaderData, Form } from 'react-router-dom'
+import { useLoaderData, Form, useSubmit } from 'react-router-dom'
 import styles from "./Show.module.scss"
 import ElephantPhotos from '../ElephantPhotos/ElephantPhotos'
 
 function Show() {
   const [isEditing, setIsEditing] = useState(false)
   const [photos, setPhotos] = useState<Photo[]>([])
+  const submit = useSubmit()
 
 
   type Photo = {
@@ -63,6 +64,28 @@ function Show() {
     setPhotos((prevPhotos) => [...prevPhotos, newPhoto]); // Add the new photo to the array
   };
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("bio", bio);
+
+    photos.forEach((photo, index) => {
+      if (photo.status === "new" && photo.file) {
+        // Append new photos (files)
+        formData.append(`photos[new][${index}]`, photo.file); // Append the file
+      } else if (photo.status === "deleted" && photo.id !== null) {
+        // Only append deleted photo IDs if the id is not null
+        formData.append(`photos[deleted][]`, String(photo.id)); // Convert to string
+      }
+    });
+
+    // Submit the formData
+    submit(formData, { method: "PATCH", encType: "multipart/form-data" });
+    setIsEditing(false)
+  };
+
   const { name, bio } = elephant.data.attributes
 
   return (
@@ -73,7 +96,7 @@ function Show() {
         </button>
       )}
 
-      <Form method="PATCH" onSubmit={() => setIsEditing(false)}>
+      <Form method="PATCH" encType="multipart/form-data" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name:</label>
           {isEditing ? (
