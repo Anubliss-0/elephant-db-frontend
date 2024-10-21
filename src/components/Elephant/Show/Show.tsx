@@ -1,77 +1,39 @@
-import { useState, useEffect } from 'react'
-import { useLoaderData, Form, useSubmit } from 'react-router-dom'
-import styles from "./Show.module.scss"
-import ElephantPhotos from '../ElephantPhotos/ElephantPhotos'
+import { useState } from 'react';
+import { useLoaderData, Form, useSubmit } from 'react-router-dom';
+import ElephantPhotoManager from '../ElephantPhotos/ElephantphotoManager';
+import { Photo } from '../../../types';
+import styles from './Show.module.scss';
 
 function Show() {
-  const [isEditing, setIsEditing] = useState(false)
-  const [photos, setPhotos] = useState<Photo[]>([])
-  const submit = useSubmit()
-
-
-  type Photo = {
-    id: string | null // null for new photos that haven't been uploaded yet
-    url: string
-    status: 'keep' | 'deleted' | 'new' // Status to track the state of each photo
-    file?: File // Only for new photos
-  }
+  const [isEditing, setIsEditing] = useState(false);
+  const [photos, setPhotos] = useState<Photo[]>([]); // Track photos in the Show component
+  const submit = useSubmit();
 
   type ElephantData = {
-    id: string
-    type: string
+    id: string;
+    type: string;
     attributes: {
-      can_edit: boolean
-      id: number
-      name: string
-      bio: string
-      user_id: number
-      photos: {
-        id: string
-        url: string
-      }[]
-    }
-  }
-
-  const { elephant } = useLoaderData() as { elephant: { data: ElephantData } }
-
-  useEffect(() => {
-    const existingPhotos = elephant.data.attributes.photos.map(photo => ({
-      id: photo.id,
-      url: photo.url,
-      status: 'keep' as const, // Existing photos are marked as 'keep'
-    }))
-    setPhotos(existingPhotos)
-  }, [elephant])
-
-  const handleRemovePhoto = (photoId: string) => {
-    setPhotos(prevPhotos =>
-      prevPhotos.map(photo =>
-        photo.id === photoId
-          ? { ...photo, status: photo.status === 'deleted' ? 'keep' : 'deleted' }
-          : photo
-      )
-    )
-  }
-
-  const handleAddPhotos = (files: FileList) => {
-    const newPhotosArray = Array.from(files).map(file => ({
-      id: null, // New photo, no ID yet
-      url: URL.createObjectURL(file), // Generate a preview URL using createObjectURL
-      status: "new" as const, // Mark it as a new photo
-      file: file, // Store the file for uploading
-    }));
-  
-    // Add the new photos to the existing photos array in state
-    setPhotos((prevPhotos) => [...prevPhotos, ...newPhotosArray]);
+      can_edit: boolean;
+      id: number;
+      name: string;
+      bio: string;
+      user_id: number;
+      photos: { id: string; url: string }[];
+    };
   };
 
+  const { elephant } = useLoaderData() as { elephant: { data: ElephantData } };
+  const { name, bio } = elephant.data.attributes;
+
+  // Function to handle the entire form submission
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("bio", bio);
+    formData.append('name', name);
+    formData.append('bio', bio);
 
+    // Append photos to the formData
     photos.forEach((photo, index) => {
       if (photo.status === "new" && photo.file) {
         // Append new photos (files)
@@ -82,18 +44,16 @@ function Show() {
       }
     });
 
-    // Submit the formData
-    submit(formData, { method: "PATCH", encType: "multipart/form-data" });
-    setIsEditing(false)
+    // Submit formData using react-router's submit method
+    submit(formData, { method: 'PATCH', encType: 'multipart/form-data' });
+    setIsEditing(false);
   };
-
-  const { name, bio } = elephant.data.attributes
 
   return (
     <div>
       {elephant.data.attributes.can_edit && (
         <button onClick={() => setIsEditing(!isEditing)}>
-          {isEditing ? "Stop Editing" : "Start Editing"}
+          {isEditing ? 'Stop Editing' : 'Start Editing'}
         </button>
       )}
 
@@ -114,11 +74,11 @@ function Show() {
             <span>{bio}</span>
           )}
         </div>
-        <ElephantPhotos
-          photos={photos}
+
+        <ElephantPhotoManager
+          initialPhotos={elephant.data.attributes.photos}
           isEditing={isEditing}
-          onRemovePhoto={handleRemovePhoto}
-          onAddPhoto={handleAddPhotos}
+          onPhotosChange={setPhotos} // Keep track of the updated photos in the Show component
         />
 
         {isEditing && <button type="submit">Update Elephant</button>}
@@ -129,9 +89,8 @@ function Show() {
           <button type="submit">Delete</button>
         </Form>
       )}
-
     </div>
-  )
+  );
 }
 
-export default Show
+export default Show;

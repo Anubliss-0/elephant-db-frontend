@@ -1,12 +1,6 @@
-import React from "react";
-import styles from "./ElephantPhotos.module.scss";
-
-interface Photo {
-  id: string | null; // null for new photos
-  url: string;
-  status: "keep" | "deleted" | "new";
-  file?: File; // Optional: only for new photos
-}
+import React from "react"
+import styles from "./ElephantPhotos.module.scss"
+import { Photo } from "../../../types"
 
 interface ElephantPhotosProps {
   photos: Photo[];
