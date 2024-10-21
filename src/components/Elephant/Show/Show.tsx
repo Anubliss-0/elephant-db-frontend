@@ -6,7 +6,7 @@ import styles from './Show.module.scss';
 
 function Show() {
   const [isEditing, setIsEditing] = useState(false);
-  const [photos, setPhotos] = useState<Photo[]>([]); // Track photos in the Show component
+  const [finalPhotos, setFinalPhotos] = useState<Photo[]>([]); // Track the final photos submitted
   const submit = useSubmit();
 
   type ElephantData = {
@@ -25,7 +25,6 @@ function Show() {
   const { elephant } = useLoaderData() as { elephant: { data: ElephantData } };
   const { name, bio } = elephant.data.attributes;
 
-  // Function to handle the entire form submission
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -33,18 +32,16 @@ function Show() {
     formData.append('name', name);
     formData.append('bio', bio);
 
-    // Append photos to the formData
-    photos.forEach((photo, index) => {
+    // Append final photos to the formData
+    finalPhotos.forEach((photo, index) => {
       if (photo.status === "new" && photo.file) {
-        // Append new photos (files)
-        formData.append(`photos[new][${index}]`, photo.file); // Append the file
+        formData.append(`photos[new][${index}]`, photo.file);
       } else if (photo.status === "deleted" && photo.id !== null) {
-        // Only append deleted photo IDs if the id is not null
-        formData.append(`photos[deleted][]`, String(photo.id)); // Convert to string
+        formData.append(`photos[deleted][]`, String(photo.id));
       }
     });
 
-    // Submit formData using react-router's submit method
+    // Submit the formData
     submit(formData, { method: 'PATCH', encType: 'multipart/form-data' });
     setIsEditing(false);
   };
@@ -78,7 +75,7 @@ function Show() {
         <ElephantPhotoManager
           initialPhotos={elephant.data.attributes.photos}
           isEditing={isEditing}
-          onPhotosChange={setPhotos} // Keep track of the updated photos in the Show component
+          onSubmitPhotos={setFinalPhotos} // Get the final photos when the form is submitted
         />
 
         {isEditing && <button type="submit">Update Elephant</button>}
