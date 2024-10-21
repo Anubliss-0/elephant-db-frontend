@@ -11,16 +11,20 @@ export const addPhotos = (files: FileList): Photo[] => {
 }
 
 // Utility function for toggling removal status of photos
-export const toggleRemovePhoto = (photos: Photo[], photoId: string | null): Photo[] => {
+export const toggleRemovePhoto = (
+  photos: Photo[],
+  photoId: string | null,
+  index: number | null = null // Add index to uniquely identify new photos
+): Photo[] => {
   return photos
-    .map(photo => {
-      // Handle new photos by filtering them out (remove from array)
-      if (photo.id === photoId && photo.status === "new") {
-        return null; // Mark for removal by returning null
+    .map((photo, i) => {
+      // Handle new photos by filtering them out (remove from array if index matches)
+      if (index !== null && i === index && photo.status === "new") {
+        return null; // Remove this photo by returning null
       }
 
       // Toggle status for existing photos between "keep" and "deleted"
-      if (photo.id === photoId) {
+      if (photo.id === photoId && photo.status !== "new") {
         return { ...photo, status: photo.status === "deleted" ? "keep" : "deleted" };
       }
 

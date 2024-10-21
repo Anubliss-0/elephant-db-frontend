@@ -28,9 +28,15 @@ function ElephantPhotoManager({
     setPhotos(existingPhotos)
   }, [initialPhotos])
 
-  const handleRemovePhoto = (event: React.MouseEvent<HTMLButtonElement>, photoId: string | null) => {
+  const handleRemovePhoto = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    photoId: string | null,
+    index: number | null = null // Add index as a parameter for new photos
+  ) => {
     event.preventDefault(); // Prevent form submission
-    setPhotos(prevPhotos => toggleRemovePhoto(prevPhotos, photoId));
+
+    // Update photos state
+    setPhotos(prevPhotos => toggleRemovePhoto(prevPhotos, photoId, index));
   };
 
   const handleAddPhotos = (files: FileList) => {
@@ -55,7 +61,7 @@ function ElephantPhotoManager({
         <div className={styles.photos}>
           {photos.map((photo, index) => (
             <div
-              key={photo.id || index}
+              key={photo.id || `new-photo-${index}`} // Use index if id is null
               className={styles.photoContainer}
               style={{ opacity: photo.status === "deleted" ? 0.5 : 1 }} // Apply opacity when deleted
             >
@@ -69,7 +75,7 @@ function ElephantPhotoManager({
 
               {/* Remove button for each photo */}
               {isEditing && (
-                <button onClick={(event) => handleRemovePhoto(event, photo.id || null)}>
+                <button onClick={(event) => handleRemovePhoto(event, photo.id || null, photo.id === null ? index : null)}>
                   {photo.status === "deleted" ? "Undo Remove" : "Remove"}
                 </button>
               )}
