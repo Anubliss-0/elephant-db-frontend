@@ -12,7 +12,7 @@ interface ElephantPhotosProps {
   photos: Photo[];
   isEditing: boolean;
   onRemovePhoto: (photoId: string) => void;
-  onAddPhoto: (file: File) => void; // New function to handle photo addition
+  onAddPhoto: (file: FileList) => void; // New function to handle photo addition
 }
 
 const ElephantPhotos: React.FC<ElephantPhotosProps> = ({
@@ -23,11 +23,11 @@ const ElephantPhotos: React.FC<ElephantPhotosProps> = ({
 }) => {
   // Handle file input change
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      onAddPhoto(file); // Trigger the parent function to add the new photo
-    }
-  };
+  const files = event.target.files; // Get the FileList from the input
+  if (files && files.length > 0) {
+    onAddPhoto(files); // Pass the entire FileList to the parent function
+  }
+};
 
   return (
     <div>
@@ -64,11 +64,11 @@ const ElephantPhotos: React.FC<ElephantPhotosProps> = ({
       {/* File input for adding new photos */}
       {isEditing && (
         <div className={styles.addPhoto}>
-          <label>
-            Add Photo:
-            <input type="file" accept="image/*" onChange={handleFileChange} />
-          </label>
-        </div>
+        <label>
+          Add Photos:
+          <input type="file" accept="image/*" multiple onChange={handleFileChange} />
+        </label>
+      </div>
       )}
     </div>
   );

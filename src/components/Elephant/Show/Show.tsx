@@ -53,15 +53,16 @@ function Show() {
     )
   }
 
-  const handleAddPhoto = (file: File) => {
-    const newPhoto = {
-      id: null, // New photo, so no id yet
-      url: URL.createObjectURL(file), // Generate a preview URL
+  const handleAddPhotos = (files: FileList) => {
+    const newPhotosArray = Array.from(files).map(file => ({
+      id: null, // New photo, no ID yet
+      url: URL.createObjectURL(file), // Generate a preview URL using createObjectURL
       status: "new" as const, // Mark it as a new photo
-      file: file, // Store the file
-    };
-
-    setPhotos((prevPhotos) => [...prevPhotos, newPhoto]); // Add the new photo to the array
+      file: file, // Store the file for uploading
+    }));
+  
+    // Add the new photos to the existing photos array in state
+    setPhotos((prevPhotos) => [...prevPhotos, ...newPhotosArray]);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -117,7 +118,7 @@ function Show() {
           photos={photos}
           isEditing={isEditing}
           onRemovePhoto={handleRemovePhoto}
-          onAddPhoto={handleAddPhoto}
+          onAddPhoto={handleAddPhotos}
         />
 
         {isEditing && <button type="submit">Update Elephant</button>}
