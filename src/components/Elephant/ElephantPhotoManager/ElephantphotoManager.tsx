@@ -1,50 +1,52 @@
-import { useState, useEffect } from 'react';
-import styles from "./ElephantPhotos.module.scss";
-import { Photo } from "../../../types";
-import { addPhotos, toggleRemovePhoto } from './ElephantphotoManagerUtils';
+import { useState, useEffect } from 'react'
+import styles from "./ElephantPhotos.module.scss"
+import { Photo } from "../../../types"
+import { addPhotos, toggleRemovePhoto } from './ElephantphotoManagerUtils'
+
+interface ElephantPhotoManagerProps {
+  initialPhotos: {
+    id: string
+    url: string
+  }[]
+  isEditing: boolean
+  onSubmitPhotos: (photos: Photo[]) => void
+}
 
 function ElephantPhotoManager({
   initialPhotos,
   isEditing,
   onSubmitPhotos,
-}: {
-  initialPhotos: { id: string; url: string }[];
-  isEditing: boolean;
-  onSubmitPhotos: (photos: Photo[]) => void;
-}) {
-  const [photos, setPhotos] = useState<Photo[]>([]);
+}: ElephantPhotoManagerProps) {
+  const [photos, setPhotos] = useState<Photo[]>([])
 
-  // Initialize photos from backend
   useEffect(() => {
     const existingPhotos = initialPhotos.map(photo => ({
       id: photo.id,
       url: photo.url,
       status: "keep" as const,
-    }));
-    setPhotos(existingPhotos);
-  }, [initialPhotos]);
+    }))
+    setPhotos(existingPhotos)
+  }, [initialPhotos])
 
   const handleRemovePhoto = (photoId: string) => {
-    setPhotos(prevPhotos => toggleRemovePhoto(prevPhotos, photoId));
-  };
+    setPhotos(prevPhotos => toggleRemovePhoto(prevPhotos, photoId))
+  }
 
   const handleAddPhotos = (files: FileList) => {
-    const newPhotosArray = addPhotos(files);
-    setPhotos(prevPhotos => [...prevPhotos, ...newPhotosArray]);
-  };
+    const newPhotosArray = addPhotos(files)
+    setPhotos(prevPhotos => [...prevPhotos, ...newPhotosArray])
+  }
 
-  // When the form is submitted, pass the final photos state to the parent
   useEffect(() => {
-    onSubmitPhotos(photos);
-  }, [photos, onSubmitPhotos]);
+    onSubmitPhotos(photos)
+  }, [photos, onSubmitPhotos])
 
-  // Handle file input change
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
+    const files = event.target.files
     if (files && files.length > 0) {
-      handleAddPhotos(files);
+      handleAddPhotos(files)
     }
-  };
+  }
 
   return (
     <div>
@@ -88,7 +90,7 @@ function ElephantPhotoManager({
         </div>
       )}
     </div>
-  );
+  )
 }
 
-export default ElephantPhotoManager;
+export default ElephantPhotoManager

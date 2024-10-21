@@ -1,4 +1,4 @@
-import { Photo } from "../../../types";
+import { Photo } from "../../../types"
 
 // Utility function for adding photos
 export const addPhotos = (files: FileList): Photo[] => {
@@ -7,8 +7,8 @@ export const addPhotos = (files: FileList): Photo[] => {
     url: URL.createObjectURL(file),
     status: "new" as const,
     file: file,
-  }));
-};
+  }))
+}
 
 // Utility function for toggling removal status of photos
 export const toggleRemovePhoto = (photos: Photo[], photoId: string): Photo[] => {
@@ -16,5 +16,5 @@ export const toggleRemovePhoto = (photos: Photo[], photoId: string): Photo[] => 
     photo.id === photoId
       ? { ...photo, status: photo.status === 'deleted' ? 'keep' : 'deleted' }
       : photo
-  );
-};
+  )
+}

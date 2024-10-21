@@ -1,50 +1,51 @@
-import { useState } from 'react';
-import { useLoaderData, Form, useSubmit } from 'react-router-dom';
-import ElephantPhotoManager from '../ElephantPhotos/ElephantphotoManager';
-import { Photo } from '../../../types';
-import styles from './Show.module.scss';
+import { useState } from 'react'
+import { useLoaderData, Form, useSubmit } from 'react-router-dom'
+import ElephantPhotoManager from '../ElephantPhotoManager/ElephantphotoManager'
+import { Photo } from '../../../types'
+import styles from './Show.module.scss'
 
 function Show() {
-  const [isEditing, setIsEditing] = useState(false);
-  const [finalPhotos, setFinalPhotos] = useState<Photo[]>([]); // Track the final photos submitted
-  const submit = useSubmit();
+  const [isEditing, setIsEditing] = useState(false)
+  const [finalPhotos, setFinalPhotos] = useState<Photo[]>([])
+  const submit = useSubmit()
 
   type ElephantData = {
-    id: string;
-    type: string;
+    id: string
+    type: string
     attributes: {
-      can_edit: boolean;
-      id: number;
-      name: string;
-      bio: string;
-      user_id: number;
-      photos: { id: string; url: string }[];
-    };
-  };
+      can_edit: boolean
+      id: number
+      name: string
+      bio: string
+      user_id: number
+      photos: {
+        id: string
+        url: string
+      }[]
+    }
+  }
 
-  const { elephant } = useLoaderData() as { elephant: { data: ElephantData } };
-  const { name, bio } = elephant.data.attributes;
+  const { elephant } = useLoaderData() as { elephant: { data: ElephantData } }
+  const { name, bio } = elephant.data.attributes
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('bio', bio);
+    const formData = new FormData()
+    formData.append('name', name)
+    formData.append('bio', bio)
 
-    // Append final photos to the formData
     finalPhotos.forEach((photo, index) => {
       if (photo.status === "new" && photo.file) {
-        formData.append(`photos[new][${index}]`, photo.file);
+        formData.append(`photos[new][${index}]`, photo.file)
       } else if (photo.status === "deleted" && photo.id !== null) {
-        formData.append(`photos[deleted][]`, String(photo.id));
+        formData.append(`photos[deleted][]`, String(photo.id))
       }
-    });
+    })
 
-    // Submit the formData
-    submit(formData, { method: 'PATCH', encType: 'multipart/form-data' });
-    setIsEditing(false);
-  };
+    submit(formData, { method: 'PATCH', encType: 'multipart/form-data' })
+    setIsEditing(false)
+  }
 
   return (
     <div>
@@ -75,7 +76,7 @@ function Show() {
         <ElephantPhotoManager
           initialPhotos={elephant.data.attributes.photos}
           isEditing={isEditing}
-          onSubmitPhotos={setFinalPhotos} // Get the final photos when the form is submitted
+          onSubmitPhotos={setFinalPhotos}
         />
 
         {isEditing && <button type="submit">Update Elephant</button>}
@@ -87,7 +88,7 @@ function Show() {
         </Form>
       )}
     </div>
-  );
+  )
 }
 
-export default Show;
+export default Show
