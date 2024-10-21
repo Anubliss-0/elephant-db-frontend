@@ -28,9 +28,10 @@ function ElephantPhotoManager({
     setPhotos(existingPhotos)
   }, [initialPhotos])
 
-  const handleRemovePhoto = (photoId: string) => {
-    setPhotos(prevPhotos => toggleRemovePhoto(prevPhotos, photoId))
-  }
+  const handleRemovePhoto = (event: React.MouseEvent<HTMLButtonElement>, photoId: string | null) => {
+    event.preventDefault(); // Prevent form submission
+    setPhotos(prevPhotos => toggleRemovePhoto(prevPhotos, photoId));
+  };
 
   const handleAddPhotos = (files: FileList) => {
     const newPhotosArray = addPhotos(files)
@@ -53,7 +54,11 @@ function ElephantPhotoManager({
       {photos.length > 0 ? (
         <div className={styles.photos}>
           {photos.map((photo, index) => (
-            <div key={photo.id || index} className={styles.photoContainer}>
+            <div
+              key={photo.id || index}
+              className={styles.photoContainer}
+              style={{ opacity: photo.status === "deleted" ? 0.5 : 1 }} // Apply opacity when deleted
+            >
               {/* Photo */}
               <img src={photo.url} alt={`Elephant photo ${index + 1}`} />
 
@@ -62,16 +67,11 @@ function ElephantPhotoManager({
                 <div className={styles.removalOverlay}>X</div>
               )}
 
-              {/* Checkbox to mark for removal or keep */}
+              {/* Remove button for each photo */}
               {isEditing && (
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={photo.status === "deleted"}
-                    onChange={() => handleRemovePhoto(photo.id || "")}
-                  />
-                  Remove
-                </label>
+                <button onClick={(event) => handleRemovePhoto(event, photo.id || null)}>
+                  {photo.status === "deleted" ? "Undo Remove" : "Remove"}
+                </button>
               )}
             </div>
           ))}
