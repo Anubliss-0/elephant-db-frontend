@@ -31,9 +31,7 @@ function Show() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const formData = new FormData()
-    formData.append('name', name)
-    formData.append('bio', bio)
+    const formData = new FormData(event.currentTarget)
 
     finalPhotos.forEach((photo, index) => {
       if (photo.status === "new" && photo.file) {
