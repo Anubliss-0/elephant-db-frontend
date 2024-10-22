@@ -5,3 +5,11 @@
         width: 25%;
     }
 }
+
+.photoCounter {
+    font-size: 2rem;
+
+    &.counterInvalid {
+        color: red;
+    }
+}
