@@ -13,21 +13,21 @@ export const addPhotos = (files: FileList): Photo[] => {
 export const toggleRemovePhoto = (
   photos: Photo[],
   photoId: string | null,
-  index: number | null = null // Add index to uniquely identify new photos
+  index: number | null = null
 ): Photo[] => {
-  return photos
-    .map((photo, i) => {
-      // Handle new photos by filtering them out (remove from array if index matches)
-      if (index !== null && i === index && photo.status === "new") {
-        return null; // Remove this photo by returning null
-      }
+  return photos.map((photo, i) => {
+    // Handle new photos using index
+    if (index !== null && i === index) {
+      // Toggle new photo's status between "new" and remove (null)
+      return photo.status === "new" ? null : { ...photo, status: "new" };
+    }
 
-      // Toggle status for existing photos between "keep" and "deleted"
-      if (photo.id === photoId && photo.status !== "new") {
-        return { ...photo, status: photo.status === "deleted" ? "keep" : "deleted" };
-      }
+    // Handle existing photos using photoId
+    if (photoId && photo.id === photoId) {
+      // Toggle status between "deleted" and "keep"
+      return { ...photo, status: photo.status === "deleted" ? "keep" : "deleted" };
+    }
 
-      return photo; // Return unchanged photo for all other cases
-    })
-    .filter((photo): photo is Photo => photo !== null); // Type guard to filter out null values
+    return photo; // Return unchanged photo for all other cases
+  }).filter((photo): photo is Photo => photo !== null); // Filter out removed (null) photos
 };
