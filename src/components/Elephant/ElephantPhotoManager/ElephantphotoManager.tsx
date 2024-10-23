@@ -16,7 +16,8 @@ interface ElephantPhotoManagerProps {
 
 function ElephantPhotoManager({ initialPhotos, isEditing, onSubmitPhotos, onInvalidStatusChange }: ElephantPhotoManagerProps) {
   const [photos, setPhotos] = useState<Photo[]>([])
-  const isCountValid = photos.length >= 1 && photos.length <= 5
+  const filteredPhotos = photos.filter(photo => photo.status !== "deleted")
+  const isCountValid = filteredPhotos.length >= 1 && filteredPhotos.length <= 5
 
   useEffect(() => {
     onInvalidStatusChange(isCountValid)
@@ -91,7 +92,7 @@ function ElephantPhotoManager({ initialPhotos, isEditing, onSubmitPhotos, onInva
       )}
 
       <div className={classNames(counterClass)}>
-        {`${photos.length} / 5`}
+        {`${filteredPhotos.length} / 5`}
       </div>
     </div>
   )
