@@ -10,12 +10,17 @@ interface ElephantPhotoManagerProps {
     url: string
   }[]
   isEditing: boolean
+  onInvalidStatusChange: (isInvalid: boolean) => void
   onSubmitPhotos: (photos: Photo[]) => void
 }
 
-function ElephantPhotoManager({ initialPhotos, isEditing, onSubmitPhotos, }: ElephantPhotoManagerProps) {
+function ElephantPhotoManager({ initialPhotos, isEditing, onSubmitPhotos, onInvalidStatusChange }: ElephantPhotoManagerProps) {
   const [photos, setPhotos] = useState<Photo[]>([])
-  const isCounterInvalid = photos.length > 5 || photos.length == 0
+  const isCountValid = photos.length >= 1 && photos.length <= 5
+
+  useEffect(() => {
+    onInvalidStatusChange(isCountValid)
+  }, [isCountValid, onInvalidStatusChange])
 
   useEffect(() => {
     const existingPhotos = initialPhotos.map(photo => ({
@@ -53,7 +58,7 @@ function ElephantPhotoManager({ initialPhotos, isEditing, onSubmitPhotos, }: Ele
     }
   }
 
-  const counterClass = classNames(styles.photoCounter, { [styles.counterInvalid]: isCounterInvalid })
+  const counterClass = classNames(styles.photoCounter, { [styles.counterInvalid]: !isCountValid })
 
   return (
     <div>

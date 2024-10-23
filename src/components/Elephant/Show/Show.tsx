@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLoaderData, Form, useSubmit } from 'react-router-dom'
 import ElephantPhotoManager from '../ElephantPhotoManager/ElephantphotoManager'
 import { Photo } from '../../../types'
@@ -7,7 +7,29 @@ import styles from './Show.module.scss'
 function Show() {
   const [isEditing, setIsEditing] = useState(false)
   const [finalPhotos, setFinalPhotos] = useState<Photo[]>([])
+  const [arePhotosValid, setArePhotosInvalid] = useState(true)
+  const [isTextValid, setIsTextValid] = useState({
+    name: true,
+    bio: true,
+  })
+  const [isFormValid, setIsFormValid] = useState(false)
+
+  useEffect(() => {
+    setIsFormValid(arePhotosValid && isTextValid.name && isTextValid.bio);
+  }, [arePhotosValid, isTextValid])
   const submit = useSubmit()
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setIsTextValid((prev) => ({
+      ...prev,
+      [name]: value.trim() !== "",
+    }))
+  }
+
+  const handleInvalidStatus = (status: boolean) => {
+    setArePhotosInvalid(status)
+  }
 
   type ElephantData = {
     id: string
@@ -57,7 +79,7 @@ function Show() {
         <div>
           <label htmlFor="name">Name:</label>
           {isEditing ? (
-            <input type="text" id="name" name="name" defaultValue={name} required />
+            <input type="text" id="name" name="name" defaultValue={name} required onChange={handleInputChange} />
           ) : (
             <span>{name}</span>
           )}
@@ -65,7 +87,7 @@ function Show() {
         <div>
           <label htmlFor="bio">Bio:</label>
           {isEditing ? (
-            <input type="text" id="bio" name="bio" defaultValue={bio} required />
+            <input type="text" id="bio" name="bio" defaultValue={bio} required onChange={handleInputChange} />
           ) : (
             <span>{bio}</span>
           )}
@@ -74,10 +96,11 @@ function Show() {
         <ElephantPhotoManager
           initialPhotos={elephant.data.attributes.photos}
           isEditing={isEditing}
+          onInvalidStatusChange={handleInvalidStatus}
           onSubmitPhotos={setFinalPhotos}
         />
 
-        {isEditing && <button type="submit">Update Elephant</button>}
+        {(isEditing) && <button type="submit" disabled={!isFormValid}>Update Elephant</button>}
       </Form>
 
       {isEditing && (
