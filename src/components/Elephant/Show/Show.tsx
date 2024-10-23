@@ -1,10 +1,29 @@
 import { useState, useEffect } from 'react'
 import { useLoaderData, Form, useSubmit } from 'react-router-dom'
-import ElephantPhotoManager from '../ElephantPhotoManager/ElephantphotoManager'
 import { Photo } from '../../../types'
+import ElephantPhotoManager from '../ElephantPhotoManager/ElephantphotoManager'
 import styles from './Show.module.scss'
 
+type ElephantData = {
+  id: string
+  type: string
+  attributes: {
+    can_edit: boolean
+    id: number
+    name: string
+    bio: string
+    user_id: number
+    photos: {
+      id: string
+      url: string
+    }[]
+  }
+}
+
 function Show() {
+  const { elephant } = useLoaderData() as { elephant: { data: ElephantData } }
+  const { name, bio, photos } = elephant.data.attributes
+  const submit = useSubmit()
   const [isEditing, setIsEditing] = useState(false)
   const [finalPhotos, setFinalPhotos] = useState<Photo[]>([])
   const [arePhotosValid, setArePhotosInvalid] = useState(true)
@@ -15,40 +34,17 @@ function Show() {
   const [isFormValid, setIsFormValid] = useState(false)
 
   useEffect(() => {
-    setIsFormValid(arePhotosValid && isTextValid.name && isTextValid.bio);
+    setIsFormValid(arePhotosValid && isTextValid.name && isTextValid.bio)
   }, [arePhotosValid, isTextValid])
-  const submit = useSubmit()
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setIsTextValid((prev) => ({
-      ...prev,
-      [name]: value.trim() !== "",
-    }))
-  }
 
   const handleInvalidStatus = (status: boolean) => {
     setArePhotosInvalid(status)
   }
 
-  type ElephantData = {
-    id: string
-    type: string
-    attributes: {
-      can_edit: boolean
-      id: number
-      name: string
-      bio: string
-      user_id: number
-      photos: {
-        id: string
-        url: string
-      }[]
-    }
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setIsTextValid((prev) => ({ ...prev, [name]: value.trim() !== "", }))
   }
-
-  const { elephant } = useLoaderData() as { elephant: { data: ElephantData } }
-  const { name, bio } = elephant.data.attributes
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -94,7 +90,7 @@ function Show() {
         </div>
 
         <ElephantPhotoManager
-          initialPhotos={elephant.data.attributes.photos}
+          initialPhotos={photos}
           isEditing={isEditing}
           onInvalidStatusChange={handleInvalidStatus}
           onSubmitPhotos={setFinalPhotos}
