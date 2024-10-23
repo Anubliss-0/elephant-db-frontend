@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import classNames from 'classnames'
-import styles from "./ElephantPhotos.module.scss"
+import styles from "./ElephantPhotoManager.module.scss"
 import { Photo } from "../../../types"
 import { addPhotos, toggleRemovePhoto } from './ElephantphotoManagerUtils'
 
@@ -53,31 +53,27 @@ function ElephantPhotoManager({ initialPhotos, isEditing, onSubmitPhotos, }: Ele
     }
   }
 
+  const counterClass = classNames(styles.photoCounter, { [styles.counterInvalid]: isCounterInvalid })
+
   return (
     <div>
       <div className={styles.photos}>
-        {photos.map((photo, index) => (
-          <div
-            key={photo.id || `new-photo-${index}`} // Use index if id is null
-            className={styles.photoContainer}
-            style={{ opacity: photo.status === "deleted" ? 0.5 : 1 }} // Apply opacity when deleted
-          >
-            {/* Photo */}
-            <img src={photo.url} alt={`Elephant photo ${index + 1}`} />
-
-            {/* Show "X" overlay if the photo is flagged for removal */}
-            {photo.status === "deleted" && (
-              <div className={styles.removalOverlay}>X</div>
-            )}
-
-            {/* Remove button for each photo */}
-            {isEditing && (
-              <button onClick={(event) => handleRemovePhoto(event, photo.id || null, photo.id === null ? index : null)}>
-                {photo.status === "deleted" ? "Undo Remove" : "Remove"}
-              </button>
-            )}
-          </div>
-        ))}
+        {photos.map((photo, index) => {
+          const photoContainerClass = classNames(styles.photoContainer, { [styles.deleting]: photo.status === "deleted", })
+          return (
+            <div
+              key={photo.id || `new-photo-${index}`}
+              className={photoContainerClass}
+            >
+              <img src={photo.url} alt={`Elephant photo ${index + 1}`} />
+              {isEditing && (
+                <button onClick={(event) => handleRemovePhoto(event, photo.id || null, photo.id === null ? index : null)}>
+                  {photo.status === "deleted" ? "Undo Remove" : "Remove"}
+                </button>
+              )}
+            </div>
+          )
+        })}
       </div>
 
       {isEditing && (
@@ -89,8 +85,8 @@ function ElephantPhotoManager({ initialPhotos, isEditing, onSubmitPhotos, }: Ele
         </div>
       )}
 
-      <div className={classNames(styles.photoCounter, { [styles.counterInvalid]: isCounterInvalid, })}>
-        {photos.length}
+      <div className={classNames(counterClass)}>
+        {`${photos.length} / 5`}
       </div>
     </div>
   )

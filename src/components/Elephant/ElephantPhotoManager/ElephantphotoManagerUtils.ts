@@ -1,6 +1,5 @@
 import { Photo } from "../../../types"
 
-// Utility function for adding photos
 export const addPhotos = (files: FileList): Photo[] => {
   return Array.from(files).map(file => ({
     id: null,
