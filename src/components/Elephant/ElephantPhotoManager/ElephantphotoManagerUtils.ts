@@ -16,18 +16,15 @@ export const toggleRemovePhoto = (
   index: number | null = null
 ): Photo[] => {
   return photos.map((photo, i) => {
-    // Handle new photos using index
-    if (index !== null && i === index) {
-      // Toggle new photo's status between "new" and remove (null)
-      return photo.status === "new" ? null : { ...photo, status: "new" };
+    if ((index !== null && i === index) || (photoId && photo.id === photoId)) {
+      if (photo.status === "new") {
+        return null; // Remove new photo
+      } else if (photo.status === "deleted") {
+        return { ...photo, status: "keep" };
+      } else {
+        return { ...photo, status: "deleted" };
+      }
     }
-
-    // Handle existing photos using photoId
-    if (photoId && photo.id === photoId) {
-      // Toggle status between "deleted" and "keep"
-      return { ...photo, status: photo.status === "deleted" ? "keep" : "deleted" };
-    }
-
-    return photo; // Return unchanged photo for all other cases
-  }).filter((photo): photo is Photo => photo !== null); // Filter out removed (null) photos
+    return photo;
+  }).filter((photo): photo is Photo => photo !== null);
 };
