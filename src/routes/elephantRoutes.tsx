@@ -35,15 +35,22 @@ const elephantRoutes = [
       }
 
       if (request.method === "PATCH" || request.method === "PUT") {
-        const formData = await request.formData()
-        const name = formData.get("name") as string | null
-        const bio = formData.get("bio") as string | null
-        const removePhotoIds = formData.getAll("photos[deleted][]") as string[]
+        const formData = await request.formData();
+        const name = formData.get("elephant[name]") as string | null;
+        const bio = formData.get("elephant[bio]") as string | null;
 
-        const newPhotos: File[] = [];
+        // Collect photo positions
+        console.log(formData)
+        const photos: { id: string; position: number }[] = []
         formData.forEach((value, key) => {
-          if (key.startsWith("photos[new]") && value instanceof File) {
-            newPhotos.push(value); // Collect new photos as File objects
+          if (key.startsWith("elephant[photos][")) {
+            const match = key.match(/elephant\[photos\]\[(\d+)\]\[(id|position)\]/);
+            if (match) {
+              const index = parseInt(match[1], 10);
+              const field = match[2];
+              if (!photos[index]) photos[index] = { id: "", position: 0 };
+              photos[index][field] = field === "position" ? parseInt(value as string, 10) : (value as string);
+            }
           }
         })
 
@@ -51,12 +58,11 @@ const elephantRoutes = [
           throw new Error("Invalid form data: name and bio must be provided")
         }
 
-        const elephantData: any = {
+        const elephantData = {
           name,
           bio,
-          remove_photo_ids: removePhotoIds, // Send deleted photo IDs
-          new_photos: newPhotos, // This contains the new photo files
-        };
+          photos, // Send photo IDs and positions
+        }
 
         await editElephantById(id, elephantData)
         return redirect(`/elephants/${id}`)

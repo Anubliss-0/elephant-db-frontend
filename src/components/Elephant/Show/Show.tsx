@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useLoaderData, Form, useSubmit } from 'react-router-dom'
 import { Photo } from '../../../types'
-import ElephantPhotoManager from '../ElephantPhotoManager/ElephantphotoManager'
-import styles from './Show.module.scss'
+import Photos from '../Photos/Photos'
 
 type ElephantData = {
   id: string
@@ -22,40 +21,46 @@ type ElephantData = {
 
 function Show() {
   const { elephant } = useLoaderData() as { elephant: { data: ElephantData } }
-  const { name, bio, photos } = elephant.data.attributes
+  const { name, bio } = elephant.data.attributes
+  const [photos, setPhotos] = useState<Photo[]>([]);
   const submit = useSubmit()
   const [isEditing, setIsEditing] = useState(false)
-  const [finalPhotos, setFinalPhotos] = useState<Photo[]>([])
-  const [arePhotosValid, setArePhotosInvalid] = useState(true)
-  const [isTextValid, setIsTextValid] = useState({
-    name: true,
-    bio: true,
-  })
-  const [isFormValid, setIsFormValid] = useState(false)
-
-  useEffect(() => {
-    setIsFormValid(arePhotosValid && isTextValid.name && isTextValid.bio)
-  }, [arePhotosValid, isTextValid])
-
-  const handleInvalidStatus = (status: boolean) => {
-    setArePhotosInvalid(status)
-  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setIsTextValid((prev) => ({ ...prev, [name]: value.trim() !== "", }))
   }
 
+  const handlePhotosChange = (updatedPhotos: Photo[]) => {
+    setPhotos(updatedPhotos)
+  }
+
+  useEffect(() => {
+    const initialPhotos = elephant.data.attributes.photos.map((photo, index) => ({
+      id: photo.id,
+      url: photo.url,
+      status: "keep" as const,
+      position: index, // Assign initial position
+    }));
+    setPhotos(initialPhotos);
+  }, [elephant.data.attributes.photos]);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const formData = new FormData(event.currentTarget)
+    const formData = new FormData(event.currentTarget);
 
-    finalPhotos.forEach((photo, index) => {
-      if (photo.status === "new" && photo.file) {
-        formData.append(`photos[new][${index}]`, photo.file)
-      } else if (photo.status === "deleted" && photo.id !== null) {
-        formData.append(`photos[deleted][]`, String(photo.id))
+    // Nest parameters under 'elephant'
+    formData.append('elephant[name]', formData.get('name') as string);
+    formData.append('elephant[bio]', formData.get('bio') as string);
+
+    photos.forEach((photo, index) => {
+      formData.append(`elephant[photos][${index}][id]`, photo.id || '');
+      formData.append(`elephant[photos][${index}][url]`, photo.url);
+      formData.append(`elephant[photos][${index}][status]`, photo.status);
+      formData.append(`elephant[photos][${index}][position]`, photo.position.toString());
+      if (photo.file) {
+        formData.append(`elephant[photos][${index}][file]`, photo.file);
       }
     })
 
@@ -89,14 +94,9 @@ function Show() {
           )}
         </div>
 
-        <ElephantPhotoManager
-          initialPhotos={photos}
-          isEditing={isEditing}
-          onInvalidStatusChange={handleInvalidStatus}
-          onSubmitPhotos={setFinalPhotos}
-        />
+        <Photos photos={photos} onPhotosChange={handlePhotosChange} />
 
-        {(isEditing) && <button type="submit" disabled={!isFormValid}>Update Elephant</button>}
+        {(isEditing) && <button type="submit">Update Elephant</button>}
       </Form>
 
       {isEditing && (
