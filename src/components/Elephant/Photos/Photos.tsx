@@ -27,13 +27,33 @@ function Photos({ photos, onPhotosChange }: PhotosProps) {
         }
     };
 
+    const handleDelete = (event: React.MouseEvent<HTMLButtonElement>, photoId: string) => {
+        event.preventDefault(); // Prevent form submission
+        const updatedPhotos = photos.map(photo => {
+            if (photo.id === photoId) {
+                if (photo.status === "keep") {
+                    return { ...photo, status: "deleted" };
+                } else if (photo.status === "deleted") {
+                    return { ...photo, status: "keep" };
+                }
+            }
+            return photo;
+        });
+        onPhotosChange(updatedPhotos as Photo[]);
+    };
+
     return (
         <DndContext onDragEnd={handleDragEnd}>
             <SortableContext items={photos.map(photo => photo.id || 'default-id')}>
                 <div className={styles.gridContainer}>
                     {photos.map((photo) => (
                         <SortableItem key={photo.id || 'default-id'} id={photo.id || 'default-id'}>
-                            <img className={styles.photo} src={photo.url} alt={`Photo ${photo.id}`} />
+                            <div>
+                                <img className={styles.photo} src={photo.url} alt={`Photo ${photo.id}`} />
+                                <button type="button" onPointerDown={(event) => handleDelete(event, photo.id)}>
+                                    Delete
+                                </button>
+                            </div>
                         </SortableItem>
                     ))}
                 </div>
