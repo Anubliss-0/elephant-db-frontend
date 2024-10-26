@@ -14,7 +14,7 @@ export const getElephantById = async (id: string) => {
 }
 
 // Edit elephant by ID
-export const editElephantById = async (id: string, elephantData: { name: string; bio: string; photos: { id: string; position: number }[] }) => {
+export const editElephantById = async (id: string, elephantData: { name: string; bio: string; photos: { id: string; position: number; status: "keep" | "deleted" | "new" }[] }) => {
   const formData = new FormData();
   
   // Nest name and bio under 'elephant'
@@ -25,6 +25,7 @@ export const editElephantById = async (id: string, elephantData: { name: string;
   elephantData.photos.forEach((photo, index) => {
     formData.append(`elephant[photos][${index}][id]`, photo.id);
     formData.append(`elephant[photos][${index}][position]`, photo.position.toString());
+    formData.append(`elephant[photos][${index}][status]`, photo.status.toString());
   });
 
   // Send FormData to Rails API via Axios
