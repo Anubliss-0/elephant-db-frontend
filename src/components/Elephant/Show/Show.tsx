@@ -54,11 +54,22 @@ function Show() {
     formData.append('elephant[name]', formData.get('name') as string);
     formData.append('elephant[bio]', formData.get('bio') as string);
 
+    // Prepare non-file photo data for JSON stringification
+    const photoData = photos.map(photo => ({
+      id: photo.id,
+      url: photo.url,
+      status: photo.status,
+      position: photo.position,
+    }));
+
+    // Convert the non-file data to a JSON string
+    const photosJson = JSON.stringify(photoData);
+
+    // Append the JSON string to the form data
+    formData.append("elephant[photos]", photosJson);
+
+    // Append files separately
     photos.forEach((photo, index) => {
-      formData.append(`elephant[photos][${index}][id]`, photo.id || '');
-      formData.append(`elephant[photos][${index}][url]`, photo.url);
-      formData.append(`elephant[photos][${index}][status]`, photo.status);
-      formData.append(`elephant[photos][${index}][position]`, photo.position.toString());
       if (photo.file) {
         formData.append(`elephant[photos][${index}][file]`, photo.file);
       }

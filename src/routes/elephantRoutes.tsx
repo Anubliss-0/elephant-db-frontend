@@ -38,31 +38,29 @@ const elephantRoutes = [
         const formData = await request.formData();
         const name = formData.get("elephant[name]") as string | null;
         const bio = formData.get("elephant[bio]") as string | null;
+        const photosJson = formData.get("elephant[photos]") as string | null;
 
-        // Collect photo positions
-        console.log(formData)
-        const photos: { id: string; position: number }[] = []
-        formData.forEach((value, key) => {
-          if (key.startsWith("elephant[photos][")) {
-            const match = key.match(/elephant\[photos\]\[(\d+)\]\[(id|position)\]/);
-            if (match) {
-              const index = parseInt(match[1], 10);
-              const field = match[2];
-              if (!photos[index]) photos[index] = { id: "", position: 0 };
-              photos[index][field] = field === "position" ? parseInt(value as string, 10) : (value as string);
-            }
-          }
-        })
-
-        if (!name || !bio) {
-          throw new Error("Invalid form data: name and bio must be provided")
+        if (!name || !bio || !photosJson) {
+          throw new Error("Invalid form data: name, bio, and photos must be provided");
         }
+
+        // Parse the photos JSON
+        const photos = JSON.parse(photosJson);
+
+        // Handle files if needed
+        const files: File[] = [];
+        formData.forEach((value, key) => {
+          if (key.startsWith("elephant[photos][") && key.endsWith("[file]")) {
+            files.push(value as File);
+          }
+        });
 
         const elephantData = {
           name,
           bio,
-          photos, // Send photo IDs and positions
-        }
+          photos, // Already parsed into an array of objects
+          // You can add logic here to associate files with photos if needed
+        };
 
         await editElephantById(id, elephantData)
         return redirect(`/elephants/${id}`)
