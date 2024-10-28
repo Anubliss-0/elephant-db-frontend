@@ -42,6 +42,23 @@ function Photos({ photos, onPhotosChange }: PhotosProps) {
         onPhotosChange(updatedPhotos as Photo[]);
     };
 
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files) {
+            const newPhotos: Photo[] = Array.from(files)
+                .filter(file => file.type.startsWith('image/')) // Ensure only image files are processed
+                .map(file => ({
+                    id: null, // Generate a unique ID
+                    url: URL.createObjectURL(file), // Create a URL for the uploaded file
+                    status: "new", // Set status to "new"
+                    position: photos.length, // Add to the end of the array
+                    file: file, // Attach the file
+                }));
+
+            onPhotosChange([...photos, ...newPhotos]);
+        }
+    };
+
     return (
         <DndContext onDragEnd={handleDragEnd}>
             <SortableContext items={photos.map(photo => photo.id || 'default-id')}>
@@ -57,6 +74,7 @@ function Photos({ photos, onPhotosChange }: PhotosProps) {
                         </SortableItem>
                     ))}
                 </div>
+                <input type="file" accept="image/*" multiple onChange={handleFileUpload} />
             </SortableContext>
         </DndContext>
     );

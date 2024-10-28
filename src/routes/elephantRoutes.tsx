@@ -4,6 +4,7 @@ import Index from '../components/Elephant/Index/Index'
 import Show from '../components/Elephant/Show/Show'
 import New from '../components/Elephant/New/New'
 import ErrorPage from '../ErrorPage'
+import axios from 'axios'
 
 const elephantRoutes = [
 
@@ -36,33 +37,23 @@ const elephantRoutes = [
 
       if (request.method === "PATCH" || request.method === "PUT") {
         const formData = await request.formData();
-        const name = formData.get("elephant[name]") as string | null;
-        const bio = formData.get("elephant[bio]") as string | null;
-        const photosJson = formData.get("elephant[photos]") as string | null;
+        // const name = formData.get("elephant[name]") as string | null;
+        // const bio = formData.get("elephant[bio]") as string | null;
+        // const photosJson = formData.get("elephant[photos]") as string | null;
 
-        if (!name || !bio || !photosJson) {
-          throw new Error("Invalid form data: name, bio, and photos must be provided");
-        }
+        // if (!name || !bio || !photosJson) {
+        //   throw new Error("Invalid form data: name, bio, and photos must be provided");
+        // }
 
-        // Parse the photos JSON
-        const photos = JSON.parse(photosJson);
+        console.log(formData)
 
-        // Handle files if needed
-        const files: File[] = [];
-        formData.forEach((value, key) => {
-          if (key.startsWith("elephant[photos][") && key.endsWith("[file]")) {
-            files.push(value as File);
-          }
+        // await editElephantById(id, formData)
+
+        return axios.patch(`http://localhost:3000/elephants/${id}`, formData, {
+          // headers: {
+          //   'Content-Type': 'multipart/form-data',
+          // },
         });
-
-        const elephantData = {
-          name,
-          bio,
-          photos, // Already parsed into an array of objects
-          // You can add logic here to associate files with photos if needed
-        };
-
-        await editElephantById(id, elephantData)
         return redirect(`/elephants/${id}`)
       }
     },

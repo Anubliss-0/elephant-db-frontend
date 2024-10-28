@@ -14,19 +14,21 @@ export const getElephantById = async (id: string) => {
 }
 
 // Edit elephant by ID
-export const editElephantById = async (id: string, elephantData: { name: string; bio: string; photos: { id: string; position: number; status: "keep" | "deleted" | "new" }[] }) => {
-  const formData = new FormData();
+export const editElephantById = async (id: string, formData: FormData) => {
+  // const formData = new FormData();
   
   // Nest name and bio under 'elephant'
-  formData.append("elephant[name]", elephantData.name);
-  formData.append("elephant[bio]", elephantData.bio);
+  // formData.append("elephant[name]", elephantData.name);
+  // formData.append("elephant[bio]", elephantData.bio);
 
   // Nest photo positions under 'elephant'
-  elephantData.photos.forEach((photo, index) => {
-    formData.append(`elephant[photos][${index}][id]`, photo.id);
-    formData.append(`elephant[photos][${index}][position]`, photo.position.toString());
-    formData.append(`elephant[photos][${index}][status]`, photo.status.toString());
-  });
+  // elephantData.photos.forEach((photo, index) => {
+  //   formData.append(`elephant[photos][${index}][id]`, photo.id);
+  //   formData.append(`elephant[photos][${index}][position]`, photo.position.toString());
+  //   formData.append(`elephant[photos][${index}][status]`, photo.status.toString());
+  // });
+
+  console.log(formData)
 
   // Send FormData to Rails API via Axios
   return axios.patch(`${baseURL}/elephants/${id}`, formData, {

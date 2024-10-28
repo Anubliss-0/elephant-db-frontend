@@ -50,33 +50,22 @@ function Show() {
 
     const formData = new FormData(event.currentTarget);
 
-    // Nest parameters under 'elephant'
-    formData.append('elephant[name]', formData.get('name') as string);
-    formData.append('elephant[bio]', formData.get('bio') as string);
-
-    // Prepare non-file photo data for JSON stringification
-    const photoData = photos.map(photo => ({
-      id: photo.id,
-      url: photo.url,
-      status: photo.status,
-      position: photo.position,
-    }));
-
-    // Convert the non-file data to a JSON string
-    const photosJson = JSON.stringify(photoData);
-
-    // Append the JSON string to the form data
-    formData.append("elephant[photos]", photosJson);
-
-    // Append files separately
+    // Append each photo's data separately
     photos.forEach((photo, index) => {
-      if (photo.file) {
-        formData.append(`elephant[photos][${index}][file]`, photo.file);
-      }
-    })
+      formData.append(`elephant[photos_attributes][${index}][id]`, photo.id);
+      formData.append(`elephant[photos_attributes][${index}][status]`, photo.status);
+      formData.append(`elephant[photos_attributes][${index}][position]`, photo.position);
 
-    submit(formData, { method: 'PATCH', encType: 'multipart/form-data' })
-    setIsEditing(false)
+      // Append file if it exists
+      if (photo.file) {
+        formData.append(`elephant[photos_attributes][${index}][file]`, photo.file);
+      }
+    });
+
+    console.log(formData)
+
+    submit(formData, { method: 'PATCH', encType: 'multipart/form-data' });
+    setIsEditing(false);
   }
 
   return (
@@ -91,7 +80,7 @@ function Show() {
         <div>
           <label htmlFor="name">Name:</label>
           {isEditing ? (
-            <input type="text" id="name" name="name" defaultValue={name} required onChange={handleInputChange} />
+            <input type="text" id="name" name="elephant[name]" defaultValue={name} required onChange={handleInputChange} />
           ) : (
             <span>{name}</span>
           )}
@@ -99,7 +88,7 @@ function Show() {
         <div>
           <label htmlFor="bio">Bio:</label>
           {isEditing ? (
-            <input type="text" id="bio" name="bio" defaultValue={bio} required onChange={handleInputChange} />
+            <input type="text" id="bio" name="elephant[bio]" defaultValue={bio} required onChange={handleInputChange} />
           ) : (
             <span>{bio}</span>
           )}
@@ -110,11 +99,11 @@ function Show() {
         {(isEditing) && <button type="submit">Update Elephant</button>}
       </Form>
 
-      {isEditing && (
+      {/* {isEditing && (
         <Form method="delete">
           <button type="submit">Delete</button>
         </Form>
-      )}
+      )} */}
     </div>
   )
 }
