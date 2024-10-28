@@ -94,7 +94,7 @@ function Show() {
           )}
         </div>
 
-        <Photos photos={photos} onPhotosChange={handlePhotosChange} />
+        <Photos photos={photos} onPhotosChange={handlePhotosChange} isEditing={isEditing} />
 
         {(isEditing) && <button type="submit">Update Elephant</button>}
       </Form>

@@ -7,9 +7,10 @@ import styles from './Photos.module.scss'
 interface PhotosProps {
     photos: Photo[];
     onPhotosChange: (photos: Photo[]) => void;
+    isEditing: boolean;
 }
 
-function Photos({ photos, onPhotosChange }: PhotosProps) {
+function Photos({ photos, onPhotosChange, isEditing }: PhotosProps) {
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
 
@@ -62,24 +63,33 @@ function Photos({ photos, onPhotosChange }: PhotosProps) {
     };
 
     return (
-        <DndContext onDragEnd={handleDragEnd}>
-            <SortableContext items={photos.map(photo => photo.id || 'default-id')}>
-                <div className={styles.gridContainer}>
-                    {photos.map((photo, index) => (
-                        <SortableItem key={photo.id || 'default-id'} id={photo.id || 'default-id'}>
-                            <div>
-                                <div>Photo {index + 1}</div>
-                                <img className={styles.photo} src={photo.url} alt={`Photo ${photo.id}`} />
-                                <button type="button" onPointerDown={(event) => handleDelete(event, photo.id)}>
-                                    Delete
-                                </button>
-                            </div>
-                        </SortableItem>
-                    ))}
-                </div>
-                <input type="file" accept="image/*" multiple onChange={handleFileUpload} />
-            </SortableContext>
-        </DndContext>
+        <div className={styles.gridContainer}>
+            {isEditing ? (
+                <DndContext onDragEnd={handleDragEnd}>
+                    <SortableContext items={photos.map(photo => photo.id || 'default-id')}>
+                        {photos.map((photo, index) => (
+                            <SortableItem key={photo.id || 'default-id'} id={photo.id || 'default-id'}>
+                                <div>
+                                    <div>Photo {index + 1}</div>
+                                    <img className={styles.photo} src={photo.url} alt={`Photo ${photo.id}`} />
+                                    <button type="button" onPointerDown={(event) => handleDelete(event, photo.id)}>
+                                        Delete
+                                    </button>
+                                </div>
+                            </SortableItem>
+                        ))}
+                    </SortableContext>
+                </DndContext>
+            ) : (
+                photos.map((photo, index) => (
+                    <div key={photo.id || 'default-id'}>
+                        <div>Photo {index + 1}</div>
+                        <img className={styles.photo} src={photo.url} alt={`Photo ${photo.id}`} />
+                    </div>
+                ))
+            )}
+            {isEditing && <input type="file" accept="image/*" multiple onChange={handleFileUpload} />}
+        </div>
     );
 }
 
