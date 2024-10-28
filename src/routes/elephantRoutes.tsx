@@ -1,10 +1,9 @@
-import { getAllElephants, getElephantById, createElephant, deleteElephant, editElephantById } from '../utils/api'
+import { getAllElephants, getElephantById, createElephant, deleteElephant, updateElephant } from '../utils/api'
 import { redirect, LoaderFunctionArgs, ActionFunctionArgs } from 'react-router-dom'
 import Index from '../components/Elephant/Index/Index'
 import Show from '../components/Elephant/Show/Show'
 import New from '../components/Elephant/New/New'
 import ErrorPage from '../ErrorPage'
-import axios from 'axios'
 
 const elephantRoutes = [
 
@@ -37,23 +36,7 @@ const elephantRoutes = [
 
       if (request.method === "PATCH" || request.method === "PUT") {
         const formData = await request.formData();
-        // const name = formData.get("elephant[name]") as string | null;
-        // const bio = formData.get("elephant[bio]") as string | null;
-        // const photosJson = formData.get("elephant[photos]") as string | null;
-
-        // if (!name || !bio || !photosJson) {
-        //   throw new Error("Invalid form data: name, bio, and photos must be provided");
-        // }
-
-        console.log(formData)
-
-        // await editElephantById(id, formData)
-
-        return axios.patch(`http://localhost:3000/elephants/${id}`, formData, {
-          // headers: {
-          //   'Content-Type': 'multipart/form-data',
-          // },
-        });
+        await updateElephant(id, formData);
         return redirect(`/elephants/${id}`)
       }
     },

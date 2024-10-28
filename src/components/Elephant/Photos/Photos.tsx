@@ -28,17 +28,19 @@ function Photos({ photos, onPhotosChange }: PhotosProps) {
     };
 
     const handleDelete = (event: React.MouseEvent<HTMLButtonElement>, photoId: string) => {
-        event.preventDefault(); // Prevent form submission
-        const updatedPhotos = photos.map(photo => {
-            if (photo.id === photoId) {
-                if (photo.status === "keep") {
-                    return { ...photo, status: "deleted" };
-                } else if (photo.status === "deleted") {
-                    return { ...photo, status: "keep" };
+        event.preventDefault();
+        const updatedPhotos = photos
+            .map(photo => {
+                if (photo.id === photoId) {
+                    if (photo.status === "keep") {
+                        return { ...photo, status: "deleted" };
+                    } else if (photo.status === "deleted") {
+                        return { ...photo, status: "keep" };
+                    }
                 }
-            }
-            return photo;
-        });
+                return photo;
+            })
+            .filter(photo => !(photo.id === photoId && photo.status === "new"));
         onPhotosChange(updatedPhotos as Photo[]);
     };
 
@@ -46,13 +48,13 @@ function Photos({ photos, onPhotosChange }: PhotosProps) {
         const files = event.target.files;
         if (files) {
             const newPhotos: Photo[] = Array.from(files)
-                .filter(file => file.type.startsWith('image/')) // Ensure only image files are processed
-                .map(file => ({
-                    id: null, // Generate a unique ID
-                    url: URL.createObjectURL(file), // Create a URL for the uploaded file
-                    status: "new", // Set status to "new"
-                    position: photos.length, // Add to the end of the array
-                    file: file, // Attach the file
+                .filter(file => file.type.startsWith('image/'))
+                .map((file, index) => ({
+                    id: `new-${photos.length + index}`,
+                    url: URL.createObjectURL(file),
+                    status: "new",
+                    position: photos.length + index,
+                    file: file,
                 }));
 
             onPhotosChange([...photos, ...newPhotos]);
@@ -63,9 +65,10 @@ function Photos({ photos, onPhotosChange }: PhotosProps) {
         <DndContext onDragEnd={handleDragEnd}>
             <SortableContext items={photos.map(photo => photo.id || 'default-id')}>
                 <div className={styles.gridContainer}>
-                    {photos.map((photo) => (
+                    {photos.map((photo, index) => (
                         <SortableItem key={photo.id || 'default-id'} id={photo.id || 'default-id'}>
                             <div>
+                                <div>Photo {index + 1}</div>
                                 <img className={styles.photo} src={photo.url} alt={`Photo ${photo.id}`} />
                                 <button type="button" onPointerDown={(event) => handleDelete(event, photo.id)}>
                                     Delete
