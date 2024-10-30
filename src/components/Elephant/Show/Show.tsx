@@ -76,7 +76,7 @@ function Show() {
         </button>
       )}
 
-      <Form method="PATCH" encType="multipart/form-data" onSubmit={handleSubmit}>
+      <Form method="PATCH" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name:</label>
           {isEditing ? (

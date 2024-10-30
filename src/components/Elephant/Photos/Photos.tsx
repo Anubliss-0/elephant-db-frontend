@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Photo } from "../../../types"
 import { DndContext, DragEndEvent } from "@dnd-kit/core"
 import { SortableContext, arrayMove } from "@dnd-kit/sortable"
@@ -11,6 +12,14 @@ interface PhotosProps {
 }
 
 function Photos({ photos, onPhotosChange, isEditing }: PhotosProps) {
+    const [activePhotoCount, setActivePhotoCount] = useState(0);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    useEffect(() => {
+        const count = photos.filter(photo => photo.status === "keep" || photo.status === "new").length;
+        setActivePhotoCount(count);
+    }, [photos]);
+
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
 
@@ -48,48 +57,59 @@ function Photos({ photos, onPhotosChange, isEditing }: PhotosProps) {
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (files) {
-            const newPhotos: Photo[] = Array.from(files)
-                .filter(file => file.type.startsWith('image/'))
-                .map((file, index) => ({
-                    id: `new-${photos.length + index}`,
-                    url: URL.createObjectURL(file),
-                    status: "new",
-                    position: photos.length + index,
-                    file: file,
-                }));
+            const currentActiveCount = photos.filter(photo => photo.status === "keep" || photo.status === "new").length;
+            const newFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+
+            if (currentActiveCount + newFiles.length > 5) {
+                setErrorMessage("Cannot add more than 5 active photos.");
+                return;
+            }
+
+            const newPhotos: Photo[] = newFiles.map((file, index) => ({
+                id: `new-${photos.length + index}`,
+                url: URL.createObjectURL(file),
+                status: "new",
+                position: photos.length + index,
+                file: file,
+            }));
 
             onPhotosChange([...photos, ...newPhotos]);
+            setErrorMessage(null);
         }
     };
 
     return (
-        <div className={styles.gridContainer}>
-            {isEditing ? (
-                <DndContext onDragEnd={handleDragEnd}>
-                    <SortableContext items={photos.map(photo => photo.id || 'default-id')}>
-                        {photos.map((photo, index) => (
-                            <SortableItem key={photo.id || 'default-id'} id={photo.id || 'default-id'}>
-                                <div>
-                                    <div>Photo {index + 1}</div>
-                                    <img className={styles.photo} src={photo.url} alt={`Photo ${photo.id}`} />
-                                    <button type="button" onPointerDown={(event) => handleDelete(event, photo.id)}>
-                                        Delete
-                                    </button>
-                                </div>
-                            </SortableItem>
-                        ))}
-                    </SortableContext>
-                </DndContext>
-            ) : (
-                photos.map((photo, index) => (
-                    <div key={photo.id || 'default-id'}>
-                        <div>Photo {index + 1}</div>
-                        <img className={styles.photo} src={photo.url} alt={`Photo ${photo.id}`} />
-                    </div>
-                ))
-            )}
+        <>
+            <div className={styles.gridContainer}>
+                {isEditing ? (
+                    <DndContext onDragEnd={handleDragEnd}>
+                        <SortableContext items={photos.map(photo => photo.id || 'default-id')}>
+                            {photos.map((photo, index) => (
+                                <SortableItem key={photo.id || 'default-id'} id={photo.id || 'default-id'}>
+                                    <div>
+                                        <div>Photo {index + 1}</div>
+                                        <img className={styles.photo} src={photo.url} alt={`Photo ${photo.id}`} />
+                                        <button type="button" onPointerDown={(event) => handleDelete(event, photo.id)}>
+                                            Delete
+                                        </button>
+                                    </div>
+                                </SortableItem>
+                            ))}
+                        </SortableContext>
+                    </DndContext>
+                ) : (
+                    photos.map((photo, index) => (
+                        <div key={photo.id || 'default-id'}>
+                            <div>Photo {index + 1}</div>
+                            <img className={styles.photo} src={photo.url} alt={`Photo ${photo.id}`} />
+                        </div>
+                    ))
+                )}
+            </div>
             {isEditing && <input type="file" accept="image/*" multiple onChange={handleFileUpload} />}
-        </div>
+            {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
+            <div>{activePhotoCount} / 5</div>
+        </>
     );
 }
 
