@@ -18,6 +18,7 @@ function Photos({ photos, onPhotosChange, isEditing }: PhotosProps) {
     useEffect(() => {
         const count = photos.filter(photo => photo.status === "keep" || photo.status === "new").length;
         setActivePhotoCount(count);
+        setErrorMessage(null)
     }, [photos]);
 
     const handleDragEnd = (event: DragEndEvent) => {
@@ -74,7 +75,6 @@ function Photos({ photos, onPhotosChange, isEditing }: PhotosProps) {
             }));
 
             onPhotosChange([...photos, ...newPhotos]);
-            setErrorMessage(null);
         }
     };
 

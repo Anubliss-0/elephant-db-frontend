@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { DndContext, DragEndEvent } from "@dnd-kit/core"
 import { SortableContext, arrayMove } from "@dnd-kit/sortable"
 import SortableItem from "../Photos/SortableItem"
@@ -10,7 +10,13 @@ interface PhotoUploaderProps {
     onPhotosChange: (photos: Photo[]) => void
 }
 
-function PhotoUploader({ photos, onPhotosChange }: PhotoUploaderProps) {
+function PhotoUploader({ photos, onPhotosChange }: PhotoUploaderProps) {    
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    useEffect(() => {
+        setErrorMessage(null)
+    }, [photos])
+
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event
         if (active.id !== over?.id) {
@@ -28,10 +34,18 @@ function PhotoUploader({ photos, onPhotosChange }: PhotoUploaderProps) {
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files
         if (files) {
+            const currentPhotoCount = photos.length
+            const newFileCount = files.length
+            
+            if (currentPhotoCount + newFileCount > 5) {
+                setErrorMessage("Cannot add more than 5 photos total")
+                return
+            }
+
             const newPhotos: Photo[] = Array.from(files).map((file, index) => ({
                 id: `new-${photos.length + index}`,
                 url: URL.createObjectURL(file),
-                status: "new",
+                status: "new", 
                 position: photos.length + index,
                 file: file,
             }));
@@ -63,6 +77,7 @@ function PhotoUploader({ photos, onPhotosChange }: PhotoUploaderProps) {
                 </DndContext>
             </>
             <input type="file" accept="image/*" multiple onChange={handleFileUpload} />
+            {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
         </div>
     )
 }
