@@ -49,15 +49,7 @@ const elephantRoutes = [
     element: <New />,
     action: async ({ request }: ActionFunctionArgs) => {
       const formData = await request.formData()
-      const name = formData.get("name") as string | null
-      const bio = formData.get("bio") as string | null
-      const photos = formData.getAll("photos") as File[]
-
-      if (!name || !bio) {
-        throw new Error("Invalid form data: name and bio must be provided")
-      }
-
-      const response = await createElephant({ name, bio, photos })
+      const response = await createElephant(formData)
       const newElephantId = response.data.data.id
       return redirect(`/elephants/${newElephantId}`)
     },

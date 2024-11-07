@@ -1,73 +1,68 @@
 import { useState } from "react"
+import { DndContext, DragEndEvent } from "@dnd-kit/core"
+import { SortableContext, arrayMove } from "@dnd-kit/sortable"
+import SortableItem from "../Photos/SortableItem"
+import styles from "./PhotoUploader.module.scss"
+import { Photo } from "../../../types"
 
 interface PhotoUploaderProps {
-    selectedFiles: File[]
-    setSelectedFiles: React.Dispatch<React.SetStateAction<File[]>>
+    photos: Photo[]
+    onPhotosChange: (photos: Photo[]) => void
 }
 
-function PhotoUploader({ selectedFiles, setSelectedFiles }: PhotoUploaderProps) {
-    const [previewUrls, setPreviewUrls] = useState<string[]>([])
-    const [error, setError] = useState<string | null>(null)
-    const maxFiles = 5
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newFiles = Array.from(event.target.files || [])
-
-        if (newFiles.length > maxFiles || selectedFiles.length + newFiles.length > maxFiles) {
-            setError(`You can only upload a maximum of ${maxFiles} photos.`)
-            return
+function PhotoUploader({ photos, onPhotosChange }: PhotoUploaderProps) {
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event
+        if (active.id !== over?.id) {
+            const oldIndex = photos.findIndex(photo => photo.id === active.id)
+            const newIndex = photos.findIndex(photo => photo.id === over?.id)
+            const updatedPhotos = arrayMove(photos, oldIndex, newIndex)
+            const photosWithUpdatedPositions = updatedPhotos.map((photo, index) => ({
+                ...photo,
+                position: index,
+            }));
+            onPhotosChange(photosWithUpdatedPositions)
         }
-
-        setError(null)
-        const updatedFiles = [...selectedFiles, ...newFiles]
-        setSelectedFiles(updatedFiles)
-
-        const newPreviews = newFiles.map(file => URL.createObjectURL(file))
-        setPreviewUrls([...previewUrls, ...newPreviews])
-        event.target.value = ''
     }
 
-    const handleRemovePhoto = (index: number) => {
-        const updatedFiles = selectedFiles.filter((_, i) => i !== index)
-        const updatedPreviews = previewUrls.filter((_, i) => i !== index)
-        setSelectedFiles(updatedFiles)
-        setPreviewUrls(updatedPreviews)
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files
+        if (files) {
+            const newPhotos: Photo[] = Array.from(files).map((file, index) => ({
+                id: `new-${photos.length + index}`,
+                url: URL.createObjectURL(file),
+                status: "new",
+                position: photos.length + index,
+                file: file,
+            }));
+            onPhotosChange([...photos, ...newPhotos])
+        }
+    }
+
+    const handleDelete = (event: React.PointerEvent<HTMLButtonElement>, id: string) => {
+        event.stopPropagation()
+        onPhotosChange(photos.filter(photo => photo.id !== id))
     }
 
     return (
-        <div>
-            <label>
-                Photos:
-                <input
-                    type="file"
-                    name="photos"
-                    multiple
-                    accept="image/*"
-                    onChange={handleFileChange}
-                />
-            </label>
-
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-
-            {previewUrls.length > 0 && (
-                <div>
-                    <h3>Photo Previews:</h3>
-                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                        {previewUrls.map((url, index) => (
-                            <div key={index}>
-                                <img
-                                    src={url}
-                                    alt={`Selected photo ${index + 1}`}
-                                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-                                />
-                                <button type="button" onClick={() => handleRemovePhoto(index)}>
-                                    Remove
-                                </button>
-                            </div>
+        <div className={styles.gridContainer}>
+            <>
+                <DndContext onDragEnd={handleDragEnd}>
+                    <SortableContext items={photos.map(photo => photo.id || 'default-id')}>
+                        {photos.map(photo => (
+                            <SortableItem key={photo.id || 'default-id'} id={photo.id || 'default-id'}>
+                                <div>
+                                    <img className={styles.photo} src={photo.url} alt={`Photo ${photo.id}`} />
+                                    <button type="button" onPointerDown={(event) => handleDelete(event, photo.id || 'default-id')}>
+                                        Delete
+                                    </button>
+                                </div>
+                            </SortableItem>
                         ))}
-                    </div>
-                </div>
-            )}
+                    </SortableContext>
+                </DndContext>
+            </>
+            <input type="file" accept="image/*" multiple onChange={handleFileUpload} />
         </div>
     )
 }

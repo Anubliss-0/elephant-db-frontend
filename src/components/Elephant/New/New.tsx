@@ -1,41 +1,43 @@
 import { useState } from "react"
 import { Form, useSubmit } from "react-router-dom"
 import PhotoUploader from "../PhotoUploader/PhotoUploader"
+import { Photo } from "../../../types"
 
 function New() {
-    const [name, setName] = useState("")
-    const [bio, setBio] = useState("")
-    const [selectedFiles, setSelectedFiles] = useState<File[]>([])
+    const [photos, setPhotos] = useState<Photo[]>([])
     const submit = useSubmit()
-    
+
+    const handlePhotosChange = (updatedPhotos: Photo[]) => {
+        setPhotos(updatedPhotos)
+    }
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
-        const formData = new FormData()
-        formData.append("name", name)
-        formData.append("bio", bio)
-
-        selectedFiles.forEach(file => {
-            formData.append("photos", file)
+        const formData = new FormData(event.currentTarget)
+        photos.forEach((photo, index) => {
+            formData.append(`elephant[photos_attributes][${index}][position]`, photo.position.toString())
+            if (photo.file) {
+                formData.append(`elephant[photos_attributes][${index}][image]`, photo.file)
+            }
         })
-
-        submit(formData, { method: "post", encType: "multipart/form-data" })
+        submit(formData, { method: 'post', encType: 'multipart/form-data' })
     }
 
     return (
         <div>
             <h1>Create a New Elephant</h1>
-            <Form method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
+            <Form method="post" onSubmit={handleSubmit}>
                 <label>
                     Name:
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+                    <input type="text" name="elephant[name]" required />
                 </label>
                 <label>
                     Bio:
-                    <input type="text" value={bio} onChange={(e) => setBio(e.target.value)} required />
+                    <input type="text" name="elephant[bio]" required />
                 </label>
 
-                <PhotoUploader selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
+                <PhotoUploader photos={photos} onPhotosChange={handlePhotosChange} />
 
                 <button type="submit">Create Elephant</button>
             </Form>

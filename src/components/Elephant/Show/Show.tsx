@@ -58,7 +58,7 @@ function Show() {
 
       // Append file if it exists
       if (photo.file) {
-        formData.append(`elephant[photos_attributes][${index}][file]`, photo.file);
+        formData.append(`elephant[photos_attributes][${index}][image]`, photo.file);
       }
     });
 
