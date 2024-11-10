@@ -29,13 +29,6 @@ export const createElephant = async (formData: FormData) => {
 }
 
 // Log in User
-export const loginUser = async (email: string, password: string) => {
-  const response = await axios.post(`${baseURL}/login`, {
-    user: { email, password }
-  })
-
-  const jwtToken = response.headers.authorization.split(' ')[1]
-  setToken(jwtToken, true)
-
-  return response
+export const loginUser = async (formData: FormData) => {
+  return axios.post(`${baseURL}/login`, formData)
 }
