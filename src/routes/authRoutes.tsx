@@ -1,7 +1,7 @@
 import { redirect, ActionFunctionArgs } from 'react-router-dom'
 import { loginUser } from '../utils/api'
 import Login from '../components/Auth/Login/Login'
-import { setToken } from '../utils/auth';
+import { setUserCookies } from '../utils/auth';
 import ErrorPage from '../ErrorPage';
 
 const authRoutes = [
@@ -17,7 +17,8 @@ const authRoutes = [
 
       const response = await loginUser(userData);
       const jwtToken = response.headers.authorization.split(' ')[1];
-      setToken(jwtToken, true);
+      const user = response.data.data.profile
+      setUserCookies(jwtToken, user);
       return redirect('/elephants');
     },
     errorElement: <ErrorPage />

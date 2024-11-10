@@ -5,3 +5,8 @@ export interface Photo {
   file?: File
   position: number
 }
+
+export type User = {
+  id: number
+  name: string
+}
