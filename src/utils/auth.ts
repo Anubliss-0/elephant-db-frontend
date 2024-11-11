@@ -71,7 +71,7 @@ export const handleLogin = async (formData: FormData, setUserName: (name: string
 export const handleLogout = async (setUserName: (name: string) => void, setUserId: (id: string) => void, setShowUserProfile: (show: boolean) => void) => {
   await logOutUser()
   removeUserCookies()
-  setUserName(null)
-  setUserId(null)
+  setUserName('')
+  setUserId('')
   setShowUserProfile(false)
 }
