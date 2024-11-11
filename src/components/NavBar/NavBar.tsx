@@ -1,17 +1,49 @@
+import { useState } from 'react'
 import { Link } from "react-router-dom"
 import styles from "./NavBar.module.scss"
-import { useUser } from "../../contexts/UserContext"
+import Login from "../Auth/Login/Login"
+import { loginUser } from '../../utils/api'
+import { setUserCookies } from '../../utils/auth'
+import ErrorPage from '../../ErrorPage'
+import { useUser } from '../../contexts/UserContext'
+
 function NavBar() {
-    const { userName } = useUser()
+    const [showLoginModal, setShowLoginModal] = useState(false)
+    const [error, setError] = useState(null)
+    const { setUserName, setUserId, userId } = useUser()
+
+    const handleLogin = async (formData) => {
+        try {
+            const userData = new FormData()
+            formData.forEach((value, key) => {
+                userData.append(`user[${key}]`, value)
+            })
+
+            const response = await loginUser(userData)
+            const jwtToken = response.headers.authorization.split(' ')[1]
+            const user = response.data.data.profile
+            setUserCookies(jwtToken, user)
+            setUserName(user.name)
+            setUserId(user.id)
+            setShowLoginModal(false)
+        } catch (err) {
+            setError(err)
+        }
+    }
+
     return (
         <div className={styles.navBar}>
-            {userName ? (
-                <span>{userName}</span>
-            ) : (
-                <Link to={'/login'}>Login</Link>
+            {!userId && (
+                <button onClick={() => setShowLoginModal(true)}>Login</button>
             )}
             <Link to={'/new_elephant'}>Add Elephant</Link>
             <Link to={'/elephants'}>Elephants</Link>
+            {showLoginModal && (
+                <div className="modal">
+                    <Login onSubmit={handleLogin} />
+                    {error && <ErrorPage />}
+                </div>
+            )}
         </div>
     )
 }

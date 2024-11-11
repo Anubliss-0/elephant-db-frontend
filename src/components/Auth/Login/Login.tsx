@@ -1,10 +1,15 @@
-import { Form } from "react-router-dom"
 
-function Login() {
+function Login({ onSubmit }: { onSubmit: (formData: FormData) => void }) {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        const formData = new FormData(event.target as HTMLFormElement)
+        onSubmit(formData)
+    }
+
     return (
         <div>
             <h1>Login</h1>
-            <Form method="post">
+            <form onSubmit={handleSubmit}>
                 <label>
                     Email:
                     <input type="email" name="email" required />
@@ -14,9 +19,9 @@ function Login() {
                     <input type="password" name="password" required />
                 </label>
                 <button type="submit">Login</button>
-            </Form>
+            </form>
         </div>
-    );
+    )
 }
 
 export default Login
