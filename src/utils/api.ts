@@ -42,3 +42,8 @@ export const logOutUser = async () => {
 export const getProfileById = async (id: string) => {
   return axios.get(`${baseURL}/profiles/${id}`)
 }
+
+// Update profile by ID
+export const updateProfile = async (id: string, formData: FormData) => {
+  return axios.patch(`${baseURL}/profiles/${id}`, formData)
+}

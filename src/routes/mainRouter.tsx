@@ -1,10 +1,10 @@
-import { createBrowserRouter, LoaderFunctionArgs } from 'react-router-dom'
+import { ActionFunctionArgs, createBrowserRouter, LoaderFunctionArgs, redirect } from 'react-router-dom'
 import { getCookie, setToken } from '../utils/auth'
 import elephantRoutes from './elephantRoutes'
 import App from '../App'
 import ErrorPage from '../ErrorPage'
 import Show from '../components/Profile/Show/Show'
-import { getProfileById } from '../utils/api'
+import { getProfileById, updateProfile } from '../utils/api'
 
 const router = createBrowserRouter([
     {
