@@ -1,3 +1,4 @@
+import styles from './Login.module.scss'
 
 function Login({ onSubmit }: { onSubmit: (formData: FormData) => void }) {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -7,7 +8,7 @@ function Login({ onSubmit }: { onSubmit: (formData: FormData) => void }) {
     }
 
     return (
-        <div>
+        <div className={styles.modal}>
             <h1>Login</h1>
             <form onSubmit={handleSubmit}>
                 <label>
