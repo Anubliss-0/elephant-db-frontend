@@ -6,9 +6,11 @@ import { loginUser } from '../../utils/api'
 import { setUserCookies } from '../../utils/auth'
 import ErrorPage from '../../ErrorPage'
 import { useUser } from '../../contexts/UserContext'
+import UserProfile from './UserProfile/UserProfile'
 
 function NavBar() {
     const [showLoginModal, setShowLoginModal] = useState(false)
+    const [showUserProfile, setShowUserProfile] = useState(false)
     const [error, setError] = useState(null)
     const { setUserName, setUserId, userId } = useUser()
 
@@ -31,10 +33,21 @@ function NavBar() {
         }
     }
 
+    const toggleLoginModal = () => {
+        setShowLoginModal(!showLoginModal)
+    }
+
+    const toggleUserProfile = () => {
+        setShowUserProfile(!showUserProfile)
+    }
+
     return (
         <div className={styles.navBar}>
             {!userId && (
-                <button onClick={() => setShowLoginModal(true)}>Login</button>
+                <button onClick={toggleLoginModal}>Login</button>
+            )}
+            {userId && (
+                <button onClick={toggleUserProfile}>Profile</button>
             )}
             <Link to={'/new_elephant'}>Add Elephant</Link>
             <Link to={'/elephants'}>Elephants</Link>
@@ -42,6 +55,11 @@ function NavBar() {
                 <div className="modal">
                     <Login onSubmit={handleLogin} />
                     {error && <ErrorPage />}
+                </div>
+            )}
+            {showUserProfile && (
+                <div className="modal">
+                    <UserProfile />
                 </div>
             )}
         </div>
