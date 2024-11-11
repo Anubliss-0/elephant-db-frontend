@@ -1,8 +1,10 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, LoaderFunctionArgs } from 'react-router-dom'
 import { getCookie, setToken } from '../utils/auth'
 import elephantRoutes from './elephantRoutes'
 import App from '../App'
 import ErrorPage from '../ErrorPage'
+import Show from '../components/Profile/Show/Show'
+import { getProfileById } from '../utils/api'
 
 const router = createBrowserRouter([
     {
@@ -18,7 +20,16 @@ const router = createBrowserRouter([
             return null
         },
         children: [
-            ...elephantRoutes
+            ...elephantRoutes,
+            {
+                path: "profiles/:id",
+                element: <Show />,
+                loader: async ({ params }: LoaderFunctionArgs) => {
+                    const response = await getProfileById(params.id as string)
+                    console.log(response)
+                    return { profile: response.data }
+                }
+            }
         ]
     }
 ])

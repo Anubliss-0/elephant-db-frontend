@@ -37,3 +37,8 @@ export const loginUser = async (formData: FormData) => {
 export const logOutUser = async () => {
   return axios.delete(`${baseURL}/logout`)
 }
+
+// Get profile by ID
+export const getProfileById = async (id: string) => {
+  return axios.get(`${baseURL}/profiles/${id}`)
+}
