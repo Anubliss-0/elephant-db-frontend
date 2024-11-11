@@ -5,8 +5,11 @@ function NavBar() {
     const { userName } = useUser()
     return (
         <div className={styles.navBar}>
-            <span>{userName}</span>
-            <Link to={'/login'}>Login</Link>
+            {userName ? (
+                <span>{userName}</span>
+            ) : (
+                <Link to={'/login'}>Login</Link>
+            )}
             <Link to={'/new_elephant'}>Add Elephant</Link>
             <Link to={'/elephants'}>Elephants</Link>
         </div>
