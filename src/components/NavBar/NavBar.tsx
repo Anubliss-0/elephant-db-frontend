@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Link } from "react-router-dom"
 import styles from "./NavBar.module.scss"
 import Login from "../Auth/Login/Login"
-import { loginUser } from '../../utils/api'
-import { setUserCookies } from '../../utils/auth'
+import { loginUser, logOutUser } from '../../utils/api'
+import { removeUserCookies, setUserCookies } from '../../utils/auth'
 import ErrorPage from '../../ErrorPage'
 import { useUser } from '../../contexts/UserContext'
 import UserProfile from './UserProfile/UserProfile'
@@ -33,6 +33,14 @@ function NavBar() {
         }
     }
 
+    const handleLogout = async () => {
+        await logOutUser()
+        removeUserCookies()
+        setUserName(null)
+        setUserId(null)
+        setShowUserProfile(false)
+    }
+
     const toggleLoginModal = () => {
         setShowLoginModal(!showLoginModal)
     }
@@ -59,7 +67,7 @@ function NavBar() {
             )}
             {showUserProfile && (
                 <div className="modal">
-                    <UserProfile />
+                    <UserProfile onLogout={handleLogout} />
                 </div>
             )}
         </div>

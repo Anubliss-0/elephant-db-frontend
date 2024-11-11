@@ -6,8 +6,9 @@ export const setUserCookies = (jwtToken: string, user: User) => {
   setUser(user, true)
 }
 
-export const logOutUser = () => {
+export const removeUserCookies = () => {
   removeToken()
+  removeUser()
 }
 
 export const setToken = (jwtToken: string, storeInCookies = false) => {
@@ -23,6 +24,11 @@ export const setUser = (user: User, storeInCookies = false) => {
     document.cookie = `user_id=${user.id}; path=/; Secure; SameSite=Strict`;
     document.cookie = `user_name=${encodeURIComponent(user.name)}; path=/; Secure; SameSite=Strict`;
   }
+}
+
+export const removeUser = () => {
+  document.cookie = 'user_id=; path=/; Secure; SameSite=Strict'
+  document.cookie = 'user_name=; path=/; Secure; SameSite=Strict'
 }
 
 export const getCookie = (name: string): string | null => {

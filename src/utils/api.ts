@@ -32,3 +32,8 @@ export const createElephant = async (formData: FormData) => {
 export const loginUser = async (formData: FormData) => {
   return axios.post(`${baseURL}/login`, formData)
 }
+
+// Log out User
+export const logOutUser = async () => {
+  return axios.delete(`${baseURL}/logout`)
+}
