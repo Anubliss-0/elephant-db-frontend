@@ -1,11 +1,10 @@
 import axios from 'axios'
-import { setToken } from './auth'
 
 const baseURL: string = 'http://localhost:3000'
 
 // Get all elephants
-export const getAllElephants = async () => {
-  return axios.get(`${baseURL}/elephants`)
+export const getElephantsByQuery = async (query: string) => {
+  return axios.get(`${baseURL}/elephants?query=${query}`)
 }
 
 // Get elephant by ID

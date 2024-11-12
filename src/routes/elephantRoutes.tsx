@@ -1,4 +1,4 @@
-import { getAllElephants, getElephantById, createElephant, deleteElephant, updateElephant } from '../utils/api'
+import { getElephantsByQuery, getElephantById, createElephant, deleteElephant, updateElephant } from '../utils/api'
 import { redirect, LoaderFunctionArgs, ActionFunctionArgs } from 'react-router-dom'
 import Index from '../components/Elephant/Index/Index'
 import Show from '../components/Elephant/Show/Show'
@@ -6,13 +6,14 @@ import New from '../components/Elephant/New/New'
 import ErrorPage from '../ErrorPage'
 
 const elephantRoutes = [
-
   // Elephant Index
   {
     path: "elephants",
     element: <Index />,
-    loader: async () => {
-      const response = await getAllElephants()
+    loader: async ({ request }: LoaderFunctionArgs) => {
+      const url = new URL(request.url)
+      const query = url.searchParams.toString()
+      const response = await getElephantsByQuery(query)
       return response.data.data
     },
     errorElement: <ErrorPage />
