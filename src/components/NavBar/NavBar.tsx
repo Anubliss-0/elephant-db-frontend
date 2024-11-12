@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link } from "react-router-dom"
 import styles from "./NavBar.module.scss"
 import Login from "../Auth/Login/Login"
-import { getUserCookies, handleLogin, handleLogout } from '../../utils/auth'
+import { handleLogin, handleLogout } from '../../utils/auth'
+import { getUserCookies } from '../../utils/cookieManager'
 import { useUser } from '../../contexts/UserContext'
 import UserProfile from './UserProfile/UserProfile'
 

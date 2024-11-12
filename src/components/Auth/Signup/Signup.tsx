@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { useUser } from "../../../contexts/UserContext"
-import { getUserCookies, handleSignup } from "../../../utils/auth"
+import { handleSignup } from "../../../utils/auth"
+import { getUserCookies } from "../../../utils/cookieManager"
 
 function Signup() {
     const navigate = useNavigate()
@@ -9,7 +10,6 @@ function Signup() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const formData = new FormData(event.currentTarget)
-        console.log(formData)
         await handleSignup(formData)
         const user = getUserCookies()
         if (user) {

@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, createBrowserRouter, LoaderFunctionArgs, redirect } from 'react-router-dom'
-import { getTokenFromCookies, setTokenCookies } from '../utils/auth'
+import { getTokenFromCookies, setTokenCookies } from '../utils/cookieManager'
 import elephantRoutes from './elephantRoutes'
 import App from '../App'
 import ErrorPage from '../ErrorPage'
@@ -27,7 +27,6 @@ const router = createBrowserRouter([
                 element: <Show />,
                 loader: async ({ params }: LoaderFunctionArgs) => {
                     const response = await getProfileById(params.id as string)
-                    console.log(response)
                     return { profile: response.data }
                 }
             },
