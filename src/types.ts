@@ -6,7 +6,20 @@ export interface Photo {
   position: number
 }
 
-export type User = {
-  id: number
-  name: string
+export interface Profile {
+  id: number;
+  user_id: number;
+  name: string;
+  gender: string;
+  location: string;
+  updated_at: string;
+  created_at: string;
+}
+
+export interface User {
+  id: number;
+  email: string;
+  created_at: string;
+  created_date: string;
+  profile: Profile;
 }

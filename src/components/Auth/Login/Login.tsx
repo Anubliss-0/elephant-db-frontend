@@ -1,6 +1,8 @@
 import styles from './Login.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 function Login({ onSubmit }: { onSubmit: (formData: FormData) => void }) {
+    const navigate = useNavigate()
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const formData = new FormData(event.target as HTMLFormElement)
@@ -21,6 +23,7 @@ function Login({ onSubmit }: { onSubmit: (formData: FormData) => void }) {
                 </label>
                 <button type="submit">Login</button>
             </form>
+            <button onClick={() => navigate('/signup')}>Signup</button>
         </div>
     )
 }

@@ -1,77 +1,92 @@
 import axios from "axios"
 import { User } from "../types"
-import { logOutUser } from "./api"
+import { logOutUser, signUpUser } from "./api"
 import { loginUser } from "./api"
+import Cookies from "js-cookie"
 
-export const setUserCookies = (jwtToken: string, user: User) => {
-  setToken(jwtToken, true)
-  setUser(user, true)
+export const handleLogin = async (formData: FormData) => {
+  const userData = new FormData()
+  formData.forEach((value, key) => {
+    userData.append(`user[${key}]`, value)
+  })
+
+  try {
+    const response = await loginUser(userData)
+    const token = response.headers.authorization.split(' ')[1]
+    const user = response.data.data
+
+    setCookies(token, user)
+
+  } catch (error) {
+    console.error('Login failed:', error)
+    throw error
+  }
 }
 
-export const removeUserCookies = () => {
-  removeToken()
-  removeUser()
+export const handleLogout = async () => {
+  await logOutUser()
+  removeCookies()
 }
 
-export const setToken = (jwtToken: string, storeInCookies = false) => {
+export const handleSignup = async (formData: FormData) => {
+  try {
+    const response = await signUpUser(formData)
+    const token = response.headers.authorization.split(' ')[1]
+    const user = response.data.data
+
+    setCookies(token, user) 
+  } catch (error) {
+    console.error('Signup failed:', error)
+    throw error
+  }
+}
+
+export const setCookies = (jwtToken: string, user: User) => {
+  setTokenCookies(jwtToken, true)
+  setUserCookies(user, true)
+}
+
+export const setTokenCookies = (jwtToken: string, storeInCookies = false) => {
   axios.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`
 
   if (storeInCookies) {
-    document.cookie = `token=${jwtToken}; path=/; Secure; SameSite=Strict`
+    Cookies.set('token', jwtToken, {
+      path: '/',
+      secure: true,
+      sameSite: 'Strict',
+      expires: 1
+    });
   }
 }
 
-export const setUser = (user: User, storeInCookies = false) => {
-  if (storeInCookies) { 
-    document.cookie = `user_id=${user.id}; path=/; Secure; SameSite=Strict`;
-    document.cookie = `user_name=${encodeURIComponent(user.name)}; path=/; Secure; SameSite=Strict`;
+export const setUserCookies = (user: User, storeInCookies = false) => {
+  if (storeInCookies) {
+    Cookies.set('user', JSON.stringify(user), {
+      path: '/',
+      secure: true,
+      sameSite: 'Strict',
+      expires: 1
+    });
   }
 }
 
-export const removeUser = () => {
-  document.cookie = 'user_id=; path=/; Secure; SameSite=Strict'
-  document.cookie = 'user_name=; path=/; Secure; SameSite=Strict'
-}
-
-export const getCookie = (name: string): string | null => {
-  const cookieArr = document.cookie.split(';');
-  for (const cookie of cookieArr) {
-    const [cookieName, cookieValue] = cookie.trim().split('=')
-    if (cookieName === name) {
-      return cookieValue
-    }
-  }
-  return null
-}
-
-export const removeToken = () => {
-  axios.defaults.headers.common['Authorization'] = ''
-  document.cookie = 'token=; path=/; Secure; SameSite=Strict'
-}
-
-export const handleLogin = async (formData: FormData, setUserName: (name: string) => void, setUserId: (id: string) => void, setShowLoginModal: (show: boolean) => void, setError: (error: any) => void) => {
+export const getUserCookies = (): User | null => {
+  const user = Cookies.get('user');
   try {
-      const userData = new FormData()
-      formData.forEach((value, key) => {
-          userData.append(`user[${key}]`, value)
-      })
-
-      const response = await loginUser(userData)
-      const jwtToken = response.headers.authorization.split(' ')[1]
-      const user = response.data.data.profile
-      setUserCookies(jwtToken, user)
-      setUserName(user.name)
-      setUserId(user.id)
-      setShowLoginModal(false)
-  } catch (err) {
-      setError(err)
+    return user ? JSON.parse(user) as User : null;
+  } catch (error) {
+    console.error('Failed to parse user data from cookies:', error);
+    return null;
   }
 }
 
-export const handleLogout = async (setUserName: (name: string) => void, setUserId: (id: string) => void, setShowUserProfile: (show: boolean) => void) => {
-  await logOutUser()
-  removeUserCookies()
-  setUserName('')
-  setUserId('')
-  setShowUserProfile(false)
+export const getTokenFromCookies = () => {
+  return Cookies.get('token')
+}
+
+export const removeCookies = () => {
+  Cookies.remove('token', { path: '/' })
+  Cookies.remove('user', { path: '/' })
+
+  delete axios.defaults.headers.common['Authorization']
 }

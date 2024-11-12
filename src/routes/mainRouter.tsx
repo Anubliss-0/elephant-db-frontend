@@ -1,20 +1,21 @@
 import { ActionFunctionArgs, createBrowserRouter, LoaderFunctionArgs, redirect } from 'react-router-dom'
-import { getCookie, setToken } from '../utils/auth'
+import { getTokenFromCookies, setTokenCookies } from '../utils/auth'
 import elephantRoutes from './elephantRoutes'
 import App from '../App'
 import ErrorPage from '../ErrorPage'
 import Show from '../components/Profile/Show/Show'
 import { getProfileById, updateProfile } from '../utils/api'
+import Signup from '../components/Auth/Signup/Signup'
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
         loader: async () => {
-            const token = getCookie('token')
+            const token = getTokenFromCookies()
 
             if (token) {
-                setToken(token)
+                setTokenCookies(token)
             }
 
             return null
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
                     console.log(response)
                     return { profile: response.data }
                 }
+            },
+            {
+                path: "signup",
+                element: <Signup />
             }
         ]
     }
