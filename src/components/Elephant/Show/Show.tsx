@@ -79,56 +79,76 @@ function Show() {
 
       <Form method="PATCH" onSubmit={handleSubmit}>
         <div>
-          <label>Name:</label>
-          {isEditing ? (
-            <input type="text" id="name" name="elephant[name]" defaultValue={name} required />
-          ) : (
-            <span>{name}</span>
-          )}
+          <label>Name:
+            {isEditing ? (
+              <input type="text" id="name" name="elephant[name]" defaultValue={name} required />
+            ) : (
+              <span>{name}</span>
+            )}
+          </label>
         </div>
         <div>
-          <label>Bio:</label>
-          {isEditing ? (
-            <input type="text" id="bio" name="elephant[bio]" defaultValue={bio} required />
-          ) : (
-            <span>{bio}</span>
-          )}
+          <label>Bio:
+            {isEditing ? (
+              <input type="text" id="bio" name="elephant[bio]" defaultValue={bio} required />
+            ) : (
+              <span>{bio}</span>
+            )}
+          </label>
         </div>
         <div>
-          <label>Age:</label>
-          {isEditing ? (
-            <input type="number" id="age" name="elephant[age]" defaultValue={age} required />
-          ) : (
-            <span>{age}</span>
-          )}
+          <label>Age:
+            {isEditing ? (
+              <input type="number" id="age" name="elephant[age]" defaultValue={age} required />
+            ) : (
+              <span>{age}</span>
+            )}
+          </label>
         </div>
         <div>
-          <label>Species:</label>
-          {isEditing ? (
-            <select id="species" name="elephant[species]" defaultValue={species} required>
-              {ElephantOptions.speciesOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <span>{species}</span>
-          )}
+          <label>Species:
+            {isEditing ? (
+              <select id="species" name="elephant[species]" defaultValue={species} required>
+                {ElephantOptions.speciesOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <span>{species}</span>
+            )}
+          </label>
         </div>
         <div>
-          <label>Gender:</label>
-          {isEditing ? (
-            <select id="gender" name="elephant[gender]" defaultValue={gender} required>
-              {ElephantOptions.genderOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <span>{gender}</span>
-          )}
+          <label>Gender:
+            {isEditing ? (
+              <select id="gender" name="elephant[gender]" defaultValue={gender} required>
+                {ElephantOptions.genderOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <span>{gender}</span>
+            )}
+          </label>
+        </div>
+        <div>
+          <label>Habitat:
+            {isEditing ? (
+              <select id="habitat" name="elephant[habitat]" defaultValue={habitat} required>
+                {ElephantOptions.habitatOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <span>{habitat}</span>
+            )}
+          </label>
         </div>
         <Photos photos={photos} onPhotosChange={handlePhotosChange} isEditing={isEditing} />
 
