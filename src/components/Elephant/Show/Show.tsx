@@ -3,7 +3,7 @@ import { useUser } from '../../../contexts/UserContext'
 import { useLoaderData, Form, useSubmit } from 'react-router-dom'
 import { Photo } from '../../../types'
 import Photos from '../Photos/Photos'
-
+import * as ElephantOptions from '../../../constants/elephantOptions'
 type ElephantData = {
   id: string
   type: string
@@ -12,6 +12,10 @@ type ElephantData = {
     id: number
     name: string
     bio: string
+    age: number
+    species: string
+    gender: string
+    habitat: string
     user_id: number
     photos: {
       id: string
@@ -23,15 +27,10 @@ type ElephantData = {
 function Show() {
   const { userId } = useUser()
   const { elephant } = useLoaderData() as { elephant: { data: ElephantData } }
-  const { name, bio } = elephant.data.attributes
+  const { name, bio, age, species, gender, habitat } = elephant.data.attributes
   const [photos, setPhotos] = useState<Photo[]>([]);
   const submit = useSubmit()
   const [isEditing, setIsEditing] = useState(false)
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setIsTextValid((prev) => ({ ...prev, [name]: value.trim() !== "", }))
-  }
 
   const handlePhotosChange = (updatedPhotos: Photo[]) => {
     setPhotos(updatedPhotos)
@@ -80,32 +79,67 @@ function Show() {
 
       <Form method="PATCH" onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name">Name:</label>
+          <label>Name:</label>
           {isEditing ? (
-            <input type="text" id="name" name="elephant[name]" defaultValue={name} required onChange={handleInputChange} />
+            <input type="text" id="name" name="elephant[name]" defaultValue={name} required />
           ) : (
             <span>{name}</span>
           )}
         </div>
         <div>
-          <label htmlFor="bio">Bio:</label>
+          <label>Bio:</label>
           {isEditing ? (
-            <input type="text" id="bio" name="elephant[bio]" defaultValue={bio} required onChange={handleInputChange} />
+            <input type="text" id="bio" name="elephant[bio]" defaultValue={bio} required />
           ) : (
             <span>{bio}</span>
           )}
         </div>
-
+        <div>
+          <label>Age:</label>
+          {isEditing ? (
+            <input type="number" id="age" name="elephant[age]" defaultValue={age} required />
+          ) : (
+            <span>{age}</span>
+          )}
+        </div>
+        <div>
+          <label>Species:</label>
+          {isEditing ? (
+            <select id="species" name="elephant[species]" defaultValue={species} required>
+              {ElephantOptions.speciesOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <span>{species}</span>
+          )}
+        </div>
+        <div>
+          <label>Gender:</label>
+          {isEditing ? (
+            <select id="gender" name="elephant[gender]" defaultValue={gender} required>
+              {ElephantOptions.genderOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <span>{gender}</span>
+          )}
+        </div>
         <Photos photos={photos} onPhotosChange={handlePhotosChange} isEditing={isEditing} />
 
         {(isEditing) && <button type="submit">Update Elephant</button>}
       </Form>
 
-      {/* {isEditing && (
+      {isEditing && (
         <Form method="delete">
           <button type="submit">Delete</button>
         </Form>
-      )} */}
+      )}
     </div>
   )
 }
