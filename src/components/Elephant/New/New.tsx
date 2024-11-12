@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Form, useSubmit } from "react-router-dom"
 import PhotoUploader from "../PhotoUploader/PhotoUploader"
 import { Photo } from "../../../types"
-
+import * as ElephantOptions from "../../../constants/elephantOptions"
 function New() {
     const [photos, setPhotos] = useState<Photo[]>([])
     const submit = useSubmit()
@@ -34,7 +34,44 @@ function New() {
                 </label>
                 <label>
                     Bio:
-                    <input type="text" name="elephant[bio]" required />
+                    <textarea name="elephant[bio]" required></textarea>
+                </label>
+                <label>
+                    Age:
+                    <input type="number" name="elephant[age]" required min="0" />
+                </label>
+                <label>
+                    Species:
+                    <select name="elephant[species]" required>
+                        <option value="">Select a species</option>
+                        {ElephantOptions.speciesOptions.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+                <label>
+                    Gender:
+                    <select name="elephant[gender]" required>
+                        <option value="">Select a gender</option>
+                        {ElephantOptions.genderOptions.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+                <label>
+                    Habitat:
+                    <select name="elephant[habitat]" required>
+                        <option value="">Select a habitat</option>
+                        {ElephantOptions.habitatOptions.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
                 </label>
 
                 <PhotoUploader photos={photos} onPhotosChange={handlePhotosChange} />
