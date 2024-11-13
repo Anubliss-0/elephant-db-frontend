@@ -9,6 +9,7 @@ type ProfileData = {
         name: string
         gender: string
         location: string
+        profileimage_url: string
     }
 }
 
@@ -17,7 +18,7 @@ function Show() {
     const { setUserName } = useUser()
     const [isEditing, setIsEditing] = useState(false)
     const [localProfile, setLocalProfile] = useState(profile.data.attributes)
-    
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const formData = new FormData(event.currentTarget)
@@ -31,7 +32,7 @@ function Show() {
 
     return (
         <div>
-            <form onSubmit={isEditing ? handleSubmit : undefined}>
+            <form onSubmit={isEditing ? handleSubmit : undefined} encType="multipart/form-data">
                 <h1>
                     {isEditing ? (
                         <input type="text" name="profile[name]" defaultValue={localProfile.name} />
@@ -53,6 +54,30 @@ function Show() {
                         localProfile.location
                     )}
                 </p>
+                <div>
+                    {isEditing ? (
+                        <div>
+                            <label htmlFor="profileimage">Profile Image:</label>
+                            <input 
+                                type="file" 
+                                name="profile[profileimage]" 
+                                id="profileimage"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file && file.size > 5 * 1024 * 1024) {
+                                        alert('File size must be less than 5MB');
+                                        e.target.value = '';
+                                    }
+                                }}
+                                accept="image/*"
+                            />
+                        </div>
+                    ) : (
+                        <p>
+                            <img src={profile.data.attributes.profileimage_url} alt="Profile Picture" />
+                        </p>
+                    )}
+                </div>
                 {isEditing ? (
                     <>
                         <button type="submit">Update Profile</button>

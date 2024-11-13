@@ -39,7 +39,11 @@ export const logOutUser = async () => {
 
 // Get profile by ID
 export const getProfileById = async (id: string) => {
-  return axios.get(`${baseURL}/profiles/${id}`)
+  return axios.get(`${baseURL}/profiles/${id}`, {
+    params: {
+      size: 'medium'
+    }
+  })
 }
 
 // Update profile by ID
