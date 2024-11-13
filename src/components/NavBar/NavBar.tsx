@@ -63,7 +63,7 @@ function NavBar() {
             )}
             {profileId && (
                 <button onClick={toggleUserProfile}>
-                    <img
+                    <img className={styles.profileImage}
                         src={profileImageUrl || ''}
                         alt="Profile"
                     />
