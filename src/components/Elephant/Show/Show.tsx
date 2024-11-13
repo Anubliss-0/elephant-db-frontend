@@ -99,7 +99,7 @@ function Show() {
         <div>
           <label>Age:
             {isEditing ? (
-              <input type="number" id="age" name="elephant[age]" defaultValue={age} required />
+              <input type="number" id="age" name="elephant[age]" defaultValue={age} />
             ) : (
               <span>{age}</span>
             )}

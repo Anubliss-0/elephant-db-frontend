@@ -3,13 +3,15 @@ const speciesOptions = [
     "Asian",
     "Forest Elephant",
     "Desert Elephant",
-    "Pygmy Elephant"
+    "Pygmy Elephant",
+    "Other"
 ]
 
 const genderOptions = [
     "Male",
     "Female",
-    "Non-binary"
+    "Non-binary",
+    "Other"
 ]
 
 const habitatOptions = [
@@ -17,7 +19,8 @@ const habitatOptions = [
     "Forest",
     "Desert",
     "Grassland",
-    "Wetlands"
+    "Wetlands",
+    "Other"
 ]
 
 export { speciesOptions, genderOptions, habitatOptions }
