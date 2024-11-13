@@ -14,6 +14,7 @@ export interface Profile {
   location: string;
   updated_at: string;
   created_at: string;
+  profileimage_url: string;
 }
 
 export interface User {

@@ -10,7 +10,7 @@ import UserProfile from './UserProfile/UserProfile'
 function NavBar() {
     const [showLoginModal, setShowLoginModal] = useState(false)
     const [showUserProfile, setShowUserProfile] = useState(false)
-    const { setUserName, setProfileId, setUserId, profileId } = useUser()
+    const { setUserName, setProfileId, setUserId, setProfileImageUrl, profileId, profileImageUrl } = useUser()
 
     useEffect(() => {
         updateUserState()
@@ -21,12 +21,14 @@ function NavBar() {
             setUserName(null)
             setProfileId(null)
             setUserId(null)
+            setProfileImageUrl(null)
         }
         const user = getUserCookies()
         if (user) {
             setUserName(user.profile.name)
             setProfileId(user.profile.id)
             setUserId(user.id)
+            setProfileImageUrl(user.profile.profileimage_url)
         }
     }
 
@@ -60,7 +62,12 @@ function NavBar() {
                 <button onClick={toggleLoginModal}>Login</button>
             )}
             {profileId && (
-                <button onClick={toggleUserProfile}>Profile</button>
+                <button onClick={toggleUserProfile}>
+                    <img
+                        src={profileImageUrl || ''}
+                        alt="Profile"
+                    />
+                </button>
             )}
             <Link to={'/new_elephant'}>Add Elephant</Link>
             <Link to={'/elephants'}>Elephants</Link>

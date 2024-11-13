@@ -7,6 +7,8 @@ interface UserContextType {
     setProfileId: (id: number | null) => void;
     userId: number | null;
     setUserId: (id: number | null) => void;
+    profileImageUrl: string | null;
+    setProfileImageUrl: (url: string | null) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -15,8 +17,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const [userName, setUserName] = useState<string | null>(null);
     const [profileId, setProfileId] = useState<number | null>(null);
     const [userId, setUserId] = useState<number | null>(null);
+    const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
     return (
-        <UserContext.Provider value={{ userName, setUserName, profileId, setProfileId, userId, setUserId }}>
+        <UserContext.Provider value={{ userName, setUserName, profileId, setProfileId, userId, setUserId, profileImageUrl, setProfileImageUrl }}>
             {children}
         </UserContext.Provider>
     );
