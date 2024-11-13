@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useUser } from '../../../contexts/UserContext'
-import { useLoaderData, Form, useSubmit } from 'react-router-dom'
+import { useLoaderData, Form, useSubmit, Link } from 'react-router-dom'
 import { Photo } from '../../../types'
 import Photos from '../Photos/Photos'
 import * as ElephantOptions from '../../../constants/elephantOptions'
@@ -17,6 +17,9 @@ type ElephantData = {
     gender: string
     habitat: string
     user_id: number
+    profile_id: number
+    user_name: string
+    user_profile_image_url: string
     photos: {
       id: string
       url: string
@@ -154,6 +157,13 @@ function Show() {
 
         {(isEditing) && <button type="submit">Update Elephant</button>}
       </Form>
+
+      <Link to={`/profiles/${elephant.data.attributes.profile_id}`}>
+        <div>
+          <p>View {elephant.data.attributes.user_name}'s Profile</p>
+          <img src={elephant.data.attributes.user_profile_image_url} alt="User Profile Thumbnail" />
+        </div>
+      </Link>
 
       {isEditing && (
         <Form method="delete">
