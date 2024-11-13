@@ -17,7 +17,7 @@ function Signup() {
             setUserId(user.id)
             setProfileId(user.profile.id)
             setProfileImageUrl(user.profile.profileimage_url)
-            navigate('/')
+            navigate('/elephants')
         }
     }
 
