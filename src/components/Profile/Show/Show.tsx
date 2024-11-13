@@ -2,14 +2,18 @@ import { useLoaderData } from 'react-router-dom'
 import { updateProfile } from '../../../utils/api'
 import { useUser } from '../../../contexts/UserContext'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 type ProfileData = {
     id: string
     attributes: {
+        user_id: string
         name: string
         gender: string
         location: string
         profileimage_url: string
+        elephants_count: number
+        created_at: string
     }
 }
 
@@ -78,6 +82,12 @@ function Show() {
                         </p>
                     )}
                 </div>
+                <p>
+                    {profile.data.attributes.elephants_count} elephants
+                </p>
+                <p>
+                    {profile.data.attributes.created_at}
+                </p>
                 {isEditing ? (
                     <>
                         <button type="submit">Update Profile</button>
@@ -87,6 +97,9 @@ function Show() {
                     <button type="button" onClick={() => setIsEditing(true)}>Edit Profile</button>
                 )}
             </form>
+            <Link to={`/elephants?user_id=${profile.data.attributes.user_id}`}>
+                View My Elephants
+            </Link>
         </div>
     )
 }
