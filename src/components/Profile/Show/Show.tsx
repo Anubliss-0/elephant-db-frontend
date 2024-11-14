@@ -1,8 +1,8 @@
-import { useLoaderData } from 'react-router-dom'
-import { updateProfile } from '../../../utils/api'
+import { Form, useLoaderData, useSubmit, useLocation } from 'react-router-dom'
 import { useUser } from '../../../contexts/UserContext'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getUserCookies } from '../../../utils/cookieManager'
 
 type ProfileData = {
     id: string
@@ -18,44 +18,49 @@ type ProfileData = {
 }
 
 function Show() {
+    const submit = useSubmit()
+    const location = useLocation()
     const { profile } = useLoaderData() as { profile: { data: ProfileData } }
-    const { setUserName } = useUser()
+    const { setUserName, setProfileImageUrl } = useUser()
     const [isEditing, setIsEditing] = useState(false)
-    const [localProfile, setLocalProfile] = useState(profile.data.attributes)
+
+    useEffect(() => {
+        const user = getUserCookies()
+        if (user) {
+            setUserName(user.profile.name)
+            setProfileImageUrl(user.profile.profileimage_url)
+        }
+    }, [location])
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const formData = new FormData(event.currentTarget)
-        const response = await updateProfile(profile.data.id, formData)
-        const updatedAttributes = response.data.data.attributes
-        setUserName(updatedAttributes.name)
-        document.cookie = `user_name=${encodeURIComponent(updatedAttributes.name)}; path=/; Secure; SameSite=Strict`;
-        setLocalProfile(updatedAttributes)
+        submit(formData, { method: 'PATCH', encType: 'multipart/form-data' })
         setIsEditing(false)
     }
 
     return (
         <div>
-            <form onSubmit={isEditing ? handleSubmit : undefined} encType="multipart/form-data">
+            <Form method="PATCH" onSubmit={handleSubmit}>
                 <h1>
                     {isEditing ? (
-                        <input type="text" name="profile[name]" defaultValue={localProfile.name} />
+                        <input type="text" name="profile[name]" defaultValue={profile.data.attributes.name} />
                     ) : (
-                        localProfile.name
+                        profile.data.attributes.name
                     )}
                 </h1>
                 <p>
                     {isEditing ? (
-                        <input type="text" name="profile[gender]" defaultValue={localProfile.gender} />
+                        <input type="text" name="profile[gender]" defaultValue={profile.data.attributes.gender} />
                     ) : (
-                        localProfile.gender
+                        profile.data.attributes.gender
                     )}
                 </p>
                 <p>
                     {isEditing ? (
-                        <input type="text" name="profile[location]" defaultValue={localProfile.location} />
+                        <input type="text" name="profile[location]" defaultValue={profile.data.attributes.location} />
                     ) : (
-                        localProfile.location
+                        profile.data.attributes.location
                     )}
                 </p>
                 <div>
@@ -96,7 +101,7 @@ function Show() {
                 ) : (
                     <button type="button" onClick={() => setIsEditing(true)}>Edit Profile</button>
                 )}
-            </form>
+            </Form>
             <Link to={`/elephants?user_id=${profile.data.attributes.user_id}`}>
                 View My Elephants
             </Link>

@@ -1,8 +1,8 @@
-import { LoaderFunctionArgs } from "react-router-dom"
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router-dom"
 import Signup from "../components/Auth/Signup/Signup"
 import Show from "../components/Profile/Show/Show"
-import { getProfileById } from "../utils/api"
-
+import { getProfileById, updateProfile } from "../utils/api"
+import { replaceUserProfileInCookies } from "../utils/cookieManager"
 const profileRoutes = [
     // Profile Show
     {
@@ -11,6 +11,14 @@ const profileRoutes = [
         loader: async ({ params }: LoaderFunctionArgs) => {
             const response = await getProfileById(params.id as string)
             return { profile: response.data }
+        },
+        action: async ({ request, params }: ActionFunctionArgs) => {
+            const id = params.id as string
+            const formData = await request.formData()
+            const response = await updateProfile(id, formData)
+            console.log(response.data)
+            await replaceUserProfileInCookies(response.data)
+            return redirect(`/profiles/${id}`)
         }
     },
     // Signup

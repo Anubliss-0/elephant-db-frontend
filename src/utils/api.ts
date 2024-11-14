@@ -48,7 +48,11 @@ export const getProfileById = async (id: string) => {
 
 // Update profile by ID
 export const updateProfile = async (id: string, formData: FormData) => {
-  return axios.patch(`${baseURL}/profiles/${id}`, formData)
+  return axios.patch(`${baseURL}/profiles/${id}`, formData, {
+    params: {
+      size: 'thumbnail'
+    }
+  })
 }
 
 // Sign up user
