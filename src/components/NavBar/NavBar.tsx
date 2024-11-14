@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import styles from "./NavBar.module.scss"
 import Login from "../Auth/Login/Login"
 import { handleLogin, handleLogout } from '../../utils/auth'
-import { getUserCookies } from '../../utils/cookieManager'
+import { getUserCookies, getTokenFromCookies } from '../../utils/cookieManager'
 import { useUser } from '../../contexts/UserContext'
 import UserProfile from './UserProfile/UserProfile'
 
@@ -22,8 +22,19 @@ function NavBar() {
             setProfileId(null)
             setUserId(null)
             setProfileImageUrl(null)
+            return;
         }
-        const user = getUserCookies()
+        
+        const token = getTokenFromCookies();
+        if (!token) {
+            setUserName(null)
+            setProfileId(null)
+            setUserId(null)
+            setProfileImageUrl(null)
+            return;
+        }
+        
+        const user = getUserCookies();
         if (user) {
             setUserName(user.profile.name)
             setProfileId(user.profile.id)
