@@ -51,3 +51,32 @@ export const removeCookies = () => {
 
     delete axios.defaults.headers.common['Authorization']
 }
+
+export const replaceUserProfileInCookies = (newProfile: { data: { attributes: { [key: string]: any } } }) => {
+    console.log('Attempting to update user profile in cookies with:', newProfile);
+
+    const user = getUserCookies();
+    if (user) {
+        console.log('Current user data retrieved from cookies:', user);
+
+        // Ensure newProfile has the expected structure
+        if (newProfile.data && newProfile.data.attributes) {
+            // Update the profile part of the user object
+            user.profile = { ...user.profile, ...newProfile.data.attributes };
+            console.log('Updated user data:', user);
+
+            // Save the updated user object back to the cookies
+            Cookies.set('user', JSON.stringify(user), {
+                path: '/',
+                secure: true,
+                sameSite: 'Strict',
+                expires: 1
+            });
+            console.log('User data successfully updated in cookies.');
+        } else {
+            console.error('Invalid profile data structure:', newProfile);
+        }
+    } else {
+        console.error('No user data found in cookies to update.');
+    }
+}
