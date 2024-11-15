@@ -1,7 +1,7 @@
 import ErrorPage from '../ErrorPage';
 import Signup from '../components/Auth/Signup/Signup';
 import { ActionFunctionArgs, redirect } from 'react-router-dom';
-import { handleSignup } from '../utils/auth';
+import { handleSignup, handleLogin } from '../utils/auth';
   
 const authRoutes = [
   {
@@ -11,6 +11,15 @@ const authRoutes = [
       const formData = await request.formData()
       await handleSignup(formData)
       return redirect('/elephants')
+    },
+    errorElement: <ErrorPage />
+  },
+  {
+    path: "login",
+    action: async ({ request }: ActionFunctionArgs) => {
+      const formData = await request.formData();
+      await handleLogin(formData);
+      return null
     },
     errorElement: <ErrorPage />
   }
