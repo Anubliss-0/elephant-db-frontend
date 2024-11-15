@@ -1,8 +1,6 @@
-import { Form, useLoaderData, useSubmit, useLocation } from 'react-router-dom'
-import { useUser } from '../../../contexts/UserContext'
-import { useEffect, useState } from 'react'
+import { Form, useLoaderData, useSubmit } from 'react-router-dom'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getUserCookies } from '../../../utils/cookieManager'
 
 type ProfileData = {
     id: string
@@ -18,30 +16,16 @@ type ProfileData = {
 }
 
 function Show() {
-    const submit = useSubmit()
-    const location = useLocation()
     const { profile } = useLoaderData() as { profile: { data: ProfileData } }
-    const { setUserName, setProfileImageUrl } = useUser()
     const [isEditing, setIsEditing] = useState(false)
-
-    useEffect(() => {
-        const user = getUserCookies()
-        if (user) {
-            setUserName(user.profile.name)
-            setProfileImageUrl(user.profile.profileimage_url)
-        }
-    }, [location])
-
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        const formData = new FormData(event.currentTarget)
-        submit(formData, { method: 'PATCH', encType: 'multipart/form-data' })
-        setIsEditing(false)
-    }
 
     return (
         <div>
-            <Form method="PATCH" onSubmit={handleSubmit}>
+            <Form 
+                method="PATCH" 
+                encType="multipart/form-data"
+                onSubmit={() => setIsEditing(false)}
+            >
                 <h1>
                     {isEditing ? (
                         <input type="text" name="profile[name]" defaultValue={profile.data.attributes.name} />
