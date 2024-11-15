@@ -4,6 +4,7 @@ import elephantRoutes from './elephantRoutes'
 import App from '../App'
 import ErrorPage from '../ErrorPage'
 import profileRoutes from './profileRoutes'
+import authRoutes from './authRoutes'
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
             return null
         },
         children: [
+            ...authRoutes,
             ...elephantRoutes,
             ...profileRoutes
         ],

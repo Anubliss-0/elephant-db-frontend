@@ -32,7 +32,8 @@ export const handleSignup = async (formData: FormData) => {
     const token = response.headers.authorization.split(' ')[1]
     const user = response.data.data
 
-    setCookies(token, user) 
+    setCookies(token, user)
+    
   } catch (error) {
     console.error('Signup failed:', error)
     throw error

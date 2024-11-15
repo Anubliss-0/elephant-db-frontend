@@ -1,25 +1,16 @@
-import { redirect, ActionFunctionArgs } from 'react-router-dom'
-import { loginUser } from '../utils/api'
-import Login from '../components/Auth/Login/Login'
-import { setUserCookies } from '../utils/auth';
 import ErrorPage from '../ErrorPage';
-
+import Signup from '../components/Auth/Signup/Signup';
+import { ActionFunctionArgs, redirect } from 'react-router-dom';
+import { handleSignup } from '../utils/auth';
+  
 const authRoutes = [
   {
-    path: "login",
-    element: <Login />,
+    path: "signup",
+    element: <Signup />,
     action: async ({ request }: ActionFunctionArgs) => {
       const formData = await request.formData()
-      const userData = new FormData();
-      formData.forEach((value, key) => {
-        userData.append(`user[${key}]`, value);
-      });
-
-      const response = await loginUser(userData);
-      const jwtToken = response.headers.authorization.split(' ')[1];
-      const user = response.data.data.profile
-      setUserCookies(jwtToken, user);
-      return redirect('/elephants');
+      await handleSignup(formData)
+      return redirect('/elephants')
     },
     errorElement: <ErrorPage />
   }

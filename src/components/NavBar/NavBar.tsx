@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import styles from "./NavBar.module.scss"
 import Login from "../Auth/Login/Login"
 import { handleLogin, handleLogout } from '../../utils/auth'
@@ -8,13 +8,14 @@ import { useUser } from '../../contexts/UserContext'
 import UserProfile from './UserProfile/UserProfile'
 
 function NavBar() {
+    const location = useLocation()
     const [showLoginModal, setShowLoginModal] = useState(false)
     const [showUserProfile, setShowUserProfile] = useState(false)
     const { setUserName, setProfileId, setUserId, setProfileImageUrl, profileId, profileImageUrl } = useUser()
 
     useEffect(() => {
         updateUserState()
-    }, [])
+    }, [location])
 
     const updateUserState = (shouldClearState = false) => {
         if (shouldClearState) {
