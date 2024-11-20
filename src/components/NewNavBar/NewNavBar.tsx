@@ -1,40 +1,42 @@
 import { useFetcher, Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect } from 'react'
+import { useUser } from '../../contexts/UserContext'
 
 function NewNavBar() {
     const fetcher = useFetcher()
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const { user, setUser } = useUser()
 
-    const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault()
-        fetcher.submit(
-            { email, password },
-            { method: 'post', action: '/login' }
-        )
-    }
+    useEffect(() => {
+        const storedUser = localStorage.getItem('profileData');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, [fetcher.state]);
 
     return (
         <nav>
             <Link to="/elephants">Elephants</Link>
-            <form onSubmit={handleSubmit}>
+            <Link to="/new_elephant">New Elephant</Link>
+
+            <fetcher.Form method="post" action="/login">
                 <input
                     type="email"
+                    name="email"
                     placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
                     type="password"
+                    name="password"
                     placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
                 />
                 <button type="submit">Login</button>
-            </form>
-            {fetcher.state === 'loading' && <p>Logging in...</p>}
+            </fetcher.Form>
+            {/* {fetcher.state === 'loading' && <p>Logging in...</p>}
             {fetcher.data && fetcher.data.success && <p>Login successful!</p>}
-            {fetcher.data && !fetcher.data.success && <p>Login failed. Please try again.</p>}
+            {fetcher.data && !fetcher.data.success && <p>Login failed. Please try again.</p>} */}
+
+            {user.userName && <p>Welcome, {user.userName}!</p>}
+            {user.profileImageUrl && <img src={user.profileImageUrl} alt={`${user.userName}'s profile`} />}
         </nav>
     )
 }

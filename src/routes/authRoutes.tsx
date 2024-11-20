@@ -18,8 +18,8 @@ const authRoutes = [
     path: "login",
     action: async ({ request }: ActionFunctionArgs) => {
       const formData = await request.formData();
-      await handleLogin(formData);
-      return null
+      const response = await handleLogin(formData);
+      return response;
     },
     errorElement: <ErrorPage />
   }

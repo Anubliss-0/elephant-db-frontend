@@ -1,6 +1,7 @@
 import { logOutUser, signUpUser } from "./api"
 import { loginUser } from "./api"
-import { setCookies, removeCookies } from "./cookieManager"
+import { setCookies, removeCookies, setTokenCookies } from "./cookieManager"
+import { storeProfileData } from "./localStorageManager"
 
 export const handleLogin = async (formData: FormData) => {
   const userData = new FormData()
@@ -13,7 +14,10 @@ export const handleLogin = async (formData: FormData) => {
     const token = response.headers.authorization.split(' ')[1]
     const user = response.data.data
 
-    setCookies(token, user)
+    setTokenCookies(token, true)
+    storeProfileData(user)
+
+    return response
 
   } catch (error) {
     console.error('Login failed:', error)

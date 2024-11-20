@@ -1,25 +1,36 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
 
-interface UserContextType {
+interface User {
     userName: string | null;
-    setUserName: (name: string | null) => void;
     profileId: number | null;
-    setProfileId: (id: number | null) => void;
     userId: number | null;
-    setUserId: (id: number | null) => void;
     profileImageUrl: string | null;
-    setProfileImageUrl: (url: string | null) => void;
+}
+
+interface UserContextType {
+    user: User;
+    setUser: (user: Partial<User>) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
-    const [userName, setUserName] = useState<string | null>(null);
-    const [profileId, setProfileId] = useState<number | null>(null);
-    const [userId, setUserId] = useState<number | null>(null);
-    const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
+    const [user, setUserState] = useState<User>(() => {
+        const storedUser = localStorage.getItem('profileData');
+        return storedUser ? JSON.parse(storedUser) : {
+            userName: null,
+            profileId: null,
+            userId: null,
+            profileImageUrl: null,
+        };
+    });
+
+    const setUser = (updatedUser: Partial<User>) => {
+        setUserState((prevUser) => ({ ...prevUser, ...updatedUser }));
+    };
+
     return (
-        <UserContext.Provider value={{ userName, setUserName, profileId, setProfileId, userId, setUserId, profileImageUrl, setProfileImageUrl }}>
+        <UserContext.Provider value={{ user, setUser }}>
             {children}
         </UserContext.Provider>
     );
