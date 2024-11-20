@@ -1,4 +1,5 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router-dom"
+import { shouldRevalidateOnNonLogin } from "../utils/revalidationUtils"
 import Signup from "../components/Auth/Signup/Signup"
 import Show from "../components/Profile/Show/Show"
 import { getProfileById, updateProfile } from "../utils/api"
@@ -19,7 +20,8 @@ const profileRoutes = [
             console.log(response.data)
             await replaceUserProfileInCookies(response.data)
             return redirect(`/profiles/${id}`)
-        }
+        },
+        shouldRevalidate: shouldRevalidateOnNonLogin
     },
     // Signup
     {

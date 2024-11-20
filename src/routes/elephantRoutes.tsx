@@ -1,4 +1,5 @@
 import { getElephantsByQuery, getElephantById, createElephant, deleteElephant, updateElephant } from '../utils/api'
+import { shouldRevalidateOnNonLogin } from '../utils/revalidationUtils'
 import { redirect, LoaderFunctionArgs, ActionFunctionArgs } from 'react-router-dom'
 import Index from '../components/Elephant/Index/Index'
 import Show from '../components/Elephant/Show/Show'
@@ -16,6 +17,7 @@ const elephantRoutes = [
       const response = await getElephantsByQuery(query)
       return response.data.data
     },
+    shouldRevalidate: shouldRevalidateOnNonLogin,
     errorElement: <ErrorPage />
   },
 
@@ -27,6 +29,7 @@ const elephantRoutes = [
       const response = await getElephantById(params.id as string)
       return { elephant: response.data }
     },
+    shouldRevalidate: shouldRevalidateOnNonLogin,
     action: async ({ request, params }: ActionFunctionArgs) => {
       const id = params.id as string
 
