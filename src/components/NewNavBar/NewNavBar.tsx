@@ -1,14 +1,16 @@
 import { useFetcher, Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useUser } from '../../contexts/UserContext'
 import Login from './Login/Login'
-import MiniProfile from './Login/MiniProfile/MiniProfile'
+import MiniProfile from './MiniProfile/MiniProfile'
+import styles from './NewNavBar.module.scss'
 
 function NewNavBar() {
-    const fetcher = useFetcher()
-    const { user, setUser } = useUser()
+    const fetcher = useFetcher();
+    const { user, setUser } = useUser();
     const [showLogin, setShowLogin] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
+    const profileRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const storedUser = localStorage.getItem('profileData');
@@ -17,16 +19,42 @@ function NewNavBar() {
         }
         else {
             setUser({
-                userName: null,
-                profileId: null,
-                userId: null,
-                profileImageUrl: null,
+                userName: undefined,
+                profileId: undefined,
+                userId: undefined,
+                profileImageUrl: undefined,
             })
         }
     }, [fetcher.state]);
 
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+                setShowProfile(false);
+            }
+        };
+
+        if (showProfile) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showProfile]);
+
     return (
-        <nav>
+        <nav className={styles.nav}>
+            {!user.userName && showLogin && <Login fetcher={fetcher} />}
+
+            {user.userName && (
+                <button onClick={() => setShowProfile(true)}>
+                    Show Profile
+                </button>
+            )}
+    
             <Link to="/elephants">Elephants</Link>
             <Link to="/new_elephant">New Elephant</Link>
 
@@ -36,15 +64,12 @@ function NewNavBar() {
                 </button>
             )}
 
-            {!user.userName && showLogin && <Login fetcher={fetcher} />}
 
-            {user.userName && (
-                <button onClick={() => setShowProfile(prev => !prev)}>
-                    {showProfile ? 'Hide Profile' : 'Show Profile'}
-                </button>
+            {user.userName && showProfile && (
+                <div ref={profileRef}>
+                    <MiniProfile fetcher={fetcher} />
+                </div>
             )}
-
-            {user.userName && showProfile && <MiniProfile fetcher={fetcher} />}
         </nav>
     )
 }
