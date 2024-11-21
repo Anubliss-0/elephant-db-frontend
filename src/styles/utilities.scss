@@ -1,0 +1,32 @@
+@import './variables.scss';
+
+@mixin flex($direction: row, $justify: flex-start, $align: stretch) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin flex-column($justify: flex-start, $align: stretch) {
+  @include flex(column, $justify, $align);
+}
+
+@mixin flex-column-reverse($justify: flex-start, $align: stretch) {
+  @include flex(column-reverse, $justify, $align);
+}
+
+@mixin flex-row($justify: flex-start, $align: stretch) {
+  @include flex(row, $justify, $align);
+}
+
+@mixin respond-to-tablet {
+  @media (max-width: $max-width-tablet) {
+    @content;
+  }
+}
+
+@mixin respond-to-phone {
+  @media (max-width: $max-width-phone) {
+    @content;
+  }
+}
