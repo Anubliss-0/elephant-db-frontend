@@ -16,13 +16,30 @@ export const clearStorage = () => {
 }
 
 export const storeProfileData = (response: any) => {
-    const profileData = {
-        userName: response.profile.name,
-        userId: response.profile.user_id,
-        profileId: response.profile.id,
-        profileImageUrl: response.profile.profileimage_url
+    let profileData;
+
+    if (response.profile) {
+        // Original response structure
+        profileData = {
+            userName: response.profile.name,
+            userId: response.profile.user_id,
+            profileId: response.profile.id,
+            profileImageUrl: response.profile.profileimage_url
+        };
+    } else if (response.data && response.data.attributes) {
+        // New response structure
+        profileData = {
+            userName: response.data.attributes.name,
+            userId: response.data.attributes.user_id,
+            profileId: response.data.attributes.id,
+            profileImageUrl: response.data.attributes.profileimage_url
+        };
+    } else {
+        console.error("Unexpected response format");
+        return;
     }
-    setItem('profileData', profileData)
+
+    setItem('profileData', profileData);
 }
 
 export const clearProfileData = () => {

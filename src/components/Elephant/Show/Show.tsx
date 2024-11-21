@@ -4,6 +4,7 @@ import { useLoaderData, Form, useSubmit, Link } from 'react-router-dom'
 import { Photo } from '../../../types'
 import Photos from '../Photos/Photos'
 import * as ElephantOptions from '../../../constants/elephantOptions'
+
 type ElephantData = {
   id: string
   type: string
@@ -28,7 +29,7 @@ type ElephantData = {
 }
 
 function Show() {
-  const { userId } = useUser()
+  const { user } = useUser()
   const { elephant } = useLoaderData() as { elephant: { data: ElephantData } }
   const { name, bio, age, species, gender, habitat } = elephant.data.attributes
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -74,7 +75,7 @@ function Show() {
 
   return (
     <div>
-      {userId === elephant.data.attributes.user_id && (
+      {user.userId === elephant.data.attributes.user_id && (
         <button onClick={() => setIsEditing(!isEditing)}>
           {isEditing ? 'Stop Editing' : 'Start Editing'}
         </button>

@@ -1,6 +1,8 @@
-import { Form, useLoaderData, useSubmit } from 'react-router-dom'
-import { useState } from 'react'
+import { Form, useLoaderData } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useUser } from '../../../contexts/UserContext'
+import { getItem } from '../../../utils/localStorageManager'
 
 type ProfileData = {
     id: string
@@ -18,6 +20,14 @@ type ProfileData = {
 function Show() {
     const { profile } = useLoaderData() as { profile: { data: ProfileData } }
     const [isEditing, setIsEditing] = useState(false)
+    const { setUser } = useUser()
+
+    useEffect(() => {
+        const storedUser = getItem('profileData')
+        if (storedUser) {
+            setUser(storedUser)
+        }
+    }, [profile])
 
     return (
         <div>
@@ -28,7 +38,7 @@ function Show() {
             >
                 <h1>
                     {isEditing ? (
-                        <input type="text" name="profile[name]" defaultValue={profile.data.attributes.name} />
+                        <input type="text" name="profile[name]" defaultValue={profile.data.attributes.name} required />
                     ) : (
                         profile.data.attributes.name
                     )}

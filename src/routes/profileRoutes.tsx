@@ -3,7 +3,8 @@ import { shouldRevalidateOnNonAuthAction } from "../utils/revalidationUtils"
 import Signup from "../components/Auth/Signup/Signup"
 import Show from "../components/Profile/Show/Show"
 import { getProfileById, updateProfile } from "../utils/api"
-import { replaceUserProfileInCookies } from "../utils/cookieManager"
+import { storeProfileData } from "../utils/localStorageManager"
+
 const profileRoutes = [
     // Profile Show
     {
@@ -17,8 +18,7 @@ const profileRoutes = [
             const id = params.id as string
             const formData = await request.formData()
             const response = await updateProfile(id, formData)
-            console.log(response.data)
-            await replaceUserProfileInCookies(response.data)
+            storeProfileData(response.data)
             return redirect(`/profiles/${id}`)
         },
         shouldRevalidate: shouldRevalidateOnNonAuthAction
