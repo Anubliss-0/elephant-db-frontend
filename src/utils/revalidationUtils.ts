@@ -1,4 +1,7 @@
-export const shouldRevalidateOnNonLogin = ({ formAction }: { formAction: string | null }) => {
-    const isLoginFormSubmission = formAction && formAction.includes('/login')
-    return !isLoginFormSubmission
+export const shouldRevalidateOnNonAuthAction = ({ formAction }: { formAction: string | null }) => {
+    const isAuthAction = formAction && (
+        formAction.includes('/login') || 
+        formAction.includes('/logout')
+    )
+    return !isAuthAction
 }

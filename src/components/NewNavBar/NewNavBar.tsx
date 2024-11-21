@@ -15,6 +15,14 @@ function NewNavBar() {
         if (storedUser) {
             setUser(JSON.parse(storedUser));
         }
+        else {
+            setUser({
+                userName: null,
+                profileId: null,
+                userId: null,
+                profileImageUrl: null,
+            })
+        }
     }, [fetcher.state]);
 
     return (
@@ -36,7 +44,7 @@ function NewNavBar() {
                 </button>
             )}
 
-            {user.userName && showProfile && <MiniProfile />}
+            {user.userName && showProfile && <MiniProfile fetcher={fetcher} />}
         </nav>
     )
 }

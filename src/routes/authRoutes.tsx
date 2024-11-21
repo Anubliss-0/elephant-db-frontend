@@ -1,7 +1,7 @@
 import ErrorPage from '../ErrorPage';
 import Signup from '../components/Auth/Signup/Signup';
 import { ActionFunctionArgs, redirect } from 'react-router-dom';
-import { handleSignup, handleLogin } from '../utils/auth';
+import { handleSignup, handleLogin, handleLogout } from '../utils/auth';
   
 const authRoutes = [
   {
@@ -17,11 +17,18 @@ const authRoutes = [
   {
     path: "login",
     action: async ({ request }: ActionFunctionArgs) => {
-      const formData = await request.formData();
-      const response = await handleLogin(formData);
-      return response;
+      const formData = await request.formData()
+      await handleLogin(formData)
+      return null
     },
     errorElement: <ErrorPage />
+  },
+  {
+    path: "logout",
+    action: async () => {
+      await handleLogout()
+      return null
+    }
   }
 ];
 

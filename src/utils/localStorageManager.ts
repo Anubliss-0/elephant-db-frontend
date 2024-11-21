@@ -25,3 +25,7 @@ export const storeProfileData = (response: any) => {
     setItem('profileData', profileData)
 }
 
+export const clearProfileData = () => {
+    removeItem('profileData')
+}
+

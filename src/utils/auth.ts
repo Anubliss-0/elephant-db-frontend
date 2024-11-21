@@ -1,7 +1,7 @@
 import { logOutUser, signUpUser } from "./api"
 import { loginUser } from "./api"
-import { setCookies, removeCookies, setTokenCookies } from "./cookieManager"
-import { storeProfileData } from "./localStorageManager"
+import { setCookies, removeTokenCookies, setTokenCookies } from "./cookieManager"
+import { clearProfileData, storeProfileData } from "./localStorageManager"
 
 export const handleLogin = async (formData: FormData) => {
   const userData = new FormData()
@@ -27,7 +27,8 @@ export const handleLogin = async (formData: FormData) => {
 
 export const handleLogout = async () => {
   await logOutUser()
-  removeCookies()
+  removeTokenCookies()
+  clearProfileData()
 }
 
 export const handleSignup = async (formData: FormData) => {

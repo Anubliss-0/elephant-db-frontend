@@ -52,6 +52,11 @@ export const removeCookies = () => {
     delete axios.defaults.headers.common['Authorization']
 }
 
+export const removeTokenCookies = () => {
+    Cookies.remove('token', { path: '/' })
+    delete axios.defaults.headers.common['Authorization']
+}
+
 export const replaceUserProfileInCookies = (newProfile: { data: { attributes: { [key: string]: any } } }) => {
     console.log('Attempting to update user profile in cookies with:', newProfile);
 
