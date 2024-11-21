@@ -1,3 +1,5 @@
+import { userProfile, UserProfileResponse } from '../types'
+
 export const setItem = (key: string, value: any) => {
     localStorage.setItem(key, JSON.stringify(value))
 }
@@ -15,25 +17,16 @@ export const clearStorage = () => {
     localStorage.clear()
 }
 
-export const storeProfileData = (response: any) => {
-    let profileData;
+export const storeProfileData = (response: UserProfileResponse) => {
+    let profileData: userProfile
 
-    if (response.profile) {
-        // Original response structure
+    if (response.data) {
         profileData = {
-            userName: response.profile.name,
-            userId: response.profile.user_id,
-            profileId: response.profile.id,
-            profileImageUrl: response.profile.profileimage_url
-        };
-    } else if (response.data && response.data.attributes) {
-        // New response structure
-        profileData = {
-            userName: response.data.attributes.name,
-            userId: response.data.attributes.user_id,
-            profileId: response.data.attributes.id,
-            profileImageUrl: response.data.attributes.profileimage_url
-        };
+            userName: response.data.name,
+            userId: response.data.user_id,
+            profileId: response.data.id,
+            profileImageUrl: response.data.profileimage_url
+        }
     } else {
         console.error("Unexpected response format");
         return;

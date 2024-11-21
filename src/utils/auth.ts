@@ -12,7 +12,7 @@ export const handleLogin = async (formData: FormData) => {
   try {
     const response = await loginUser(userData)
     const token = response.headers.authorization.split(' ')[1]
-    const user = response.data.data
+    const user = response.data
 
     setTokenCookies(token, true)
     storeProfileData(user)

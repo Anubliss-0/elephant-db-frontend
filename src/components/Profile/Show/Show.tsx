@@ -4,21 +4,18 @@ import { Link } from 'react-router-dom'
 import { useUser } from '../../../contexts/UserContext'
 import { getItem } from '../../../utils/localStorageManager'
 
-type ProfileData = {
-    id: string
-    attributes: {
-        user_id: string
-        name: string
-        gender: string
-        location: string
-        profileimage_url: string
-        elephants_count: number
-        created_at: string
-    }
+type ProfileShowData = {
+    user_id: string
+    name: string
+    gender: string
+    location: string
+    profileimage_url: string
+    elephants_count: number
+    created_at: string
 }
 
 function Show() {
-    const { profile } = useLoaderData() as { profile: { data: ProfileData } }
+    const { profile } = useLoaderData() as { profile: ProfileShowData }
     const [isEditing, setIsEditing] = useState(false)
     const { setUser } = useUser()
 
@@ -31,39 +28,39 @@ function Show() {
 
     return (
         <div>
-            <Form 
-                method="PATCH" 
+            <Form
+                method="PATCH"
                 encType="multipart/form-data"
                 onSubmit={() => setIsEditing(false)}
             >
                 <h1>
                     {isEditing ? (
-                        <input type="text" name="profile[name]" defaultValue={profile.data.attributes.name} required />
+                        <input type="text" name="profile[name]" defaultValue={profile.name} required />
                     ) : (
-                        profile.data.attributes.name
+                        profile.name
                     )}
                 </h1>
                 <p>
                     {isEditing ? (
-                        <input type="text" name="profile[gender]" defaultValue={profile.data.attributes.gender} />
+                        <input type="text" name="profile[gender]" defaultValue={profile.gender} />
                     ) : (
-                        profile.data.attributes.gender
+                        profile.gender
                     )}
                 </p>
                 <p>
                     {isEditing ? (
-                        <input type="text" name="profile[location]" defaultValue={profile.data.attributes.location} />
+                        <input type="text" name="profile[location]" defaultValue={profile.location} />
                     ) : (
-                        profile.data.attributes.location
+                        profile.location
                     )}
                 </p>
                 <div>
                     {isEditing ? (
                         <div>
                             <label htmlFor="profileimage">Profile Image:</label>
-                            <input 
-                                type="file" 
-                                name="profile[profileimage]" 
+                            <input
+                                type="file"
+                                name="profile[profileimage]"
                                 id="profileimage"
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
@@ -77,15 +74,15 @@ function Show() {
                         </div>
                     ) : (
                         <p>
-                            <img src={profile.data.attributes.profileimage_url} alt="Profile Picture" />
+                            <img src={profile.profileimage_url} alt="Profile Picture" />
                         </p>
                     )}
                 </div>
                 <p>
-                    {profile.data.attributes.elephants_count} elephants
+                    {profile.elephants_count} elephants
                 </p>
                 <p>
-                    {profile.data.attributes.created_at}
+                    {profile.created_at}
                 </p>
                 {isEditing ? (
                     <>
@@ -96,7 +93,7 @@ function Show() {
                     <button type="button" onClick={() => setIsEditing(true)}>Edit Profile</button>
                 )}
             </Form>
-            <Link to={`/elephants?user_id=${profile.data.attributes.user_id}`}>
+            <Link to={`/elephants?user_id=${profile.user_id}`}>
                 View My Elephants
             </Link>
         </div>

@@ -6,21 +6,38 @@ export interface Photo {
   position: number
 }
 
-export interface Profile {
-  id: number;
-  user_id: number;
-  name: string;
-  gender: string;
-  location: string;
-  updated_at: string;
-  created_at: string;
-  profileimage_url: string;
+// export interface Profile {
+//   id: number;
+//   user_id: number;
+//   name: string;
+//   gender: string;
+//   location: string;
+//   updated_at: string;
+//   created_at: string;
+//   profileimage_url: string;
+// }
+
+// export interface User {
+//   id: number;
+//   email: string;
+//   created_at: string;
+//   created_date: string;
+//   profile: Profile;
+// }
+
+export interface userProfileContext {
+  userName: string;
+  profileId: number;
+  userId: number;
+  profileImageUrl: string;
 }
 
-export interface User {
-  id: number;
-  email: string;
-  created_at: string;
-  created_date: string;
-  profile: Profile;
+// Define a type for the response data
+export interface UserProfileResponse {
+  data: {
+    name: string;
+    user_id: number;
+    id: number;
+    profileimage_url: string;
+  };
 }

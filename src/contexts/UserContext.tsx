@@ -1,21 +1,15 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
-
-interface User {
-    userName: string | null;
-    profileId: number | null;
-    userId: number | null;
-    profileImageUrl: string | null;
-}
+import { userProfileContext } from '../types';
 
 interface UserContextType {
-    user: User;
-    setUser: (user: Partial<User>) => void;
+    user: userProfileContext;
+    setUser: (user: Partial<userProfileContext>) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
-    const [user, setUserState] = useState<User>(() => {
+    const [user, setUserState] = useState<userProfileContext>(() => {
         const storedUser = localStorage.getItem('profileData');
         return storedUser ? JSON.parse(storedUser) : {
             userName: null,
@@ -25,7 +19,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         };
     });
 
-    const setUser = (updatedUser: Partial<User>) => {
+    const setUser = (updatedUser: Partial<userProfileContext>) => {
         setUserState((prevUser) => ({ ...prevUser, ...updatedUser }));
     };
 

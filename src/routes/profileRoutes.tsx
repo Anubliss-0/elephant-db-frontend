@@ -18,7 +18,7 @@ const profileRoutes = [
             const id = params.id as string
             const formData = await request.formData()
             const response = await updateProfile(id, formData)
-            storeProfileData(response.data)
+            storeProfileData(response)
             return redirect(`/profiles/${id}`)
         },
         shouldRevalidate: shouldRevalidateOnNonAuthAction
