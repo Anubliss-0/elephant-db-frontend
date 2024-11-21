@@ -9,8 +9,9 @@ const authRoutes = [
     element: <Signup />,
     action: async ({ request }: ActionFunctionArgs) => {
       const formData = await request.formData()
-      await handleSignup(formData)
-      return redirect('/elephants')
+      const response = await handleSignup(formData)
+      const id = response.profile.id
+      return redirect(`/profiles/${id}`)
     },
     errorElement: <ErrorPage />
   },

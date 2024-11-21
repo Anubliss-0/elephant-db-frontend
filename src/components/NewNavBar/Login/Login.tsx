@@ -1,4 +1,4 @@
-import { FetcherWithComponents } from 'react-router-dom'
+import { FetcherWithComponents, Link } from 'react-router-dom'
 
 interface LoginProps {
     fetcher: FetcherWithComponents<any>;
@@ -6,19 +6,22 @@ interface LoginProps {
 
 function Login({ fetcher }: LoginProps) {
     return (
-        <fetcher.Form method="post" action="/login">
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-            />
-            <input
-                type="password"
-                name="password"
-                placeholder="Password"
-            />
-            <button type="submit">Login</button>
-        </fetcher.Form>
+        <>
+            <fetcher.Form method="post" action="/login">
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                />
+                <button type="submit">Login</button>
+            </fetcher.Form>
+            <Link to="/signup">Signup</Link>
+        </>
     )
 }
 
