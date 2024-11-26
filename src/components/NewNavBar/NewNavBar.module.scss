@@ -1,6 +1,25 @@
+@import '../../styles/variables.scss';
+@import '../../styles/utilities.scss';
+
 .nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
+    background-color: $elephant-grey;
+}
+
+.logo {
+    width: 3.75rem;
+    height: 3.75rem;
+}
+
+.logoContainer {
+    @include flex(row, center, center);
+    gap: 0.5rem;
+}
+
+.logoText {
+    font-size: 1.5rem;
+    font-weight: bold;
 }

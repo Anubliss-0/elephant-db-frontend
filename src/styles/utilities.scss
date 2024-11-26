@@ -30,3 +30,31 @@
     @content;
   }
 }
+
+@mixin text-center {
+  text-align: center;
+}
+
+@mixin text-uppercase {
+  text-transform: uppercase;
+}
+
+@mixin margin($top: 0, $right: 0, $bottom: 0, $left: 0) {
+  margin: $top $right $bottom $left;
+}
+
+@mixin padding($top: 0, $right: 0, $bottom: 0, $left: 0) {
+  padding: $top $right $bottom $left;
+}
+
+@mixin border($width: 1px, $style: solid, $color: $text-color) {
+  border: $width $style $color;
+}
+
+@mixin box-shadow($x: 0, $y: 0, $blur: 10px, $color: rgba(0, 0, 0, 0.1)) {
+  box-shadow: $x $y $blur $color;
+}
+
+@mixin transition($property: all, $duration: 0.3s, $timing: ease-in-out) {
+  transition: $property $duration $timing;
+}

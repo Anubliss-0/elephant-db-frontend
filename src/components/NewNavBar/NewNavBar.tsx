@@ -4,6 +4,7 @@ import { useUser } from '../../contexts/UserContext'
 import Login from './Login/Login'
 import MiniProfile from './MiniProfile/MiniProfile'
 import styles from './NewNavBar.module.scss'
+import Logo from '../../assets/epdb-logo.svg?react'
 
 function NewNavBar() {
     const fetcher = useFetcher();
@@ -47,6 +48,10 @@ function NewNavBar() {
 
     return (
         <nav className={styles.nav}>
+            <div className={styles.logoContainer}>
+                <Logo className={styles.logo} />
+                <span className={styles.logoText}>EPDB</span>
+            </div>
             {!user.userName && showLogin && <Login fetcher={fetcher} />}
 
             {user.userName && (
@@ -63,7 +68,6 @@ function NewNavBar() {
                     {showLogin ? 'Hide Login' : 'Login'}
                 </button>
             )}
-
 
             {user.userName && showProfile && (
                 <div ref={profileRef}>
