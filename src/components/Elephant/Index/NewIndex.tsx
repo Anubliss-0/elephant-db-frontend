@@ -1,11 +1,21 @@
-import React, { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { useFetcher } from "react-router-dom"
 import InfiniteScroll from "react-infinite-scroll-component"
 
-const NewIndex = React.memo(() => {
+interface IndexElephantData {
+    id: number
+    type: string
+    attributes: {
+        id: number
+        name: string
+        photo: string
+    }
+}
+
+const NewIndex = () => {
     const fetcher = useFetcher()
     const [page, setPage] = useState(1)
-    const [elephants, setElephants] = useState([])
+    const [elephants, setElephants] = useState<IndexElephantData[]>([])
     const [hasMore, setHasMore] = useState(true)
 
     useEffect(() => {
@@ -44,6 +54,6 @@ const NewIndex = React.memo(() => {
             </InfiniteScroll>
         </div>
     )
-})
+}
 
 export default NewIndex
