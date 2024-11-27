@@ -13,8 +13,10 @@ function NewNavBar() {
     const { t } = useTranslation();
     const fetcher = useFetcher();
     const { user, setUser } = useUser();
-    const [showLogin, setShowLogin] = useState(false);
-    const [showProfile, setShowProfile] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+
+    const modalRef = useRef<HTMLDivElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
         const storedUser = localStorage.getItem('profileData');
@@ -30,6 +32,28 @@ function NewNavBar() {
             })
         }
     }, [fetcher.state]);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                modalRef.current && 
+                !modalRef.current.contains(event.target as Node) &&
+                buttonRef.current &&
+                !buttonRef.current.contains(event.target as Node)
+            ) {
+                setShowModal(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setShowModal(prev => !prev);
+    };
 
     return (
         <nav className={styles.nav}>
@@ -48,7 +72,8 @@ function NewNavBar() {
                     <div className={styles.navLink}>
                         <button
                             className={styles.profileButton}
-                            onClick={() => setShowProfile(prev => !prev)}
+                            onClick={handleButtonClick}
+                            ref={buttonRef}
                         >
                             <img src={user.profileImageUrl} alt="Profile" />
                         </button>
@@ -58,7 +83,8 @@ function NewNavBar() {
                     <div className={styles.navLink}>
                         <button
                             className={styles.profileButton}
-                            onClick={() => setShowLogin(prev => !prev)}
+                            onClick={handleButtonClick}
+                            ref={buttonRef}
                         >
                             <UserIcon className={styles.userIcon} />
                         </button>
@@ -66,9 +92,9 @@ function NewNavBar() {
                 )}
             </div>
 
-            <div className={styles.modalContainer}>
-                {user.userName && showProfile && <MiniProfile fetcher={fetcher} />}
-                {!user.userName && showLogin && <Login fetcher={fetcher} />}
+            <div className={styles.modalContainer} ref={modalRef}>
+                {user.userName && showModal && <MiniProfile fetcher={fetcher} />}
+                {!user.userName && showModal && <Login fetcher={fetcher} />}
             </div>
         </nav>
     )
