@@ -1,23 +1,37 @@
-import { getElephantsByQuery, getElephantById, createElephant, deleteElephant, updateElephant } from '../utils/api'
+import { getElephantsByQuery, getElephantById, createElephant, deleteElephant, updateElephant, getAllElephants } from '../utils/api'
 import { shouldRevalidateOnNonAuthAction } from '../utils/revalidationUtils'
 import { redirect, LoaderFunctionArgs, ActionFunctionArgs } from 'react-router-dom'
 import Index from '../components/Elephant/Index/Index'
 import Show from '../components/Elephant/Show/Show'
 import New from '../components/Elephant/New/New'
 import ErrorPage from '../ErrorPage'
+import NewIndex from '../components/Elephant/Index/NewIndex'
 
 const elephantRoutes = [
   // Elephant Index
+  // {
+  //   path: "elephants",
+  //   element: <Index />,
+  //   loader: async ({ request }: LoaderFunctionArgs) => {
+  //     const url = new URL(request.url)
+  //     const query = url.searchParams.toString()
+  //     const response = await getElephantsByQuery(query)
+  //     return response.data.data
+  //   },
+  //   shouldRevalidate: shouldRevalidateOnNonAuthAction,
+  //   errorElement: <ErrorPage />
+  // },
+
   {
     path: "elephants",
-    element: <Index />,
-    loader: async ({ request }: LoaderFunctionArgs) => {
-      const url = new URL(request.url)
-      const query = url.searchParams.toString()
-      const response = await getElephantsByQuery(query)
+    element: <NewIndex />,
+    action: async ({ request }: ActionFunctionArgs) => {
+      const formData = await request.formData()
+      const page = formData.get("page") || "1"
+      const response = await getAllElephants(page as string)
       return response.data.data
     },
-    shouldRevalidate: shouldRevalidateOnNonAuthAction,
+    shouldRevalidate: false,
     errorElement: <ErrorPage />
   },
 

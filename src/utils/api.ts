@@ -7,6 +7,13 @@ export const getElephantsByQuery = async (query: string) => {
   return axios.get(`${baseURL}/elephants?query=${query}`)
 }
 
+// Experimental get all elephants
+export const getAllElephants = async (page: string) => {
+  return axios.get(`${baseURL}/elephants`, {
+    params: { page }
+  })
+}
+
 // Get elephant by ID
 export const getElephantById = async (id: string) => {
   return axios.get(`${baseURL}/elephants/${id}`)
