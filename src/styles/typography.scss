@@ -7,14 +7,30 @@
 
 $font-primary: 'parkinsans', sans-serif;
 
+@mixin text-body {
+    font-family: $font-primary;
+    font-weight: 400;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
 @mixin text-body-bold {
     font-family: $font-primary;
     font-weight: 700;
     font-size: 1rem;
+    text-decoration: none;
 }
 
 @mixin text-heading-bold {
     font-family: $font-primary;
     font-weight: 700;
     font-size: 1.5rem;
+    text-decoration: none;
+}
+
+@mixin text-style-h3 {
+    font-family: $font-primary;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-decoration: none;
 }

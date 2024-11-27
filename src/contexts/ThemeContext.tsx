@@ -15,7 +15,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         if (storedTheme) {
             return storedTheme as Theme;
         }
-        // Detect system preference
         const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
         return prefersDark ? 'dark' : 'light';
     });
@@ -30,6 +29,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         mediaQuery.addEventListener('change', handleChange);
         return () => mediaQuery.removeEventListener('change', handleChange);
     }, []);
+
+    useEffect(() => {
+        const body = document.body;
+        if (theme === 'dark') {
+            body.classList.add('dark');
+        } else {
+            body.classList.remove('dark');
+        }
+    }, [theme]);
 
     const toggleTheme = () => {
         setTheme((prevTheme) => {

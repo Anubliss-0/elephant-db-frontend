@@ -62,13 +62,11 @@
 @mixin theme($theme) {
   @if $theme =='light' {
     background-color: $color-primary-light;
-    color: $color-secondary-light;
     @content;
   }
 
   @else if $theme =='dark' {
     background-color: $color-primary-dark;
-    color: $color-secondary-dark;
     @content;
   }
 }

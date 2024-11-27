@@ -66,12 +66,12 @@ function NewNavBar() {
                 </div>
             </div>
 
-            <div className={styles.rightSide}>
-                <Link className={styles.navLink} to="/elephants">{t('navBar.exploreElephants')}</Link>
-                <Link className={styles.navLink} to="/new_elephant">{t('navBar.addElephant')}</Link>
+            <div className={classNames(styles.rightSide, styles[theme])}>
+                <Link className={classNames(styles.navLink, styles[theme])} to="/elephants">{t('navBar.exploreElephants')}</Link>
+                <Link className={classNames(styles.navLink, styles[theme])} to="/new_elephant">{t('navBar.addElephant')}</Link>
 
                 {user.userName && (
-                    <div className={styles.navLink}>
+                    <div className={classNames(styles.navLink, styles[theme])}>
                         <button
                             className={styles.profileButton}
                             onClick={handleButtonClick}
@@ -82,7 +82,7 @@ function NewNavBar() {
                     </div>
                 )}
                 {!user.userName && (
-                    <div className={styles.navLink}>
+                    <div className={classNames(styles.navLink, styles[theme])}>
                         <button
                             className={styles.profileButton}
                             onClick={handleButtonClick}

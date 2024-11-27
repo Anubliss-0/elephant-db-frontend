@@ -1,7 +1,18 @@
+@import "./styles/variables.scss";
+@import "./styles/utilities.scss";
+@import "./styles/typography.scss";
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
+    @include text-body;
+    background-color: $color-background-light;
+    color: $color-text-light;
+
+    &.dark {
+        background-color: $color-background-dark;
+        color: $color-text-dark;
+    }
 }
