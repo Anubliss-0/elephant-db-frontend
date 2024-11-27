@@ -20,6 +20,8 @@ function NewNavBar() {
     const modalRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
 
+    const themedClass = (baseClass: string) => classNames(baseClass, styles[theme]);
+
     useEffect(() => {
         const storedUser = localStorage.getItem('profileData');
         if (storedUser) {
@@ -56,8 +58,6 @@ function NewNavBar() {
     const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setShowModal(prev => !prev);
     };
-
-    const themedClass = (baseClass: string) => classNames(baseClass, styles[theme]);
 
     return (
         <nav className={themedClass(styles.nav)}>
