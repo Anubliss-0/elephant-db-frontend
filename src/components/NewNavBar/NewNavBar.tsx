@@ -1,17 +1,20 @@
 import { useFetcher, Link } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useUser } from '../../contexts/UserContext'
 import Login from './Login/Login'
 import MiniProfile from './MiniProfile/MiniProfile'
 import styles from './NewNavBar.module.scss'
 import Logo from '../../assets/epdb-logo.svg?react'
+import classNames from 'classnames'
 
 function NewNavBar() {
+    const { t } = useTranslation();
     const fetcher = useFetcher();
     const { user, setUser } = useUser();
     const [showLogin, setShowLogin] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
-    const profileRef = useRef<HTMLDivElement>(null);
+    const profileRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         const storedUser = localStorage.getItem('profileData');
@@ -35,45 +38,51 @@ function NewNavBar() {
             }
         };
 
-        if (showProfile) {
-            document.addEventListener('mousedown', handleClickOutside);
-        } else {
-            document.removeEventListener('mousedown', handleClickOutside);
-        }
-
+        document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [showProfile]);
+    }, []);
 
     return (
         <nav className={styles.nav}>
-            <div className={styles.logoContainer}>
-                <Logo className={styles.logo} />
-                <span className={styles.logoText}>EPDB</span>
-            </div>
-            {!user.userName && showLogin && <Login fetcher={fetcher} />}
-
-            {user.userName && (
-                <button onClick={() => setShowProfile(true)}>
-                    Show Profile
-                </button>
-            )}
-    
-            <Link to="/elephants">Elephants</Link>
-            <Link to="/new_elephant">New Elephant</Link>
-
-            {!user.userName && (
-                <button onClick={() => setShowLogin(prev => !prev)}>
-                    {showLogin ? 'Hide Login' : 'Login'}
-                </button>
-            )}
-
-            {user.userName && showProfile && (
-                <div ref={profileRef}>
-                    <MiniProfile fetcher={fetcher} />
+            <div className={styles.leftSide}>
+                <div className={styles.logoContainer}>
+                    <Logo className={styles.logo} />
+                    <span className={styles.logoText}>EPDB</span>
                 </div>
-            )}
+            </div>
+
+            <div className={styles.rightSide}>
+                <Link className={styles.navLink} to="/elephants">{t('navBar.exploreElephants')}</Link>
+                <Link className={styles.navLink} to="/new_elephant">{t('navBar.addElephant')}</Link>
+                {!user.userName && showLogin && <Login fetcher={fetcher} />}
+
+                {user.userName && (
+                    <div className={styles.navLink}>
+                        <button
+                            className={styles.profileButton}
+                            onClick={() => setShowProfile(prev => !prev)}
+                        >
+                            <img src={user.profileImageUrl} alt="Profile" />
+                        </button>
+                    </div>
+                )}
+            </div>
+
+            <div className={styles.modalContainer}>
+                {!user.userName && (
+                    <button onClick={() => setShowLogin(prev => !prev)}>
+                        {showLogin ? 'Hide Login' : 'Login'}
+                    </button>
+                )}
+
+                {user.userName && showProfile && (
+                    <div ref={profileRef} className={styles.miniProfileContainer}>
+                        <MiniProfile fetcher={fetcher} />
+                    </div>
+                )}
+            </div>
         </nav>
     )
 }
