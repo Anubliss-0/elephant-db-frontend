@@ -6,6 +6,7 @@ import Login from './Login/Login'
 import MiniProfile from './MiniProfile/MiniProfile'
 import styles from './NewNavBar.module.scss'
 import Logo from '../../assets/epdb-logo.svg?react'
+import UserIcon from '../../assets/user.svg?react'
 import classNames from 'classnames'
 
 function NewNavBar() {
@@ -14,7 +15,6 @@ function NewNavBar() {
     const { user, setUser } = useUser();
     const [showLogin, setShowLogin] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
-    const profileRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         const storedUser = localStorage.getItem('profileData');
@@ -31,19 +31,6 @@ function NewNavBar() {
         }
     }, [fetcher.state]);
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
-                setShowProfile(false);
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
-
     return (
         <nav className={styles.nav}>
             <div className={styles.leftSide}>
@@ -56,7 +43,6 @@ function NewNavBar() {
             <div className={styles.rightSide}>
                 <Link className={styles.navLink} to="/elephants">{t('navBar.exploreElephants')}</Link>
                 <Link className={styles.navLink} to="/new_elephant">{t('navBar.addElephant')}</Link>
-                {!user.userName && showLogin && <Login fetcher={fetcher} />}
 
                 {user.userName && (
                     <div className={styles.navLink}>
@@ -68,20 +54,21 @@ function NewNavBar() {
                         </button>
                     </div>
                 )}
+                {!user.userName && (
+                    <div className={styles.navLink}>
+                        <button
+                            className={styles.profileButton}
+                            onClick={() => setShowLogin(prev => !prev)}
+                        >
+                            <UserIcon className={styles.userIcon} />
+                        </button>
+                    </div>
+                )}
             </div>
 
             <div className={styles.modalContainer}>
-                {!user.userName && (
-                    <button onClick={() => setShowLogin(prev => !prev)}>
-                        {showLogin ? 'Hide Login' : 'Login'}
-                    </button>
-                )}
-
-                {user.userName && showProfile && (
-                    <div ref={profileRef} className={styles.miniProfileContainer}>
-                        <MiniProfile fetcher={fetcher} />
-                    </div>
-                )}
+                {user.userName && showProfile && <MiniProfile fetcher={fetcher} />}
+                {!user.userName && showLogin && <Login fetcher={fetcher} />}
             </div>
         </nav>
     )

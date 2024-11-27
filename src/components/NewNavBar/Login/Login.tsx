@@ -1,4 +1,5 @@
 import { FetcherWithComponents, Link } from 'react-router-dom'
+import styles from './Login.module.scss'
 
 interface LoginProps {
     fetcher: FetcherWithComponents<any>;
@@ -6,7 +7,7 @@ interface LoginProps {
 
 function Login({ fetcher }: LoginProps) {
     return (
-        <>
+        <div className={styles.modal}>
             <fetcher.Form method="post" action="/login">
                 <input
                     type="email"
@@ -21,7 +22,7 @@ function Login({ fetcher }: LoginProps) {
                 <button type="submit">Login</button>
             </fetcher.Form>
             <Link to="/signup">Signup</Link>
-        </>
+        </div>
     )
 }
 
