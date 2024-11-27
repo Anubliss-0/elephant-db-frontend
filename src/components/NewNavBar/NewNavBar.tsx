@@ -57,8 +57,10 @@ function NewNavBar() {
         setShowModal(prev => !prev);
     };
 
+    const themedClass = (baseClass: string) => classNames(baseClass, styles[theme]);
+
     return (
-        <nav className={classNames(styles.nav, styles[theme])}>
+        <nav className={themedClass(styles.nav)}>
             <div className={styles.leftSide}>
                 <div className={styles.logoContainer}>
                     <Logo className={styles.logo} />
@@ -66,12 +68,12 @@ function NewNavBar() {
                 </div>
             </div>
 
-            <div className={classNames(styles.rightSide, styles[theme])}>
-                <Link className={classNames(styles.navLink, styles[theme])} to="/elephants">{t('navBar.exploreElephants')}</Link>
-                <Link className={classNames(styles.navLink, styles[theme])} to="/new_elephant">{t('navBar.addElephant')}</Link>
+            <div className={themedClass(styles.rightSide)}>
+                <Link className={themedClass(styles.navLink)} to="/elephants">{t('navBar.exploreElephants')}</Link>
+                <Link className={themedClass(styles.navLink)} to="/new_elephant">{t('navBar.addElephant')}</Link>
 
                 {user.userName && (
-                    <div className={classNames(styles.navLink, styles[theme])}>
+                    <div className={themedClass(styles.navLink)}>
                         <button
                             className={styles.profileButton}
                             onClick={handleButtonClick}
@@ -82,7 +84,7 @@ function NewNavBar() {
                     </div>
                 )}
                 {!user.userName && (
-                    <div className={classNames(styles.navLink, styles[theme])}>
+                    <div className={themedClass(styles.navLink)}>
                         <button
                             className={styles.profileButton}
                             onClick={handleButtonClick}
