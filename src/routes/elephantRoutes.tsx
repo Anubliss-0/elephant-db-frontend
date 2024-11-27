@@ -29,9 +29,9 @@ const elephantRoutes = [
       const formData = await request.formData()
       const page = formData.get("page") || "1"
       const response = await getAllElephants(page as string)
-      return response.data.data
+      return response.data
     },
-    shouldRevalidate: false,
+    shouldRevalidate: shouldRevalidateOnNonAuthAction,
     errorElement: <ErrorPage />
   },
 

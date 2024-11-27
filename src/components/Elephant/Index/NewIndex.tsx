@@ -16,7 +16,8 @@ const NewIndex = React.memo(() => {
 
     useEffect(() => {
         if (fetcher.state === "idle" && fetcher.data) {
-            setElephants(prevElephants => [...prevElephants, ...fetcher.data])
+            setElephants(prevElephants => [...prevElephants, ...fetcher.data.elephants.data])
+            setHasMore(fetcher.data.has_more)
         }
     }, [fetcher.data, fetcher.state])
 
@@ -31,6 +32,7 @@ const NewIndex = React.memo(() => {
                 next={handleLoadMore}
                 hasMore={hasMore}
                 loader={<h4>Loading...</h4>}
+                endMessage={<p>No more elephants to load</p>}
             >
                 {elephants.map((elephant: any, index: number) => (
                     <div key={`${elephant.id}-${index}`}>
