@@ -1,8 +1,10 @@
+@import '../../../styles/variables.scss';
+
 .modal {
     position: fixed;
     top: 6rem;
     right: 2rem;
-    background-color: white;
+    background-color: $color-secondary-light;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;

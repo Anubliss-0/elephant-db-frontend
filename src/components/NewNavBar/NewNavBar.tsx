@@ -8,11 +8,13 @@ import styles from './NewNavBar.module.scss'
 import Logo from '../../assets/epdb-logo.svg?react'
 import UserIcon from '../../assets/user.svg?react'
 import classNames from 'classnames'
+import { useTheme } from '../../contexts/ThemeContext'
 
 function NewNavBar() {
     const { t } = useTranslation();
     const fetcher = useFetcher();
     const { user, setUser } = useUser();
+    const { theme } = useTheme()
     const [showModal, setShowModal] = useState(false);
 
     const modalRef = useRef<HTMLDivElement>(null);
@@ -56,7 +58,7 @@ function NewNavBar() {
     };
 
     return (
-        <nav className={styles.nav}>
+        <nav className={classNames(styles.nav, styles[theme])}>
             <div className={styles.leftSide}>
                 <div className={styles.logoContainer}>
                     <Logo className={styles.logo} />
