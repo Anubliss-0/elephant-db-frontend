@@ -3,7 +3,8 @@ import styles from "./ElephantCard.module.scss"
 
 type ElephantCardProps = {
     elephant: {
-      id: string
+      id: number
+      type: string
       attributes: {
         name: string
         photo: string

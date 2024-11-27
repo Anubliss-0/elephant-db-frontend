@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { useFetcher } from "react-router-dom"
 import InfiniteScroll from "react-infinite-scroll-component"
+import ElephantCard from "../ElephantCard/ElephantCard"
 
 interface IndexElephantData {
     id: number
     type: string
     attributes: {
-        id: number
         name: string
         photo: string
     }
@@ -46,9 +46,7 @@ const NewIndex = () => {
             >
                 {elephants.map((elephant: any, index: number) => (
                     <div key={`${elephant.id}-${index}`}>
-                        <h3>Elephant ID: {elephant.id}</h3>
-                        <p>Type: {elephant.type}</p>
-                        <p>Attributes: {JSON.stringify(elephant.attributes)}</p>
+                        <ElephantCard elephant={elephant} />
                     </div>
                 ))}
             </InfiniteScroll>
