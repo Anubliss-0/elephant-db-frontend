@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'parkinsans';
+    src: url('../assets/fonts/Parkinsans-Regular.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+}
+
+$font-primary: 'parkinsans', sans-serif;
+
+@mixin text-body-bold {
+    font-family: $font-primary;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+@mixin text-heading-bold {
+    font-family: $font-primary;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
