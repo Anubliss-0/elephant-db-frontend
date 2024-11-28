@@ -14,7 +14,8 @@ const elephantRoutes = [
     action: async ({ request }: ActionFunctionArgs) => {
       const formData = await request.formData()
       const page = formData.get("page")
-      const response = await getAllElephants(page as string)
+      const habitat = formData.get("habitat")
+      const response = await getAllElephants(page as string, habitat as string)
       return response.data
     },
     shouldRevalidate: shouldRevalidateOnNonAuthAction,
