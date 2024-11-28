@@ -13,9 +13,11 @@ const elephantRoutes = [
     element: <NewIndex />,
     action: async ({ request }: ActionFunctionArgs) => {
       const formData = await request.formData()
-      const page = formData.get("page")
+      const page = formData.get("page") 
       const habitat = formData.get("habitat")
-      const response = await getAllElephants(page as string, habitat as string)
+      const gender = formData.get("gender")
+      const species = formData.get("species")
+      const response = await getAllElephants(page as string, habitat as string, gender as string, species as string)
       return response.data
     },
     shouldRevalidate: shouldRevalidateOnNonAuthAction,

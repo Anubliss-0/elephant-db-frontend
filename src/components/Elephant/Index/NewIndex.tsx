@@ -13,12 +13,16 @@ const NewIndex = () => {
     const [hasMore, setHasMore] = useState(true)
     const isMounted = useRef(false)
     const [habitat, setHabitat] = useState("")
+    const [gender, setGender] = useState("")
+    const [species, setSpecies] = useState("")
     const [isFiltering, setIsFiltering] = useState(false)
 
     const handleSubmit = () => {
         const formData = new FormData()
         formData.append("page", page.toString())
         formData.append("habitat", habitat)
+        formData.append("gender", gender)
+        formData.append("species", species)
         fetcher.submit(formData, { method: "post", action: "/elephants" })
         setIsFiltering(false)
     }
@@ -27,15 +31,12 @@ const NewIndex = () => {
         if (isMounted.current) {
             if (isFiltering) {
                 setElephants([])
-                if (page !== 1) {
-                    setPage(1)
-                }
             }
             handleSubmit()
         } else {
             isMounted.current = true
         }
-    }, [page, habitat])
+    }, [page, habitat, gender, species])
 
     useEffect(() => {
         if (fetcher.state === "idle" && fetcher.data) {
@@ -50,7 +51,7 @@ const NewIndex = () => {
 
     return (
         <>
-            <IndexFilter habitat={habitat} setHabitat={setHabitat} setPage={setPage} setIsFiltering={setIsFiltering} />
+            <IndexFilter habitat={habitat} gender={gender} species={species} setHabitat={setHabitat} setGender={setGender} setSpecies={setSpecies} setPage={setPage} setIsFiltering={setIsFiltering} />
             <div className={styles.elephantIndex}>
                 <InfiniteScroll
                     dataLength={elephants.length}

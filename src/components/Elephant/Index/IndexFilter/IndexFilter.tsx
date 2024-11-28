@@ -2,12 +2,16 @@ import * as ElephantOptions from "../../../../constants/elephantOptions"
 
 interface IndexFilterProps {
     habitat: string
+    gender: string
+    species: string
     setHabitat: (habitat: string) => void
+    setGender: (gender: string) => void
+    setSpecies: (species: string) => void
     setPage: (page: number) => void
     setIsFiltering: (isFiltering: boolean) => void
 }
 
-function IndexFilter({ habitat, setHabitat, setPage, setIsFiltering }: IndexFilterProps) {
+function IndexFilter({ habitat, gender, species, setHabitat, setGender, setSpecies, setPage, setIsFiltering }: IndexFilterProps) {
     return (
         <div>
             <select value={habitat} onChange={(e) => {
@@ -17,6 +21,28 @@ function IndexFilter({ habitat, setHabitat, setPage, setIsFiltering }: IndexFilt
             }}>
                 <option value="">Habitat</option>
                 {ElephantOptions.habitatOptions.map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                ))}
+            </select>
+
+            <select value={gender} onChange={(e) => {
+                setGender(e.target.value)
+                setPage(1)
+                setIsFiltering(true)
+            }}>
+                <option value="">Gender</option>
+                {ElephantOptions.genderOptions.map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                ))}
+            </select>
+
+            <select value={species} onChange={(e) => {
+                setSpecies(e.target.value)
+                setPage(1)
+                setIsFiltering(true)
+            }}>
+                <option value="">Species</option>
+                {ElephantOptions.speciesOptions.map((option) => (
                     <option key={option} value={option}>{option}</option>
                 ))}
             </select>

@@ -8,9 +8,9 @@ export const getElephantsByQuery = async (query: string) => {
 }
 
 // Experimental get all elephants
-export const getAllElephants = async (page: string, habitat: string) => {
+export const getAllElephants = async (page: string, habitat: string, gender: string, species: string) => {
   return axios.get(`${baseURL}/elephants`, {
-    params: { page, habitat }
+    params: { page, habitat, gender, species }
   })
 }
 
