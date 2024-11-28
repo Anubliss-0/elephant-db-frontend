@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useFetcher } from "react-router-dom"
 import InfiniteScroll from "react-infinite-scroll-component"
 import ElephantCard from "../ElephantCard/ElephantCard"
@@ -10,11 +10,16 @@ const NewIndex = () => {
     const [page, setPage] = useState(1)
     const [elephants, setElephants] = useState<ElephantIndexData[]>([])
     const [hasMore, setHasMore] = useState(true)
+    const isMounted = useRef(false)
 
     useEffect(() => {
-        const formData = new FormData()
-        formData.append("page", page.toString())
-        fetcher.submit(formData, { method: "post", action: "/elephants" })
+        if (isMounted.current) {
+            const formData = new FormData()
+            formData.append("page", page.toString())
+            fetcher.submit(formData, { method: "post", action: "/elephants" })
+        } else {
+            isMounted.current = true
+        }
     }, [page])
 
     useEffect(() => {
