@@ -1,11 +1,20 @@
 @import '../../../styles/variables.scss';
 @import '../../../styles/utilities.scss';
 
+.elephantIndex {
+
+    > div {
+        width: 100%;
+        @include flex-column(center, center);
+    }
+}
+
 .elephantList {
     display: grid;
     grid-template-columns: repeat(auto-fill, 280px);
     gap: 1rem;
     justify-content: center;
     width: 100%;
+    max-width: 90rem;
     padding: 1rem 5rem;
 }
