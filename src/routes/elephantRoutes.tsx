@@ -27,7 +27,7 @@ const elephantRoutes = [
     element: <NewIndex />,
     action: async ({ request }: ActionFunctionArgs) => {
       const formData = await request.formData()
-      const page = formData.get("page") || "1"
+      const page = formData.get("page")
       const response = await getAllElephants(page as string)
       return response.data
     },

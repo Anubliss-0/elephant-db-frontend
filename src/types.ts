@@ -41,3 +41,15 @@ export interface UserProfileResponse {
     profileimage_url: string;
   };
 }
+
+export interface ElephantIndexData {
+  id: number
+  type: string
+  attributes: {
+    name: string
+    photo: string
+    species: string
+    gender: string
+    habitat: string
+  }
+}

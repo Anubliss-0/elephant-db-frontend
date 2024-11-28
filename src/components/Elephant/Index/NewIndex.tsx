@@ -2,20 +2,13 @@ import { useEffect, useState } from "react"
 import { useFetcher } from "react-router-dom"
 import InfiniteScroll from "react-infinite-scroll-component"
 import ElephantCard from "../ElephantCard/ElephantCard"
-
-interface IndexElephantData {
-    id: number
-    type: string
-    attributes: {
-        name: string
-        photo: string
-    }
-}
+import { ElephantIndexData } from "../../../types"
+import styles from "./index.module.scss"
 
 const NewIndex = () => {
     const fetcher = useFetcher()
     const [page, setPage] = useState(1)
-    const [elephants, setElephants] = useState<IndexElephantData[]>([])
+    const [elephants, setElephants] = useState<ElephantIndexData[]>([])
     const [hasMore, setHasMore] = useState(true)
 
     useEffect(() => {
@@ -36,15 +29,16 @@ const NewIndex = () => {
     }
 
     return (
-        <div>
+        <div className={styles.elephantIndex}>
             <InfiniteScroll
                 dataLength={elephants.length}
                 next={handleLoadMore}
                 hasMore={hasMore}
                 loader={<h4>Loading...</h4>}
                 endMessage={<p>No more elephants to load</p>}
+                className={styles.elephantList}
             >
-                {elephants.map((elephant: any, index: number) => (
+                {elephants.map((elephant: ElephantIndexData, index: number) => (
                     <div key={`${elephant.id}-${index}`}>
                         <ElephantCard elephant={elephant} />
                     </div>
