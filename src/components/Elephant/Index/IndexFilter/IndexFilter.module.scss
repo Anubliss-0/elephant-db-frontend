@@ -5,12 +5,14 @@
 .filter {
     @include flex-column(start, start);
     background-color: $color-secondary-light;
-    padding: 2rem;
     gap: 1rem;
-    width: 100%;
     border-radius: 0.5rem;
     color: white;
-
+    width: 0;
+    height: 100%;
+    overflow: hidden;
+    transition: width 0.3s ease;
+    
     h3 {
         @include text-style-h3;
         width: 100%;
@@ -26,6 +28,11 @@
         font-size: 1rem;
     }
 
+    &.filterVisible {
+        width: 100%;
+        border-radius: 0 0.5rem 0.5rem 0.5rem;
+    }
+
     &.dark {
         background-color: $color-secondary-dark;
     }
@@ -38,4 +45,5 @@
 
 .filterRow {
     width: 100%;
+    padding: 0 1rem;
 }

@@ -5,59 +5,66 @@
     @include flex-row(start, start);
     width: 100%;
     min-height: 100vh;
-    gap: 1rem;
+    padding: 1rem 3rem;
+}
+
+.filterToggleContainer {
+    width: 100%;
+    @include flex-row(start, start);
 }
 
 .filterToggle {
-    position: fixed;
-    top: 7rem;
-    left: 1rem;
-    z-index: 100;
     border: none;
     background-color: $color-secondary-light;
     color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
+    border-radius: 50%;
+    width: 5rem;
+    height: 5rem;
+    font-size: 1.5rem;
+    @include flex-row(center, center);
+    transition: border-radius 0.3s ease;
+
+    &.filterVisible {
+        border-radius: 2rem 2rem 0 0;
+    }
 }
 
 .filterContainer {
-    width: 0;
-    height: 50vh;
+    width: 5rem;
+    min-width: 5rem;
+    height: 40rem;
     overflow: hidden;
     @include flex-column(start, start);
-    top: 7rem;
-    left: 1rem;
+    top: 10rem;
     transition: all 0.3s ease;
     position: sticky;
 
     &.filterVisible {
-        width: 25%;
+        width: 25rem;
     }
 }
 
 
 .resultsContainer {
     width: 100%;
-    padding: 1rem 5rem;
     transition: all 0.3s ease;
-    height: 100%;
+    padding-right: 5rem;
+
+    &.filterVisible {
+        padding-right: 0;
+    }
 
     > div {
         @include flex-column(center, center);
-        padding: 0;
-    }
-
-    &.filterVisible {
-        padding: 1rem 0rem;
     }
 }
 
 .elephantList {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 280px);
+    grid-template-columns: repeat(auto-fill, 17.5rem);
     gap: 1rem;
     justify-content: center;
     width: 100%;
-    max-width: 90rem;
+    // max-width: 90rem;
     transition: padding 0.3s ease;
 }

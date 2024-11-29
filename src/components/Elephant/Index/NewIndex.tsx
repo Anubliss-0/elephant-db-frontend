@@ -6,6 +6,7 @@ import ElephantCard from "../ElephantCard/ElephantCard"
 import { ElephantIndexData } from "../../../types"
 import styles from "./index.module.scss"
 import IndexFilter from "./IndexFilter/IndexFilter"
+import { TfiFilter } from "react-icons/tfi"
 
 const NewIndex = () => {
     const fetcher = useFetcher()
@@ -54,10 +55,12 @@ const NewIndex = () => {
 
     return (
         <div className={styles.indexContainer}>
-            <button className={styles.filterToggle} onClick={() => setIsFilterVisible(!isFilterVisible)}>
-                {isFilterVisible ? "Hide Filter" : "Show Filter"}
-            </button>
             <div className={classNames(styles.filterContainer, { [styles.filterVisible]: isFilterVisible })}>
+                <div className={styles.filterToggleContainer}>
+                    <button className={classNames(styles.filterToggle, { [styles.filterVisible]: isFilterVisible })} onClick={() => setIsFilterVisible(!isFilterVisible)}>
+                        <TfiFilter />
+                    </button>
+                </div>
                 <IndexFilter
                     habitat={habitat}
                     gender={gender}

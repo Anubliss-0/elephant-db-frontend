@@ -5,6 +5,7 @@
 .nav {
     position: sticky;
     z-index: 100;
+    width: 100vw;
     top: 0;
     @include flex(row, space-between, center);
     padding-left: 1rem;

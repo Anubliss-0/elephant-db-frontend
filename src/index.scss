@@ -10,9 +10,17 @@ body {
     @include text-body;
     background-color: $color-background-light;
     color: $color-text-light;
-
+    display: flex;
+    justify-content: center;
     &.dark {
         background-color: $color-background-dark;
         color: $color-text-dark;
     }
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 2000px;
 }
