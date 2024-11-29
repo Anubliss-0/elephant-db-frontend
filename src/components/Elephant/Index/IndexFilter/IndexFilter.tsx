@@ -1,4 +1,7 @@
+import classNames from "classnames"
 import * as ElephantOptions from "../../../../constants/elephantOptions"
+import styles from "./IndexFilter.module.scss"
+import { useTheme } from "../../../../contexts/ThemeContext"
 
 interface IndexFilterProps {
     habitat: string
@@ -9,11 +12,12 @@ interface IndexFilterProps {
     setSpecies: (species: string) => void
     setPage: (page: number) => void
     setIsFiltering: (isFiltering: boolean) => void
+    isFilterVisible: boolean
 }
 
-function IndexFilter({ habitat, gender, species, setHabitat, setGender, setSpecies, setPage, setIsFiltering }: IndexFilterProps) {
+function IndexFilter({ habitat, gender, species, setHabitat, setGender, setSpecies, setPage, setIsFiltering, isFilterVisible }: IndexFilterProps) {
     return (
-        <div>
+        <div className={classNames(styles.filter, { [styles.filterVisible]: isFilterVisible })}>
             <select value={habitat} onChange={(e) => {
                 setHabitat(e.target.value)
                 setPage(1)

@@ -1,11 +1,47 @@
 @import '../../../styles/variables.scss';
 @import '../../../styles/utilities.scss';
 
-.elephantIndex {
+.indexContainer {
+    @include flex-row(start, start);
+    width: 100%;
+    gap: 1rem;
+}
+
+.filterToggle {
+    position: fixed;
+    top: 5rem;
+    left: 1rem;
+    z-index: 100;
+}
+
+.filterContainer {
+    width: 0;
+    height: 50vh;
+    overflow: hidden;
+    @include flex-column(start, start);
+    top: 9rem;
+    left: 1rem;
+    transition: all 0.3s ease;
+    position: sticky;
+
+    &.filterVisible {
+        width: 25%;
+    }
+}
+
+
+.resultsContainer {
+    width: 100%;
+    padding: 1rem 5rem;
+    transition: all 0.3s ease;
 
     > div {
-        width: 100%;
         @include flex-column(center, center);
+        padding: 0;
+    }
+
+    &.filterVisible {
+        padding: 1rem 0rem;
     }
 }
 
@@ -16,5 +52,5 @@
     justify-content: center;
     width: 100%;
     max-width: 90rem;
-    padding: 1rem 5rem;
+    transition: padding 0.3s ease;
 }
