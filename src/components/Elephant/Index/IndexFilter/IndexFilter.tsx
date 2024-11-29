@@ -13,43 +13,63 @@ interface IndexFilterProps {
     setPage: (page: number) => void
     setIsFiltering: (isFiltering: boolean) => void
     isFilterVisible: boolean
+    elephantTotal: number
 }
 
-function IndexFilter({ habitat, gender, species, setHabitat, setGender, setSpecies, setPage, setIsFiltering, isFilterVisible }: IndexFilterProps) {
+function IndexFilter({ habitat, gender, species, setHabitat, setGender, setSpecies, setPage, setIsFiltering, isFilterVisible, elephantTotal }: IndexFilterProps) {
+    const { theme } = useTheme()
+
     return (
-        <div className={classNames(styles.filter, { [styles.filterVisible]: isFilterVisible })}>
-            <select value={habitat} onChange={(e) => {
-                setHabitat(e.target.value)
-                setPage(1)
-                setIsFiltering(true)
-            }}>
-                <option value="">Habitat</option>
-                {ElephantOptions.habitatOptions.map((option) => (
-                    <option key={option} value={option}>{option}</option>
-                ))}
-            </select>
+        <div className={classNames(styles.filter, { [styles.filterVisible]: isFilterVisible, [styles[theme]]: theme })}>
+            <h3>Filter Results</h3>
+            <div className={styles.filterRow}>
+                <label>Habitat
+                    <select value={habitat} onChange={(e) => {
+                        setHabitat(e.target.value)
+                        setPage(1)
+                        setIsFiltering(true)
+                    }}>
+                        <option value="">All</option>
+                        {ElephantOptions.habitatOptions.map((option) => (
+                            <option key={option} value={option}>{option}</option>
+                        ))}
+                    </select>
+                </label>
+            </div>
 
-            <select value={gender} onChange={(e) => {
-                setGender(e.target.value)
-                setPage(1)
-                setIsFiltering(true)
-            }}>
-                <option value="">Gender</option>
-                {ElephantOptions.genderOptions.map((option) => (
-                    <option key={option} value={option}>{option}</option>
-                ))}
-            </select>
+            <div className={styles.filterRow}>
+                <label>Gender
+                    <select value={gender} onChange={(e) => {
+                        setGender(e.target.value)
+                        setPage(1)
+                        setIsFiltering(true)
+                    }}>
+                        <option value="">All</option>
+                        {ElephantOptions.genderOptions.map((option) => (
+                            <option key={option} value={option}>{option}</option>
+                        ))}
+                    </select>
+                </label>
+            </div>
 
-            <select value={species} onChange={(e) => {
-                setSpecies(e.target.value)
-                setPage(1)
-                setIsFiltering(true)
-            }}>
-                <option value="">Species</option>
-                {ElephantOptions.speciesOptions.map((option) => (
-                    <option key={option} value={option}>{option}</option>
-                ))}
-            </select>
+            <div className={styles.filterRow}>
+                <label>Species
+                    <select value={species} onChange={(e) => {
+                        setSpecies(e.target.value)
+                        setPage(1)
+                        setIsFiltering(true)
+                    }}>
+                        <option value="">All</option>
+                        {ElephantOptions.speciesOptions.map((option) => (
+                            <option key={option} value={option}>{option}</option>
+                        ))}
+                    </select>
+                </label>
+            </div>
+            
+            <div className={styles.totalElephants}>
+                <p>Total Elephants: {elephantTotal}</p>
+            </div>
         </div>
     )
 }

@@ -4,14 +4,20 @@
 .indexContainer {
     @include flex-row(start, start);
     width: 100%;
+    min-height: 100vh;
     gap: 1rem;
 }
 
 .filterToggle {
     position: fixed;
-    top: 5rem;
+    top: 7rem;
     left: 1rem;
     z-index: 100;
+    border: none;
+    background-color: $color-secondary-light;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
 }
 
 .filterContainer {
@@ -19,7 +25,7 @@
     height: 50vh;
     overflow: hidden;
     @include flex-column(start, start);
-    top: 9rem;
+    top: 7rem;
     left: 1rem;
     transition: all 0.3s ease;
     position: sticky;
@@ -34,6 +40,7 @@
     width: 100%;
     padding: 1rem 5rem;
     transition: all 0.3s ease;
+    height: 100%;
 
     > div {
         @include flex-column(center, center);

@@ -18,7 +18,7 @@ const NewIndex = () => {
     const [species, setSpecies] = useState("")
     const [isFiltering, setIsFiltering] = useState(false)
     const [isFilterVisible, setIsFilterVisible] = useState(false)
-
+    const [elephantTotal, setElephantTotal] = useState(0)
     const handleSubmit = () => {
         const formData = new FormData()
         formData.append("page", page.toString())
@@ -44,6 +44,7 @@ const NewIndex = () => {
         if (fetcher.state === "idle" && fetcher.data) {
             setElephants(prevElephants => [...prevElephants, ...fetcher.data.elephants.data])
             setHasMore(fetcher.data.has_more)
+            setElephantTotal(fetcher.data.total_elephants)
         }
     }, [fetcher.data, fetcher.state])
 
@@ -67,6 +68,7 @@ const NewIndex = () => {
                     setPage={setPage}
                     setIsFiltering={setIsFiltering}
                     isFilterVisible={isFilterVisible}
+                    elephantTotal={elephantTotal}
                 />
             </div>
             <div className={classNames(styles.resultsContainer, { [styles.filterVisible]: isFilterVisible })}>

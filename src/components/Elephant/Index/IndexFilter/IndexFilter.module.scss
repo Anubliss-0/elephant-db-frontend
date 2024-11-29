@@ -1,11 +1,21 @@
 @import '../../../../styles/variables.scss';
 @import '../../../../styles/utilities.scss';
+@import '../../../../styles/typography.scss';
 
 .filter {
     @include flex-column(start, start);
     background-color: $color-secondary-light;
-    padding: 1rem;
+    padding: 2rem;
+    gap: 1rem;
     width: 100%;
+    border-radius: 0.5rem;
+    color: white;
+
+    h3 {
+        @include text-style-h3;
+        width: 100%;
+        white-space: nowrap;
+    }
 
     select {
         width: 100%;
@@ -15,4 +25,17 @@
         background-color: $color-primary-light;
         font-size: 1rem;
     }
+
+    &.dark {
+        background-color: $color-secondary-dark;
+    }
+}
+
+.totalElephants {
+    width: 100%;
+    white-space: nowrap;
+}
+
+.filterRow {
+    width: 100%;
 }
