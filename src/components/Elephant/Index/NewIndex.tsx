@@ -56,11 +56,9 @@ const NewIndex = () => {
     return (
         <div className={styles.indexContainer}>
             <div className={classNames(styles.filterContainer, { [styles.filterVisible]: isFilterVisible })}>
-                <div className={styles.filterToggleContainer}>
-                    <button className={classNames(styles.filterToggle, { [styles.filterVisible]: isFilterVisible })} onClick={() => setIsFilterVisible(!isFilterVisible)}>
-                        <TfiFilter />
-                    </button>
-                </div>
+                <button className={classNames(styles.filterToggle, { [styles.filterVisible]: isFilterVisible })} onClick={() => setIsFilterVisible(!isFilterVisible)}>
+                    <TfiFilter />
+                </button>
                 <IndexFilter
                     habitat={habitat}
                     gender={gender}

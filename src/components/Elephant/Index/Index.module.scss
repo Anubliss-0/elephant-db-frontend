@@ -8,11 +8,6 @@
     padding: 1rem 3rem;
 }
 
-.filterToggleContainer {
-    width: 100%;
-    @include flex-row(start, start);
-}
-
 .filterToggle {
     border: none;
     background-color: $color-secondary-light;
@@ -22,10 +17,37 @@
     height: 5rem;
     font-size: 1.5rem;
     @include flex-row(center, center);
-    transition: border-radius 0.3s ease;
+    transition: border-radius 0.2s ease;
+    padding: 0;
 
     &.filterVisible {
         border-radius: 2rem 2rem 0 0;
+    }
+
+    &:hover {
+        cursor: pointer;
+        border-radius: 2rem 2rem 0 0;
+    }
+
+    & + div {
+        &::before {
+            content: '';
+            position: absolute;
+            top: 5rem;
+            left: 0;
+            background-color: $color-secondary-light;
+            width: 0px;
+            height: calc(100% - 5rem);
+            transition: width 0.3s ease;
+            border-radius: 0 0 2rem 0;
+            z-index: -1;
+        }
+    }
+
+    &:hover + div {
+        &::before {
+            width: 20px;
+        }
     }
 }
 
