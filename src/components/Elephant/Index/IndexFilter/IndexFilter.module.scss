@@ -2,17 +2,15 @@
 @import '../../../../styles/utilities.scss';
 @import '../../../../styles/typography.scss';
 
-.filter {
-    @include flex-column(start, start);
+.container {
     background-color: $color-secondary-light;
-    gap: 1rem;
-    border-radius: 0.5rem;
     color: white;
     width: 0;
-    height: 100%;
+    height: calc(100% - 5rem);
     overflow: hidden;
     transition: width 0.3s ease;
-    
+    border-radius: 0 2rem 2rem 2rem;
+
     h3 {
         @include text-style-h3;
         width: 100%;
@@ -30,12 +28,45 @@
 
     &.filterVisible {
         width: 100%;
-        border-radius: 0 0.5rem 0.5rem 0.5rem;
+
+        &::before {
+            width: 100%;
+            border-radius: 0 2rem 2rem 2rem;
+        }
     }
 
     &.dark {
         background-color: $color-secondary-dark;
+
+        &::before {
+            background-color: $color-secondary-dark;
+        }
     }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 5rem;
+        left: 0;
+        background-color: $color-secondary-light;
+        width: 0;
+        height: calc(100% - 5rem);
+        transition: width 0.3s ease;
+        border-radius: 0 0 2rem 2rem;
+        z-index: -1;
+    }
+
+    &.hovering {
+        &::before {
+            width: 1rem;
+        }
+    }
+}
+
+.innerFilter {
+    @include flex-column(start, start);
+    padding: 1rem;
+    gap: 1rem;
 }
 
 .totalElephants {
@@ -45,5 +76,4 @@
 
 .filterRow {
     width: 100%;
-    padding: 0 1rem;
 }

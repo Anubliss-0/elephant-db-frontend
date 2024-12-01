@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react"
 import { useFetcher } from "react-router-dom"
+import { useTheme } from "../../../contexts/ThemeContext"
 import InfiniteScroll from "react-infinite-scroll-component"
 import classNames from "classnames"
 import ElephantCard from "../ElephantCard/ElephantCard"
@@ -9,6 +10,7 @@ import IndexFilter from "./IndexFilter/IndexFilter"
 import { TfiFilter } from "react-icons/tfi"
 
 const NewIndex = () => {
+    const { theme } = useTheme()
     const fetcher = useFetcher()
     const [page, setPage] = useState(1)
     const [elephants, setElephants] = useState<ElephantIndexData[]>([])
@@ -19,7 +21,9 @@ const NewIndex = () => {
     const [species, setSpecies] = useState("")
     const [isFiltering, setIsFiltering] = useState(false)
     const [isFilterVisible, setIsFilterVisible] = useState(false)
+    const [isHovering, setIsHovering] = useState(false)
     const [elephantTotal, setElephantTotal] = useState(0)
+
     const handleSubmit = () => {
         const formData = new FormData()
         formData.append("page", page.toString())
@@ -56,7 +60,12 @@ const NewIndex = () => {
     return (
         <div className={styles.indexContainer}>
             <div className={classNames(styles.filterContainer, { [styles.filterVisible]: isFilterVisible })}>
-                <button className={classNames(styles.filterToggle, { [styles.filterVisible]: isFilterVisible })} onClick={() => setIsFilterVisible(!isFilterVisible)}>
+                <button 
+                    className={classNames(styles.filterToggle, { [styles.filterVisible]: isFilterVisible, [styles[theme]]: theme })} 
+                    onClick={() => setIsFilterVisible(!isFilterVisible)} 
+                    onMouseEnter={() => setIsHovering(true)} 
+                    onMouseLeave={() => setIsHovering(false)}
+                >
                     <TfiFilter />
                 </button>
                 <IndexFilter
@@ -70,6 +79,7 @@ const NewIndex = () => {
                     setIsFiltering={setIsFiltering}
                     isFilterVisible={isFilterVisible}
                     elephantTotal={elephantTotal}
+                    isHovering={isHovering}
                 />
             </div>
             <div className={classNames(styles.resultsContainer, { [styles.filterVisible]: isFilterVisible })}>
