@@ -2,7 +2,10 @@ import { useLocation, Form } from 'react-router-dom'
 
 type Photo = {
     id: number
-    url: string
+    original_url: string
+    thumbnail_url: string
+    medium_url: string
+    position: number
 }
 
 type Elephant = {
