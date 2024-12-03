@@ -36,20 +36,6 @@ const elephantRoutes = [
       return { elephant: response.data.data.attributes }
     },
     shouldRevalidate: shouldRevalidateOnNonAuthAction,
-    action: async ({ request, params }: ActionFunctionArgs) => {
-      const id = params.id as string
-
-      if (request.method === "DELETE") {
-        await deleteElephant(id)
-        return redirect("/elephants")
-      }
-
-      if (request.method === "PATCH" || request.method === "PUT") {
-        const formData = await request.formData();
-        await updateElephant(id, formData);
-        return redirect(`/elephants/${id}`)
-      }
-    },
     errorElement: <ErrorPage />
   },
 
@@ -59,10 +45,19 @@ const elephantRoutes = [
     element: <Edit />,
     action: async ({ request, params }: ActionFunctionArgs) => {
       const id = params.id as string
-      const formData = await request.formData()
-      await updateElephant(id, formData)
-      return redirect(`/elephants/${id}`)
+
+      if (request.method === "DELETE") {
+        await deleteElephant(id)
+        return redirect("/elephants")
+      }
+
+      if (request.method === "PATCH" || request.method === "PUT") {
+        const formData = await request.formData()
+        await updateElephant(id, formData)
+        return redirect(`/elephants/${id}`)
+      }
     },
+    shouldRevalidate: shouldRevalidateOnNonAuthAction,
     errorElement: <ErrorPage />
   },
 

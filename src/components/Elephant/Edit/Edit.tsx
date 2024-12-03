@@ -32,7 +32,7 @@ type Elephant = {
 
 function SortablePhoto({ photo }: { photo: PhotoFormData }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: photo.id })
-    
+
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -112,7 +112,7 @@ function Edit() {
             return [...updatedPhotos, { ...photoToDelete, status: "deleted", previous_position: photoToDelete.position }]
         })
     }
-    
+
     const handleRestore = (id: number) => {
         setPhotos(prevPhotos => {
             const photoToRestore = prevPhotos.find(p => p.id === id)
@@ -170,6 +170,9 @@ function Edit() {
                     </SortableContext>
                 </DndContext>
                 <button type="submit">Save</button>
+            </Form>
+            <Form method="DELETE">
+                <button type="submit">Delete Elephant</button>
             </Form>
         </div>
     )
