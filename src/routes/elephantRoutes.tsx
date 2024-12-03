@@ -5,6 +5,8 @@ import Show from '../components/Elephant/Show/Show'
 import New from '../components/Elephant/New/New'
 import ErrorPage from '../ErrorPage'
 import NewIndex from '../components/Elephant/Index/NewIndex'
+import Edit from '../components/Elephant/Edit/Edit'
+import NewShow from '../components/Elephant/Show/NewShow'
 
 const elephantRoutes = [
   // Elephant Index
@@ -27,10 +29,11 @@ const elephantRoutes = [
   // Elephant Show
   {
     path: "elephants/:id",
-    element: <Show />,
+    element: <NewShow />,
+    // element: <Show />,
     loader: async ({ params }: LoaderFunctionArgs) => {
       const response = await getElephantById(params.id as string)
-      return { elephant: response.data }
+      return { elephant: response.data.data.attributes }
     },
     shouldRevalidate: shouldRevalidateOnNonAuthAction,
     action: async ({ request, params }: ActionFunctionArgs) => {
@@ -46,6 +49,19 @@ const elephantRoutes = [
         await updateElephant(id, formData);
         return redirect(`/elephants/${id}`)
       }
+    },
+    errorElement: <ErrorPage />
+  },
+
+  // Elephant Edit
+  {
+    path: "elephants/:id/edit",
+    element: <Edit />,
+    action: async ({ request, params }: ActionFunctionArgs) => {
+      const id = params.id as string
+      const formData = await request.formData()
+      await updateElephant(id, formData)
+      return redirect(`/elephants/${id}`)
     },
     errorElement: <ErrorPage />
   },

@@ -45,6 +45,7 @@ function NewShow() {
     
     return (
         <>
+            <Link to={`/elephants/${elephant.id}/edit`} state={{ elephant: elephant }}>EDIT</Link>
             <h1>{elephant.name}</h1>
             <p>{elephant.id}</p>
             <p>{elephant.age}</p>
@@ -53,7 +54,6 @@ function NewShow() {
             <p>{elephant.habitat}</p>
             <p>{elephant.bio}</p>
             <ImageGallery items={images} />
-            <Link to={`/elephants/${elephant.id}/edit`} state={{ elephant: elephant }}>EDIT</Link>
         </>
     )
 }
