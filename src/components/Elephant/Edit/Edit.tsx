@@ -5,15 +5,6 @@ import { SortableContext, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import styles from './Edit.module.scss'
 
-// TODO: Might not need this
-type Photo = {
-    id: number
-    original_url: string
-    thumbnail_url: string
-    medium_url: string
-    position: number
-}
-
 type PhotoFormData = {
     id: number
     status: string
@@ -32,7 +23,7 @@ type Elephant = {
     bio: string
     user_id: number
     age: number
-    photos: Photo[]
+    photos: PhotoFormData[]
     profile_id: number
     can_edit: boolean | null
     user_name: string
@@ -72,6 +63,73 @@ function Edit() {
         })))
     }, [elephant])
 
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files
+        if (files) {
+            const newPhotos = Array.from(files).map((file, index) => ({
+                id: Date.now() + index,
+                status: 'new',
+                position: photos.length + index,
+                image: file,
+                thumbnail_url: URL.createObjectURL(file),
+                previous_position: photos.length + index
+            }))
+
+            setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos])
+        }
+    }
+
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event
+
+        if (over && active.id !== over.id) {
+            setPhotos((prevPhotos) => {
+                const oldIndex = prevPhotos.findIndex(photo => photo.id === active.id)
+                const newIndex = prevPhotos.findIndex(photo => photo.id === over.id)
+
+                const updatedPhotos = [...prevPhotos]
+                const [movedPhoto] = updatedPhotos.splice(oldIndex, 1)
+                updatedPhotos.splice(newIndex, 0, movedPhoto)
+
+                return updatedPhotos.map((photo, index) => ({
+                    ...photo,
+                    position: index
+                }))
+            })
+        }
+    }
+
+    const handleDelete = (id: number) => {
+        setPhotos(prevPhotos => {
+            const photoToDelete = prevPhotos.find(p => p.id === id)
+            if (!photoToDelete) return prevPhotos
+
+            if (photoToDelete.status === "new") {
+                return prevPhotos.filter(p => p.id !== id)
+            }
+
+            const updatedPhotos = prevPhotos.filter(p => p.id !== id)
+            return [...updatedPhotos, { ...photoToDelete, status: "deleted", previous_position: photoToDelete.position }]
+        })
+    }
+    
+    const handleRestore = (id: number) => {
+        setPhotos(prevPhotos => {
+            const photoToRestore = prevPhotos.find(p => p.id === id)
+            if (!photoToRestore) return prevPhotos
+
+            const updatedPhotos = prevPhotos.filter(p => p.id !== id)
+            const restoredPhoto = { ...photoToRestore, status: "" }
+
+            updatedPhotos.splice(photoToRestore.previous_position ?? 0, 0, restoredPhoto)
+
+            return updatedPhotos.map((photo, index) => ({
+                ...photo,
+                position: index
+            }))
+        })
+    }
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const formData = new FormData(event.currentTarget)
@@ -86,73 +144,6 @@ function Edit() {
         })
 
         submit(formData, { method: 'PATCH', encType: 'multipart/form-data' })
-    };
-
-    const handleDragEnd = (event: DragEndEvent) => {
-        const { active, over } = event;
-
-        if (over && active.id !== over.id) {
-            setPhotos((prevPhotos) => {
-                const oldIndex = prevPhotos.findIndex(photo => photo.id === active.id);
-                const newIndex = prevPhotos.findIndex(photo => photo.id === over.id);
-
-                const updatedPhotos = [...prevPhotos];
-                const [movedPhoto] = updatedPhotos.splice(oldIndex, 1);
-                updatedPhotos.splice(newIndex, 0, movedPhoto);
-
-                return updatedPhotos.map((photo, index) => ({
-                    ...photo,
-                    position: index
-                }));
-            });
-        }
-    };
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
-        if (files) {
-            const newPhotos = Array.from(files).map((file, index) => ({
-                id: Date.now() + index,
-                status: 'new',
-                position: photos.length + index,
-                image: file,
-                thumbnail_url: URL.createObjectURL(file),
-                previous_position: photos.length + index
-            }));
-
-            setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos]);
-        }
-    };
-
-    const handleDelete = (id: number) => {
-        setPhotos(prevPhotos => {
-            const photoToDelete = prevPhotos.find(p => p.id === id);
-            if (!photoToDelete) return prevPhotos;
-
-            if (photoToDelete.status === "new") {
-                return prevPhotos.filter(p => p.id !== id);
-            }
-
-            const updatedPhotos = prevPhotos.filter(p => p.id !== id);
-            return [...updatedPhotos, { ...photoToDelete, status: "deleted", previous_position: photoToDelete.position }];
-        });
-    }
-    
-    const handleRestore = (id: number) => {
-        setPhotos(prevPhotos => {
-            const photoToRestore = prevPhotos.find(p => p.id === id);
-            if (!photoToRestore) return prevPhotos;
-
-            const updatedPhotos = prevPhotos.filter(p => p.id !== id);
-            const restoredPhoto = { ...photoToRestore, status: "" };
-
-            updatedPhotos.splice(photoToRestore.previous_position ?? 0, 0, restoredPhoto);
-
-            return updatedPhotos.map((photo, index) => ({
-                ...photo,
-                position: index
-            }));
-        });
     }
 
     return (
