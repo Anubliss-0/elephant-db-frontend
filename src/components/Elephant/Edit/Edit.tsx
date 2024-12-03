@@ -5,6 +5,7 @@ import { SortableContext, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import styles from './Edit.module.scss'
 
+// TODO: Might not need this
 type Photo = {
     id: number
     original_url: string
@@ -19,6 +20,7 @@ type PhotoFormData = {
     position: number
     image: File | null
     thumbnail_url: string
+    previous_position: number | null
 }
 
 type Elephant = {
@@ -65,7 +67,8 @@ function Edit() {
             status: '',
             position: photo.position,
             image: null,
-            thumbnail_url: photo.thumbnail_url
+            thumbnail_url: photo.thumbnail_url,
+            previous_position: photo.position
         })))
     }, [elephant])
 
@@ -113,12 +116,44 @@ function Edit() {
                 status: 'new',
                 position: photos.length + index,
                 image: file,
-                thumbnail_url: URL.createObjectURL(file)
+                thumbnail_url: URL.createObjectURL(file),
+                previous_position: photos.length + index
             }));
 
             setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos]);
         }
     };
+
+    const handleDelete = (id: number) => {
+        setPhotos(prevPhotos => {
+            const photoToDelete = prevPhotos.find(p => p.id === id);
+            if (!photoToDelete) return prevPhotos;
+
+            if (photoToDelete.status === "new") {
+                return prevPhotos.filter(p => p.id !== id);
+            }
+
+            const updatedPhotos = prevPhotos.filter(p => p.id !== id);
+            return [...updatedPhotos, { ...photoToDelete, status: "deleted", previous_position: photoToDelete.position }];
+        });
+    }
+    
+    const handleRestore = (id: number) => {
+        setPhotos(prevPhotos => {
+            const photoToRestore = prevPhotos.find(p => p.id === id);
+            if (!photoToRestore) return prevPhotos;
+
+            const updatedPhotos = prevPhotos.filter(p => p.id !== id);
+            const restoredPhoto = { ...photoToRestore, status: "" };
+
+            updatedPhotos.splice(photoToRestore.previous_position ?? 0, 0, restoredPhoto);
+
+            return updatedPhotos.map((photo, index) => ({
+                ...photo,
+                position: index
+            }));
+        });
+    }
 
     return (
         <div>
@@ -135,7 +170,11 @@ function Edit() {
                 <DndContext onDragEnd={handleDragEnd}>
                     <SortableContext items={photos.map(photo => photo.id)}>
                         {photos.map(photo => (
-                            <SortablePhoto key={photo.id} photo={photo} />
+                            <div key={photo.id}>
+                                <SortablePhoto photo={photo} />
+                                <button type="button" onClick={() => handleDelete(photo.id)}>Delete</button>
+                                {photo.status === "deleted" && <button type="button" onClick={() => handleRestore(photo.id)}>Restore</button>}
+                            </div>
                         ))}
                     </SortableContext>
                 </DndContext>
