@@ -20,7 +20,6 @@ export const handleLogin = async (formData: FormData) => {
     return response
 
   } catch (error) {
-    console.error('Login failed:', error)
     throw error
   }
 }

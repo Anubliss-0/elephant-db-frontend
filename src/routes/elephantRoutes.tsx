@@ -16,7 +16,7 @@ const elephantRoutes = [
     element: <NewIndex />,
     action: async ({ request }: ActionFunctionArgs) => {
       const formData = await request.formData()
-      const page = formData.get("page") 
+      const page = formData.get("page")
       const habitat = formData.get("habitat")
       const gender = formData.get("gender")
       const species = formData.get("species")
@@ -60,10 +60,8 @@ const elephantRoutes = [
           return redirect(`/elephants/${id}`);
         }
       } catch (error: any) {
-        if (!error.response.data.error) {
-          return toast.error(i18n.t("errors.general"));
-        }
-        return toast.error(i18n.t(error.response.data.error));
+        const errorMessage = error.response.data.error || error.response.data;
+        return toast.error(i18n.t(errorMessage))
       }
     },
     shouldRevalidate: shouldRevalidateOnNonAuthAction,
