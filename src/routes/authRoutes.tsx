@@ -1,7 +1,8 @@
-import ErrorPage from '../ErrorPage';
 import Signup from '../components/Auth/Signup/Signup';
 import { ActionFunctionArgs, redirect } from 'react-router-dom';
 import { handleSignup, handleLogin, handleLogout } from '../utils/auth';
+import i18n from '../i18n';
+import { toast } from 'react-toastify';
   
 const authRoutes = [
   {
@@ -13,23 +14,30 @@ const authRoutes = [
       const id = response.profile.id
       return redirect(`/profiles/${id}`)
     },
-    errorElement: <ErrorPage />
   },
   {
     path: "login",
     action: async ({ request }: ActionFunctionArgs) => {
       const formData = await request.formData()
-      await handleLogin(formData)
-      return null
+
+      try {
+        await handleLogin(formData)
+        return toast.success(i18n.t("sessions.signedIn"));
+      } catch (error: any) {
+        return toast.error(i18n.t(error.response.data));
+      }
     },
-    errorElement: <ErrorPage />
   },
   {
     path: "logout",
     action: async () => {
-      await handleLogout()
-      return null
-    }
+      try {
+        await handleLogout()
+        return toast.success(i18n.t("sessions.signedOut"));
+      } catch (error: any) {
+        return toast.error(i18n.t(error.response.data));
+      }
+    },
   }
 ];
 

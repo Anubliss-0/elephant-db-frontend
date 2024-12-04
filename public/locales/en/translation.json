@@ -5,10 +5,17 @@
     },
     "errors": {
         "photoCountLimit": "You can only have a maximum of 5 photos.",
-        "unauthorized": "You are not authorized to perform this action."
+        "unauthorized": "You are not authorized to perform this action.",
+        "unauthenticated": "You need to sign in or sign up before continuing.",
+        "invalidLogin": "Invalid username or password.",
+        "general": "Something went wrong. Please try again."
+    },
+    "sessions": {
+        "signedIn": "Signed in successfully.",
+        "signedOut": "Signed out successfully."
     },
     "elephants": {
-        "updated": "Elephant updated successfully YES! 🐘",
+        "updated": "Elephant updated successfully 🐘",
         "deleted": "Elephant deleted successfully BYE!"
     }
 }

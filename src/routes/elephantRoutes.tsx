@@ -59,9 +59,11 @@ const elephantRoutes = [
           toast.success(i18n.t("elephants.updated"));
           return redirect(`/elephants/${id}`);
         }
-      } catch (error) {
-        console.log((error as any).response.data)
-        return toast.error(i18n.t((error as any).response.data.error));
+      } catch (error: any) {
+        if (!error.response.data.error) {
+          return toast.error(i18n.t("errors.general"));
+        }
+        return toast.error(i18n.t(error.response.data.error));
       }
     },
     shouldRevalidate: shouldRevalidateOnNonAuthAction,
