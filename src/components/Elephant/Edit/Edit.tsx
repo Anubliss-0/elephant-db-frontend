@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useLocation, Form, useSubmit } from 'react-router-dom'
+import { useLocation, useFetcher } from 'react-router-dom'
 import { DndContext, DragEndEvent } from '@dnd-kit/core'
 import { SortableContext, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -48,9 +48,9 @@ function SortablePhoto({ photo }: { photo: PhotoFormData }) {
 
 function Edit() {
     const location = useLocation()
-    const submit = useSubmit()
     const elephant = location.state.elephant as Elephant
     const [photos, setPhotos] = useState<PhotoFormData[]>([])
+    const fetcher = useFetcher()
 
     useEffect(() => {
         setPhotos(elephant.photos.map((photo) => ({
@@ -143,14 +143,14 @@ function Edit() {
             }
         })
 
-        submit(formData, { method: 'PATCH', encType: 'multipart/form-data' })
+        fetcher.submit(formData, { method: 'PATCH', encType: 'multipart/form-data' })
     }
 
     return (
         <div>
             <h1>Edit</h1>
             <p>{elephant.name}</p>
-            <Form onSubmit={handleSubmit}>
+            <fetcher.Form onSubmit={handleSubmit}>
                 <input type="text" name="elephant[name]" defaultValue={elephant.name} />
                 <input type="text" name="elephant[bio]" defaultValue={elephant.bio} />
                 <input type="number" name="elephant[age]" defaultValue={elephant.age} />
@@ -170,10 +170,10 @@ function Edit() {
                     </SortableContext>
                 </DndContext>
                 <button type="submit">Save</button>
-            </Form>
-            <Form method="DELETE">
+            </fetcher.Form>
+            <fetcher.Form method="DELETE">
                 <button type="submit">Delete Elephant</button>
-            </Form>
+            </fetcher.Form>
         </div>
     )
 }

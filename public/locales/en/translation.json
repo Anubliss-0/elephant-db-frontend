@@ -2,5 +2,13 @@
     "navBar": {
         "exploreElephants": "Explore Elephants",
         "addElephant": "Add Elephant"
+    },
+    "errors": {
+        "photoCountLimit": "You can only have a maximum of 5 photos.",
+        "unauthorized": "You are not authorized to perform this action."
+    },
+    "elephants": {
+        "updated": "Elephant updated successfully YES! 🐘",
+        "deleted": "Elephant deleted successfully BYE!"
     }
 }

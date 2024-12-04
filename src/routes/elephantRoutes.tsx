@@ -2,6 +2,7 @@ import { getElephantsByQuery, getElephantById, createElephant, deleteElephant, u
 import { shouldRevalidateOnNonAuthAction } from '../utils/revalidationUtils'
 import { redirect, LoaderFunctionArgs, ActionFunctionArgs } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import i18n from '../i18n'
 import New from '../components/Elephant/New/New'
 import ErrorPage from '../ErrorPage'
 import NewIndex from '../components/Elephant/Index/NewIndex'
@@ -45,16 +46,22 @@ const elephantRoutes = [
     action: async ({ request, params }: ActionFunctionArgs) => {
       const id = params.id as string
 
-      if (request.method === "DELETE") {
-        await deleteElephant(id)
-        return redirect("/elephants")
-      }
+      try {
+        if (request.method === "DELETE") {
+          await deleteElephant(id);
+          toast.success(i18n.t("elephants.deleted"));
+          return redirect("/elephants");
+        }
 
-      if (request.method === "PATCH" || request.method === "PUT") {
-        const formData = await request.formData()
-        await updateElephant(id, formData)
-        toast.success("Elephant updated successfully YES! 🐘")
-        return redirect(`/elephants/${id}`)
+        if (request.method === "PATCH" || request.method === "PUT") {
+          const formData = await request.formData();
+          await updateElephant(id, formData);
+          toast.success(i18n.t("elephants.updated"));
+          return redirect(`/elephants/${id}`);
+        }
+      } catch (error) {
+        console.log((error as any).response.data)
+        return toast.error(i18n.t((error as any).response.data.error));
       }
     },
     shouldRevalidate: shouldRevalidateOnNonAuthAction,
