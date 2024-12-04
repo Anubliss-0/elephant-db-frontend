@@ -1,7 +1,7 @@
 import { getElephantsByQuery, getElephantById, createElephant, deleteElephant, updateElephant, getAllElephants } from '../utils/api'
 import { shouldRevalidateOnNonAuthAction } from '../utils/revalidationUtils'
 import { redirect, LoaderFunctionArgs, ActionFunctionArgs } from 'react-router-dom'
-import Show from '../components/Elephant/Show/Show'
+import { toast } from 'react-toastify'
 import New from '../components/Elephant/New/New'
 import ErrorPage from '../ErrorPage'
 import NewIndex from '../components/Elephant/Index/NewIndex'
@@ -30,7 +30,6 @@ const elephantRoutes = [
   {
     path: "elephants/:id",
     element: <NewShow />,
-    // element: <Show />,
     loader: async ({ params }: LoaderFunctionArgs) => {
       const response = await getElephantById(params.id as string)
       return { elephant: response.data.data.attributes }
@@ -54,6 +53,7 @@ const elephantRoutes = [
       if (request.method === "PATCH" || request.method === "PUT") {
         const formData = await request.formData()
         await updateElephant(id, formData)
+        toast.success("Elephant updated successfully YES! 🐘")
         return redirect(`/elephants/${id}`)
       }
     },
