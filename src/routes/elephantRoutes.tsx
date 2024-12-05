@@ -1,5 +1,4 @@
 import { getElephantsByQuery, getElephantById, createElephant, deleteElephant, updateElephant, getAllElephants } from '../utils/api'
-import { shouldRevalidateOnNonAuthAction } from '../utils/revalidationUtils'
 import { redirect, LoaderFunctionArgs, ActionFunctionArgs } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import i18n from '../i18n'
@@ -23,7 +22,6 @@ const elephantRoutes = [
       const response = await getAllElephants(page as string, habitat as string, gender as string, species as string)
       return response.data
     },
-    shouldRevalidate: shouldRevalidateOnNonAuthAction,
     errorElement: <ErrorPage />
   },
 
@@ -35,7 +33,6 @@ const elephantRoutes = [
       const response = await getElephantById(params.id as string)
       return { elephant: response.data.data.attributes }
     },
-    shouldRevalidate: shouldRevalidateOnNonAuthAction,
     errorElement: <ErrorPage />
   },
 
@@ -64,7 +61,6 @@ const elephantRoutes = [
         return toast.error(i18n.t(errorMessage))
       }
     },
-    shouldRevalidate: shouldRevalidateOnNonAuthAction,
     errorElement: <ErrorPage />
   },
 

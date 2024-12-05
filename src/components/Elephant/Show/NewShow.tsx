@@ -48,7 +48,7 @@ function NewShow() {
         fullscreen: photo.original_url,
         loading: 'eager',
     }))
-    
+
     return (
         <div className={styles.show}>
             <div className={styles.showHeader}>

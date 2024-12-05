@@ -5,6 +5,7 @@
 .show {
     @include flex-column(start, start);
     padding: 3rem;
+    border-radius: 1rem;
     width: 100%;
     max-width: 1000px;
     margin: 3rem;
@@ -13,7 +14,7 @@
 }
 
 .showHeader {
-    @include flex-row(space-between, start);
+    @include flex-row(space-between, center);
     width: 100%;
 }
 
@@ -40,6 +41,20 @@
     gap: 1rem;
 }
 
+.userInfoLink {
+    @include flex-row(start, center);
+    gap: 0.5rem;
+    text-decoration: underline;
+    color: inherit;
+
+    img {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+}
+
 .editLinkContainer {
     margin-top: 1rem;
     @include flex-row(start, center);
@@ -54,18 +69,4 @@
     padding: 0.5rem 1rem;
     background-color: $color-primary-light;
     border-radius: 0.5rem;
-}
-
-.userInfoLink {
-    @include flex-row(start, center);
-    gap: 0.5rem;
-    text-decoration: underline;
-    color: inherit;
-
-    img {
-        width: 3rem;
-        height: 3rem;
-        border-radius: 50%;
-        object-fit: cover;
-    }
 }
