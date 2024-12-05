@@ -1,4 +1,119 @@
+@import '../../../styles/variables.scss';
+@import '../../../styles/utilities.scss';
+@import '../../../styles/typography.scss';
+
+.edit {
+    @include flex-column(start, start);
+    padding: 3rem;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 1000px;
+    margin: 3rem;
+    gap: 2rem;
+    background-color: $color-primary-dark;
+}
+
+.editForm {
+    @include flex-column(space-between, start);
+    gap: 1rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto auto;
+    grid-template-areas: 
+        "fields photos"
+        "bio bio";
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "fields"
+            "photos"
+            "bio";
+    }
+}
+
+.editFields {
+    grid-area: fields;
+    @include flex-column(start, start);
+    gap: 1rem;
+}
+
+.editPhotos {
+    border: 1px solid $color-primary-light;
+    padding: 1rem;
+    grid-area: photos;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto;
+    align-self: stretch;
+
+    @media (max-width: 600px) {
+        grid-template-columns: auto auto;
+    }
+}
+
+.photoItem {
+    @include flex-column(center, center);
+}
+
+.editBio {
+    grid-area: bio;
+    width: 100%;
+
+    textarea {
+        width: 100%;
+    }
+}
+
+.editFormItem {
+    @include flex-column(start, start);
+    gap: 0.5rem;
+    width: 100%;
+    
+    input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid $color-primary-light;
+        border-radius: 4px;
+        
+        &:focus {
+            outline: none;
+            border-color: $color-primary-light;
+            box-shadow: 0 0 0 2px rgba($color-primary-light, 0.2);
+        }
+    }
+}
+
 .photo {
     width: 100px;
     height: 100px;
+}
+
+.hiddenFileInput {
+    display: none;
+}
+
+.customUploadButton {
+    cursor: pointer;
+    width: 100%;
+    margin-top: 0.5rem;
+    background-color: $color-primary-light;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: none;
+    color: #fff;
+    text-align: center;
+    transition: background-color 0.3s;
+    font-size: 1rem;
+
+    &:hover {
+        background-color: darken($color-primary-light, 10%);
+    }
+}
+
+.fileUploadLabel {
+    @include flex-column(start, start);
+    gap: 0.5rem;
+    width: 100%;
 }

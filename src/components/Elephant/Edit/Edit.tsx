@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useId } from 'react'
 import { useLocation, useFetcher } from 'react-router-dom'
 import { DndContext, DragEndEvent } from '@dnd-kit/core'
 import { SortableContext, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import styles from './Edit.module.scss'
+import { useTranslation } from 'react-i18next'
 
 type PhotoFormData = {
     id: number
@@ -50,7 +51,10 @@ function Edit() {
     const location = useLocation()
     const elephant = location.state.elephant as Elephant
     const [photos, setPhotos] = useState<PhotoFormData[]>([])
+    const [currentName, setCurrentName] = useState(elephant.name)
+    const { t } = useTranslation()
     const fetcher = useFetcher()
+    const fileInputId = useId();
 
     useEffect(() => {
         setPhotos(elephant.photos.map((photo) => ({
@@ -147,33 +151,61 @@ function Edit() {
     }
 
     return (
-        <div>
-            <h1>Edit</h1>
-            <p>{elephant.name}</p>
-            <fetcher.Form onSubmit={handleSubmit}>
-                <input type="text" name="elephant[name]" defaultValue={elephant.name} />
-                <input type="text" name="elephant[bio]" defaultValue={elephant.bio} />
-                <input type="number" name="elephant[age]" defaultValue={elephant.age} />
-                <input type="text" name="elephant[species]" defaultValue={elephant.species} />
-                <input type="text" name="elephant[gender]" defaultValue={elephant.gender} />
-                <input type="text" name="elephant[habitat]" defaultValue={elephant.habitat} />
-                <input type="file" multiple accept="image/*" onChange={handleFileChange} />
-                <DndContext onDragEnd={handleDragEnd}>
-                    <SortableContext items={photos.map(photo => photo.id)}>
-                        {photos.map(photo => (
-                            <div key={photo.id}>
-                                <SortablePhoto photo={photo} />
-                                <button type="button" onClick={() => handleDelete(photo.id)}>Delete</button>
-                                {photo.status === "deleted" && <button type="button" onClick={() => handleRestore(photo.id)}>Restore</button>}
-                            </div>
-                        ))}
-                    </SortableContext>
-                </DndContext>
+        <div className={styles.edit}>
+            <h1>{t('elephants.editing')} {currentName}</h1>
+            <fetcher.Form onSubmit={handleSubmit} className={styles.editForm}>
+                <div className={styles.editFields}>
+                    <label className={styles.editFormItem}>
+                        {t('elephants.name')}
+                        <input type="text" name="elephant[name]" defaultValue={currentName} onChange={(e) => setCurrentName(e.target.value)} />
+                    </label>
+                    <label className={styles.editFormItem}>
+                        {t('elephants.age')}
+                        <input type="number" name="elephant[age]" defaultValue={elephant.age} />
+                    </label>
+                    <label className={styles.editFormItem}>
+                        {t('elephants.species')}
+                        <input type="text" name="elephant[species]" defaultValue={elephant.species} />
+                    </label>
+                    <label className={styles.editFormItem}>
+                        {t('elephants.gender')}
+                        <input type="text" name="elephant[gender]" defaultValue={elephant.gender} />
+                    </label>
+                    <label className={styles.editFormItem}>
+                        {t('elephants.habitat')}
+                        <input type="text" name="elephant[habitat]" defaultValue={elephant.habitat} />
+                    </label>
+                    <label className={styles.fileUploadLabel}>
+                        <input type="file" id={fileInputId} multiple accept="image/*" onChange={handleFileChange} className={styles.hiddenFileInput} />
+                        <button type="button" onClick={() => document.getElementById(fileInputId)?.click()} className={styles.customUploadButton}>
+                            {t('elephants.addPhotos')}
+                        </button>
+                    </label>
+                </div>
+                <div className={styles.editPhotos}>
+                    <DndContext onDragEnd={handleDragEnd}>
+                        <SortableContext items={photos.map(photo => photo.id)}>
+                            {photos.map(photo => (
+                                <div key={photo.id} className={styles.photoItem}>
+                                    <SortablePhoto photo={photo} />
+                                    <button type="button" onClick={() => handleDelete(photo.id)}>Delete</button>
+                                    {photo.status === "deleted" && <button type="button" onClick={() => handleRestore(photo.id)}>Restore</button>}
+                                </div>
+                            ))}
+                        </SortableContext>
+                    </DndContext>
+                </div>
+                <div className={styles.editBio}>
+                    <label className={styles.editFormItem}>
+                        {t('elephants.bio')}
+                        <textarea name="elephant[bio]" defaultValue={elephant.bio} />
+                    </label>
+                </div>
                 <button type="submit">Save</button>
             </fetcher.Form>
-            <fetcher.Form method="DELETE">
+            {/* <fetcher.Form method="DELETE">
                 <button type="submit">Delete Elephant</button>
-            </fetcher.Form>
+            </fetcher.Form> */}
         </div>
     )
 }
