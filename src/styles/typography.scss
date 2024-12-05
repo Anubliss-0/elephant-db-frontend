@@ -31,6 +31,27 @@ $font-primary: 'parkinsans', sans-serif;
 @mixin text-style-h3 {
     font-family: $font-primary;
     font-weight: 700;
+    font-size: 1.25rem;
+    text-decoration: none;
+}
+
+@mixin text-style-h4 {
+    font-family: $font-primary;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+@mixin text-style-h1 {
+    font-family: $font-primary;
+    font-weight: 700;
+    font-size: 2rem;
+    text-decoration: none;
+}
+
+@mixin text-style-h2 {
+    font-family: $font-primary;
+    font-weight: 700;
     font-size: 1.5rem;
     text-decoration: none;
 }

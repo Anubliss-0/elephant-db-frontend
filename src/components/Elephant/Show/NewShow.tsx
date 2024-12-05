@@ -1,6 +1,9 @@
 import { useLoaderData, Link } from 'react-router-dom'
 import ImageGallery from 'react-image-gallery'
+import { useTranslation } from 'react-i18next'
+import classNames from 'classnames'
 import 'react-image-gallery/styles/scss/image-gallery.scss'
+import styles from './Show.module.scss'
 
 type Photo = {
     id: number
@@ -35,26 +38,52 @@ type ImageGalleryItem = {
 
 function NewShow() {
     const { elephant } = useLoaderData() as { elephant: Elephant }
+    const { t } = useTranslation()
 
     const images: ImageGalleryItem[] = elephant.photos.map(photo => ({
         original: photo.medium_url,
         thumbnail: photo.thumbnail_url,
         fullscreen: photo.original_url,
-        loading: 'lazy',
+        loading: 'eager',
     }))
     
     return (
-        <>
-            <Link to={`/elephants/${elephant.id}/edit`} state={{ elephant: elephant }}>EDIT</Link>
-            <h1>{elephant.name}</h1>
-            <p>{elephant.id}</p>
-            <p>{elephant.age}</p>
-            <p>{elephant.species}</p>
-            <p>{elephant.gender}</p>
-            <p>{elephant.habitat}</p>
-            <p>{elephant.bio}</p>
-            <ImageGallery items={images} />
-        </>
+        <div className={styles.show}>
+            <div className={styles.showHeader}>
+                <div className={styles.showHeaderInfo}> 
+                    <h1>{elephant.name}</h1>
+                    <div className={styles.showHeaderInfoItem}>
+                        <h3>{t('elephants.species')}:</h3>
+                        <p>{elephant.species}</p>
+                    </div>
+                    <div className={styles.showHeaderInfoItem}>
+                        <h3>{t('elephants.habitat')}:</h3>
+                        <p>{elephant.habitat}</p>
+                    </div>
+                    <div className={styles.showHeaderInfoItem}>
+                        <h3>{t('elephants.age')}:</h3>
+                        <p>{elephant.age}</p>
+                    </div>
+                    <div className={styles.showHeaderInfoItem}>
+                        <h3>{t('elephants.gender')}:</h3>
+                        <p>{elephant.gender}</p>
+                    </div>
+                    <div className={styles.userInfo}>
+                        <h3>{t('elephants.creator')}:</h3>
+                        <Link to={`/profiles/${elephant.profile_id}`} className={styles.userInfoLink}>
+                            <p>{elephant.user_name}</p>
+                            {elephant.user_profile_image_url && <img src={elephant.user_profile_image_url} alt={`${elephant.user_name}'s profile`} />}
+                        </Link>
+                    </div>
+                    <Link to={`/elephants/${elephant.id}/edit`} state={{ elephant: elephant }} className={styles.editLink}>EDIT</Link>
+                </div>
+                <ImageGallery items={images} thumbnailPosition='right' showPlayButton={false} />
+            </div>
+            <div className={styles.bio}>
+                <h2>{t('elephants.bio')}:</h2>
+                <p>{elephant.bio}</p>
+            </div>
+        </div>
     )
 }
 

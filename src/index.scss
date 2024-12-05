@@ -24,3 +24,18 @@ body {
     align-items: center;
     max-width: 2000px;
 }
+
+h1 {
+    margin: 0;
+    @include text-style-h1;
+}
+
+h2 {
+    margin: 0;
+    @include text-style-h2;
+}
+
+h3 {
+    margin: 0;
+    @include text-style-h3;
+}
