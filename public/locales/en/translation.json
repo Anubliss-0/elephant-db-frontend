@@ -20,7 +20,10 @@
         "gender": "Gender",
         "habitat": "Habitat",
         "bio": "Bio",
+        "createdAt": "Created",
+        "updatedAt": "Last updated",
         "creator": "Added by",
+        "edit": "Edit your Elephant",
         "updated": "Elephant updated successfully 🐘",
         "deleted": "Elephant deleted successfully BYE!"
     }

@@ -8,6 +8,7 @@
     width: 100%;
     max-width: 1000px;
     margin: 3rem;
+    gap: 2rem;
     background-color: $color-primary-dark;
 }
 
@@ -18,10 +19,10 @@
 
 .showHeaderInfo {
     @include flex-column(start, start);
-    gap: 1rem;
 
     > h1 {
         text-decoration: underline;
+        margin-bottom: 1rem;
     }
 }
 
@@ -37,6 +38,11 @@
 .userInfo {
     @include flex-row(start, center);
     gap: 1rem;
+}
+
+.editLinkContainer {
+    margin-top: 1rem;
+    @include flex-row(start, center);
 }
 
 .editLink {

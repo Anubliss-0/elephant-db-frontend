@@ -27,6 +27,8 @@ type Elephant = {
     can_edit: boolean | null
     user_name: string
     user_profile_image_url: string
+    created_at: string
+    updated_at: string
 }
 
 type ImageGalleryItem = {
@@ -50,7 +52,7 @@ function NewShow() {
     return (
         <div className={styles.show}>
             <div className={styles.showHeader}>
-                <div className={styles.showHeaderInfo}> 
+                <div className={styles.showHeaderInfo}>
                     <h1>{elephant.name}</h1>
                     <div className={styles.showHeaderInfoItem}>
                         <h3>{t('elephants.species')}:</h3>
@@ -68,6 +70,14 @@ function NewShow() {
                         <h3>{t('elephants.gender')}:</h3>
                         <p>{elephant.gender}</p>
                     </div>
+                    <div className={styles.showHeaderInfoItem}>
+                        <h3>{t('elephants.createdAt')}:</h3>
+                        <p>{elephant.created_at}</p>
+                    </div>
+                    <div className={styles.showHeaderInfoItem}>
+                        <h3>{t('elephants.updatedAt')}:</h3>
+                        <p>{elephant.updated_at}</p>
+                    </div>
                     <div className={styles.userInfo}>
                         <h3>{t('elephants.creator')}:</h3>
                         <Link to={`/profiles/${elephant.profile_id}`} className={styles.userInfoLink}>
@@ -75,7 +85,9 @@ function NewShow() {
                             {elephant.user_profile_image_url && <img src={elephant.user_profile_image_url} alt={`${elephant.user_name}'s profile`} />}
                         </Link>
                     </div>
-                    <Link to={`/elephants/${elephant.id}/edit`} state={{ elephant: elephant }} className={styles.editLink}>EDIT</Link>
+                    <div className={styles.editLinkContainer}>
+                        {elephant.can_edit && <Link to={`/elephants/${elephant.id}/edit`} state={{ elephant: elephant }} className={styles.editLink}>{t('elephants.edit')}</Link>}
+                    </div>
                 </div>
                 <ImageGallery items={images} thumbnailPosition='right' showPlayButton={false} />
             </div>
