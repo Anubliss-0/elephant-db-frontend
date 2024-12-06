@@ -86,7 +86,7 @@ function Edit() {
                         <textarea name="elephant[bio]" defaultValue={elephant.bio} />
                     </label>
                 </div>
-                <button type="submit">Save</button>
+                <button type="submit" className={styles.saveButton}>{t('elephants.save')}</button>
             </fetcher.Form>
         </div>
     )
