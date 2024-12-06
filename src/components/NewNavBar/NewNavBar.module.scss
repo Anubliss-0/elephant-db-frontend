@@ -35,13 +35,13 @@
         width: 100%;
         height: 100%;
         border-radius: 0 0 2rem 2rem;
-        background-color: $color-secondary-light;
+        background-color: $color-accent-light;
         transition: top 0.3s ease;
         z-index: -1;
     }
     
     &.dark::before {
-        background-color: $color-secondary-dark;
+        background-color: $color-accent-dark;
     }
 
     &:hover::before {
@@ -73,12 +73,12 @@
         left: 0;
         width: 100%;
         height: 0.7rem;
-        background-color: $color-secondary-light;
+        background-color: $color-accent-light;
         border-radius: 0 0 0 2rem;
     }
 
     &.dark::before {
-        background-color: $color-secondary-dark;
+        background-color: $color-accent-dark;
     }
 }
 

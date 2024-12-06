@@ -1,4 +1,4 @@
-import { DndContext } from "@dnd-kit/core"
+import { DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core"
 import { SortableContext } from "@dnd-kit/sortable"
 import { useTranslation } from "react-i18next"
 import SortablePhoto from "./SortablePhoto/SortablePhoto"
@@ -15,15 +15,26 @@ type ElephantPhotosProps = {
 function ElephantPhotos({ photos, setPhotos, fileInputId }: ElephantPhotosProps) {
     const { t } = useTranslation()
 
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 8,
+            },
+        })
+    );
+
+    const testFunction = () => {
+        console.log('testFunction')
+    }
+
     return (
         <>
             <div className={styles.editPhotos}>
-                <DndContext onDragEnd={(event) => handleDragEnd(event, setPhotos)}>
+                <DndContext onDragEnd={(event) => handleDragEnd(event, setPhotos)} sensors={sensors}>
                     <SortableContext items={photos.map(photo => photo.id)}>
                         {photos.map(photo => (
                             <div key={photo.id} className={styles.photoItem}>
-                                <SortablePhoto photo={photo} />
-                                <button type="button" onClick={() => handleDelete(photo.id, setPhotos)}>Delete</button>
+                                <SortablePhoto photo={photo} onDelete={() => handleDelete(photo.id, setPhotos)} />
                                 {photo.status === "deleted" && <button type="button" onClick={() => handleRestore(photo.id, setPhotos)}>Restore</button>}
                             </div>
                         ))}
