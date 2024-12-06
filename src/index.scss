@@ -8,12 +8,12 @@
 body {
     margin: 0;
     @include text-body;
-    background-color: $color-background-light;
+    background-color: $color-page-background-light;
     color: $color-text-light;
     display: flex;
     justify-content: center;
     &.dark {
-        background-color: $color-background-dark;
+        background-color: $color-page-background-dark;
         color: $color-text-dark;
     }
 }

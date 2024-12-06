@@ -3,13 +3,29 @@ $max-width-tablet: 1165px;
 $max-width-phone: 875px;
 
 // default colors
+$color-page-background-light: #f5f5f5;
+$color-element-background-light: #e0e0e0;
+$color-accent-light: #ff6f61;
 $color-background-light: #ffffff;
-$color-text-light: #333333;
+$color-text-light: black;
 $color-primary-light: #808080;
 $color-secondary-light: #9a249a;
+$color-button-login-light: #4CAF50;
+$color-button-edit-light: #FFC107;
+$color-button-save-light: #2196F3;
+$color-button-delete-light: #F44336;
+$color-button-clear-filter-light: #9E9E9E;
 
 // dark theme colors
+$color-page-background-dark: #2c2f33;
+$color-element-background-dark: #3a3f44;
+$color-accent-dark: #ff6f61;
 $color-background-dark: #212529;
 $color-text-dark: #ffffff;
 $color-primary-dark: #363d44;
 $color-secondary-dark: #431243;
+$color-button-login-dark: #66BB6A;
+$color-button-edit-dark: #FFCA28;
+$color-button-save-dark: #42A5F5;
+$color-button-delete-dark: #EF5350;
+$color-button-clear-filter-dark: #BDBDBD;
