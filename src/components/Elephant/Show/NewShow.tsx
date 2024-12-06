@@ -1,7 +1,7 @@
 import { useLoaderData, Link, useFetcher } from 'react-router-dom'
+import { useConfirmation } from '../../../contexts/ConfirmationContext.tsx'
 import ImageGallery from 'react-image-gallery'
 import { useTranslation } from 'react-i18next'
-import classNames from 'classnames'
 import 'react-image-gallery/styles/scss/image-gallery.scss'
 import styles from './Show.module.scss'
 
@@ -39,6 +39,7 @@ type ImageGalleryItem = {
 }
 
 function NewShow() {
+    const { setShowWarning, setWarningMessage, setOnConfirm } = useConfirmation()
     const { elephant } = useLoaderData() as { elephant: Elephant }
     const { t } = useTranslation()
     const fetcher = useFetcher()
@@ -49,6 +50,15 @@ function NewShow() {
         fullscreen: photo.original_url,
         loading: 'eager',
     }))
+
+    const handleDelete = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        setShowWarning(true)
+        setWarningMessage(t('elephants.confirmDelete'))
+        setOnConfirm(() => () => {
+            fetcher.submit(null, { method: 'DELETE' })
+        })
+    }
 
     return (
         <div className={styles.show}>
@@ -89,7 +99,7 @@ function NewShow() {
                     {elephant.can_edit && (
                         <div className={styles.editContainer}>
                             <Link to={`/elephants/${elephant.id}/edit`} state={{ elephant: elephant }} className={styles.editLink}>{t('elephants.edit')}</Link>
-                            <fetcher.Form method="DELETE" className={styles.deleteForm}>
+                            <fetcher.Form method="DELETE" className={styles.deleteForm} onSubmit={handleDelete}>
                                 <button type="submit">{t('elephants.delete')}</button>
                             </fetcher.Form>
                         </div>
