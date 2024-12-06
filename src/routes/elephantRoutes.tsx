@@ -33,6 +33,18 @@ const elephantRoutes = [
       const response = await getElephantById(params.id as string)
       return { elephant: response.data.data.attributes }
     },
+    action: async ({ params }: ActionFunctionArgs) => {
+      const id = params.id as string
+
+      try {
+        await deleteElephant(id);
+        toast.success(i18n.t("elephants.deleted"));
+        return redirect("/elephants");
+      } catch (error: any) {
+        const errorMessage = error.response.data.error || error.response.data;
+        return toast.error(i18n.t(errorMessage))
+      }
+    },
     errorElement: <ErrorPage />
   },
 
@@ -44,18 +56,10 @@ const elephantRoutes = [
       const id = params.id as string
 
       try {
-        if (request.method === "DELETE") {
-          await deleteElephant(id);
-          toast.success(i18n.t("elephants.deleted"));
-          return redirect("/elephants");
-        }
-
-        if (request.method === "PATCH" || request.method === "PUT") {
-          const formData = await request.formData();
-          await updateElephant(id, formData);
-          toast.success(i18n.t("elephants.updated"));
-          return redirect(`/elephants/${id}`);
-        }
+        const formData = await request.formData();
+        await updateElephant(id, formData);
+        toast.success(i18n.t("elephants.updated"));
+        return redirect(`/elephants/${id}`);
       } catch (error: any) {
         const errorMessage = error.response.data.error || error.response.data;
         return toast.error(i18n.t(errorMessage))

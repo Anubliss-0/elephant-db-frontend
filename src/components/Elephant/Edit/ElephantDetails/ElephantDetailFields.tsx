@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-// import styles from '../Edit.module.scss'
 import styles from './ElephantDetailFields.module.scss'
 
 type ElephantDetailsProps = {

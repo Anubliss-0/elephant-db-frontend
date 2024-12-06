@@ -13,12 +13,12 @@
     background-color: $color-primary-dark;
 }
 
-.showHeader {
+.top {
     @include flex-row(space-between, center);
     width: 100%;
 }
 
-.showHeaderInfo {
+.topInfo {
     @include flex-column(start, start);
 
     > h1 {
@@ -27,7 +27,7 @@
     }
 }
 
-.showHeaderInfoItem {
+.topInfoItem {
     @include flex-row(start, center);
     gap: 1rem;
 
@@ -55,13 +55,16 @@
     }
 }
 
-.editLinkContainer {
+.editContainer {
     margin-top: 1rem;
-    @include flex-row(start, center);
+    @include flex-column(start, center);
+    gap: 1rem;
+    width: 100%;
 }
 
 .editLink {
     line-height: 1;
+    width: 100%;
     @include flex-row(center, center);
     @include text-body-bold;
     color: $color-text-dark;
@@ -69,4 +72,19 @@
     padding: 0.5rem 1rem;
     background-color: $color-primary-light;
     border-radius: 0.5rem;
+}
+
+.deleteForm {
+    width: 100%;
+    
+    button {
+        width: 100%;
+        border: none;
+        @include text-body-bold;
+        color: $color-text-dark;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        background-color: red;
+        border-radius: 0.5rem;
+    }
 }

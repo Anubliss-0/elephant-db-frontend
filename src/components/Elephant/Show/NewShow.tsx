@@ -1,4 +1,4 @@
-import { useLoaderData, Link } from 'react-router-dom'
+import { useLoaderData, Link, useFetcher } from 'react-router-dom'
 import ImageGallery from 'react-image-gallery'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
@@ -41,6 +41,7 @@ type ImageGalleryItem = {
 function NewShow() {
     const { elephant } = useLoaderData() as { elephant: Elephant }
     const { t } = useTranslation()
+    const fetcher = useFetcher()
 
     const images: ImageGalleryItem[] = elephant.photos.map(photo => ({
         original: photo.medium_url,
@@ -51,30 +52,30 @@ function NewShow() {
 
     return (
         <div className={styles.show}>
-            <div className={styles.showHeader}>
-                <div className={styles.showHeaderInfo}>
+            <div className={styles.top}>
+                <div className={styles.topInfo}>
                     <h1>{elephant.name}</h1>
-                    <div className={styles.showHeaderInfoItem}>
+                    <div className={styles.topInfoItem}>
                         <h3>{t('elephants.species')}:</h3>
                         <p>{elephant.species}</p>
                     </div>
-                    <div className={styles.showHeaderInfoItem}>
+                    <div className={styles.topInfoItem}>
                         <h3>{t('elephants.habitat')}:</h3>
                         <p>{elephant.habitat}</p>
                     </div>
-                    <div className={styles.showHeaderInfoItem}>
+                    <div className={styles.topInfoItem}>
                         <h3>{t('elephants.age')}:</h3>
                         <p>{elephant.age}</p>
                     </div>
-                    <div className={styles.showHeaderInfoItem}>
+                    <div className={styles.topInfoItem}>
                         <h3>{t('elephants.gender')}:</h3>
                         <p>{elephant.gender}</p>
                     </div>
-                    <div className={styles.showHeaderInfoItem}>
+                    <div className={styles.topInfoItem}>
                         <h3>{t('elephants.createdAt')}:</h3>
                         <p>{elephant.created_at}</p>
                     </div>
-                    <div className={styles.showHeaderInfoItem}>
+                    <div className={styles.topInfoItem}>
                         <h3>{t('elephants.updatedAt')}:</h3>
                         <p>{elephant.updated_at}</p>
                     </div>
@@ -85,9 +86,14 @@ function NewShow() {
                             {elephant.user_profile_image_url && <img src={elephant.user_profile_image_url} alt={`${elephant.user_name}'s profile`} />}
                         </Link>
                     </div>
-                    <div className={styles.editLinkContainer}>
-                        {elephant.can_edit && <Link to={`/elephants/${elephant.id}/edit`} state={{ elephant: elephant }} className={styles.editLink}>{t('elephants.edit')}</Link>}
-                    </div>
+                    {elephant.can_edit && (
+                        <div className={styles.editContainer}>
+                            <Link to={`/elephants/${elephant.id}/edit`} state={{ elephant: elephant }} className={styles.editLink}>{t('elephants.edit')}</Link>
+                            <fetcher.Form method="DELETE" className={styles.deleteForm}>
+                                <button type="submit">{t('elephants.delete')}</button>
+                            </fetcher.Form>
+                        </div>
+                    )}
                 </div>
                 <ImageGallery items={images} thumbnailPosition='right' showPlayButton={false} />
             </div>
