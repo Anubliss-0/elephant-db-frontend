@@ -21,6 +21,7 @@
         "gender": "Gender",
         "habitat": "Habitat",
         "bio": "Bio",
+        "photos": "Photos",
         "createdAt": "Created",
         "updatedAt": "Last updated",
         "creator": "Added by",
