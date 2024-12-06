@@ -10,7 +10,11 @@
     max-width: 1000px;
     margin: 3rem;
     gap: 2rem;
-    background-color: $color-primary-dark;
+    background-color: $color-element-background-light;
+
+    &.dark {
+        background-color: $color-element-background-dark;
+    }
 }
 
 .top {
@@ -67,11 +71,15 @@
     width: 100%;
     @include flex-row(center, center);
     @include text-body-bold;
-    color: $color-text-dark;
+    color: $color-text-light;
     text-decoration: none;
     padding: 0.5rem 1rem;
-    background-color: $color-primary-light;
+    background-color: $color-button-edit-light;
     border-radius: 0.5rem;
+
+    &.dark {
+        background-color: $color-button-edit-dark;
+    }
 }
 
 .deleteForm {
@@ -81,10 +89,14 @@
         width: 100%;
         border: none;
         @include text-body-bold;
-        color: $color-text-dark;
+        color: $color-text-light;
         text-decoration: none;
         padding: 0.5rem 1rem;
-        background-color: red;
+        background-color: $color-button-delete-light;
         border-radius: 0.5rem;
+
+        &.dark {
+            background-color: $color-button-delete-dark;
+        }
     }
 }

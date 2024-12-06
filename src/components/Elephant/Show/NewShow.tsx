@@ -2,8 +2,10 @@ import { useLoaderData, Link, useFetcher } from 'react-router-dom'
 import { useConfirmation } from '../../../contexts/ConfirmationContext.tsx'
 import ImageGallery from 'react-image-gallery'
 import { useTranslation } from 'react-i18next'
+import classNames from 'classnames'
 import 'react-image-gallery/styles/scss/image-gallery.scss'
 import styles from './Show.module.scss'
+import { useTheme } from '../../../contexts/ThemeContext.tsx'
 
 type Photo = {
     id: number
@@ -39,6 +41,7 @@ type ImageGalleryItem = {
 }
 
 function NewShow() {
+    const { theme } = useTheme()
     const { setShowWarning, setWarningMessage, setOnConfirm } = useConfirmation()
     const { elephant } = useLoaderData() as { elephant: Elephant }
     const { t } = useTranslation()
@@ -61,7 +64,7 @@ function NewShow() {
     }
 
     return (
-        <div className={styles.show}>
+        <div className={classNames(styles.show, styles[theme])}>
             <div className={styles.top}>
                 <div className={styles.topInfo}>
                     <h1>{elephant.name}</h1>
