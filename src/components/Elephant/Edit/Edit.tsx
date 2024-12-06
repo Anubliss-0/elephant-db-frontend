@@ -72,7 +72,7 @@ function Edit() {
                         habitat={elephant.habitat}
                     />
                 </div>
-                <label className={styles.editPhotosLabel}>
+                <label className={styles.photosGridArea}>
                     {t('elephants.photos')}
                     <ElephantPhotos
                         photos={photos}
@@ -80,7 +80,7 @@ function Edit() {
                         setPhotos={setPhotos}
                     />
                 </label>
-                <div className={styles.editBio}>
+                <div className={styles.bioGridArea}>
                     <label>
                         {t('elephants.bio')}
                         <textarea name="elephant[bio]" defaultValue={elephant.bio} />

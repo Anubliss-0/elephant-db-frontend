@@ -39,26 +39,16 @@
     gap: 1rem;
 }
 
-.editPhotosLabel {
+.photosGridArea {
     grid-area: photos;
     height: 100%;
 }
 
-.photoItem {
-    @include flex-column(center, center);
-}
-
-.editBio {
+.bioGridArea {
     grid-area: bio;
     width: 100%;
 
     textarea {
         width: 100%;
     }
-}
-
-.fileUploadLabel {
-    @include flex-column(start, start);
-    gap: 0.5rem;
-    width: 100%;
 }
