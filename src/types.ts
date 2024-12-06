@@ -32,7 +32,6 @@ export interface userProfileContext {
   profileImageUrl: string;
 }
 
-// Define a type for the response data
 export interface UserProfileResponse {
   data: {
     name: string;
@@ -52,4 +51,13 @@ export interface ElephantIndexData {
     gender: string
     habitat: string
   }
+}
+
+export type PhotoFormData = {
+  id: number
+  status: string
+  position: number
+  image: File | null
+  thumbnail_url: string
+  previous_position: number | null
 }

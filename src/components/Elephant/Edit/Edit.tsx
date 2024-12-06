@@ -1,19 +1,12 @@
 import { useState, useEffect, useId } from 'react'
 import { useLocation, useFetcher } from 'react-router-dom'
 import { DndContext, DragEndEvent } from '@dnd-kit/core'
-import { SortableContext, useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
+import { SortableContext } from '@dnd-kit/sortable'
+import SortablePhoto from './ElephantPhotos/SortablePhoto/SortablePhoto'
 import styles from './Edit.module.scss'
 import { useTranslation } from 'react-i18next'
-
-type PhotoFormData = {
-    id: number
-    status: string
-    position: number
-    image: File | null
-    thumbnail_url: string
-    previous_position: number | null
-}
+import { PhotoFormData } from '../../../types'
+import ElephantDetailFields from './ElephantDetails/ElephantDetailFields'
 
 type Elephant = {
     id: string
@@ -29,22 +22,6 @@ type Elephant = {
     can_edit: boolean | null
     user_name: string
     user_profile_image_url: string
-}
-
-function SortablePhoto({ photo }: { photo: PhotoFormData }) {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: photo.id })
-
-
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-    }
-
-    return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-            <img src={photo.thumbnail_url} alt={`Photo ${photo.id}`} className={styles.photo} />
-        </div>
-    )
 }
 
 function Edit() {
@@ -154,47 +131,36 @@ function Edit() {
         <div className={styles.edit}>
             <h1>{t('elephants.editing')} {currentName}</h1>
             <fetcher.Form onSubmit={handleSubmit} className={styles.editForm}>
-                <div className={styles.editFields}>
-                    <label className={styles.editFormItem}>
-                        {t('elephants.name')}
-                        <input type="text" name="elephant[name]" defaultValue={currentName} onChange={(e) => setCurrentName(e.target.value)} />
-                    </label>
-                    <label className={styles.editFormItem}>
-                        {t('elephants.age')}
-                        <input type="number" name="elephant[age]" defaultValue={elephant.age} />
-                    </label>
-                    <label className={styles.editFormItem}>
-                        {t('elephants.species')}
-                        <input type="text" name="elephant[species]" defaultValue={elephant.species} />
-                    </label>
-                    <label className={styles.editFormItem}>
-                        {t('elephants.gender')}
-                        <input type="text" name="elephant[gender]" defaultValue={elephant.gender} />
-                    </label>
-                    <label className={styles.editFormItem}>
-                        {t('elephants.habitat')}
-                        <input type="text" name="elephant[habitat]" defaultValue={elephant.habitat} />
-                    </label>
-                    <label className={styles.fileUploadLabel}>
-                        <input type="file" id={fileInputId} multiple accept="image/*" onChange={handleFileChange} className={styles.hiddenFileInput} />
+                <input type="file" id={fileInputId} multiple accept="image/*" onChange={handleFileChange} className={styles.hiddenFileInput} />
+                <div className={styles.detailsGridArea}>
+                    <ElephantDetailFields
+                        currentName={currentName}
+                        setCurrentName={setCurrentName}
+                        age={elephant.age}
+                        species={elephant.species}
+                        gender={elephant.gender}
+                        habitat={elephant.habitat}
+                    />
+                </div>
+                <label className={styles.editPhotosLabel}>
+                    {t('elephants.photos')}
+                    <div className={styles.editPhotos}>
+                        <DndContext onDragEnd={handleDragEnd}>
+                            <SortableContext items={photos.map(photo => photo.id)}>
+                                {photos.map(photo => (
+                                    <div key={photo.id} className={styles.photoItem}>
+                                        <SortablePhoto photo={photo} />
+                                        <button type="button" onClick={() => handleDelete(photo.id)}>Delete</button>
+                                        {photo.status === "deleted" && <button type="button" onClick={() => handleRestore(photo.id)}>Restore</button>}
+                                    </div>
+                                ))}
+                            </SortableContext>
+                        </DndContext>
                         <button type="button" onClick={() => document.getElementById(fileInputId)?.click()} className={styles.customUploadButton}>
                             {t('elephants.addPhotos')}
                         </button>
-                    </label>
-                </div>
-                <div className={styles.editPhotos}>
-                    <DndContext onDragEnd={handleDragEnd}>
-                        <SortableContext items={photos.map(photo => photo.id)}>
-                            {photos.map(photo => (
-                                <div key={photo.id} className={styles.photoItem}>
-                                    <SortablePhoto photo={photo} />
-                                    <button type="button" onClick={() => handleDelete(photo.id)}>Delete</button>
-                                    {photo.status === "deleted" && <button type="button" onClick={() => handleRestore(photo.id)}>Restore</button>}
-                                </div>
-                            ))}
-                        </SortableContext>
-                    </DndContext>
-                </div>
+                    </div>
+                </label>
                 <div className={styles.editBio}>
                     <label className={styles.editFormItem}>
                         {t('elephants.bio')}
@@ -203,9 +169,6 @@ function Edit() {
                 </div>
                 <button type="submit">Save</button>
             </fetcher.Form>
-            {/* <fetcher.Form method="DELETE">
-                <button type="submit">Delete Elephant</button>
-            </fetcher.Form> */}
         </div>
     )
 }
