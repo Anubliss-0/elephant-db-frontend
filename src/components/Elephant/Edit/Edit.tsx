@@ -1,12 +1,10 @@
 import { useState, useEffect, useId } from 'react'
 import { useLocation, useFetcher } from 'react-router-dom'
-import { DndContext, DragEndEvent } from '@dnd-kit/core'
-import { SortableContext } from '@dnd-kit/sortable'
-import SortablePhoto from './ElephantPhotos/SortablePhoto/SortablePhoto'
 import styles from './Edit.module.scss'
 import { useTranslation } from 'react-i18next'
 import { PhotoFormData } from '../../../types'
 import ElephantDetailFields from './ElephantDetails/ElephantDetailFields'
+import ElephantPhotos from './ElephantPhotos/Elephantphotos'
 
 type Elephant = {
     id: string
@@ -25,13 +23,13 @@ type Elephant = {
 }
 
 function Edit() {
+    const { t } = useTranslation()
+    const fetcher = useFetcher()
     const location = useLocation()
     const elephant = location.state.elephant as Elephant
     const [photos, setPhotos] = useState<PhotoFormData[]>([])
     const [currentName, setCurrentName] = useState(elephant.name)
-    const { t } = useTranslation()
-    const fetcher = useFetcher()
-    const fileInputId = useId();
+    const fileInputId = useId()
 
     useEffect(() => {
         setPhotos(elephant.photos.map((photo) => ({
@@ -43,73 +41,6 @@ function Edit() {
             previous_position: photo.position
         })))
     }, [elephant])
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files
-        if (files) {
-            const newPhotos = Array.from(files).map((file, index) => ({
-                id: Date.now() + index,
-                status: 'new',
-                position: photos.length + index,
-                image: file,
-                thumbnail_url: URL.createObjectURL(file),
-                previous_position: photos.length + index
-            }))
-
-            setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos])
-        }
-    }
-
-    const handleDragEnd = (event: DragEndEvent) => {
-        const { active, over } = event
-
-        if (over && active.id !== over.id) {
-            setPhotos((prevPhotos) => {
-                const oldIndex = prevPhotos.findIndex(photo => photo.id === active.id)
-                const newIndex = prevPhotos.findIndex(photo => photo.id === over.id)
-
-                const updatedPhotos = [...prevPhotos]
-                const [movedPhoto] = updatedPhotos.splice(oldIndex, 1)
-                updatedPhotos.splice(newIndex, 0, movedPhoto)
-
-                return updatedPhotos.map((photo, index) => ({
-                    ...photo,
-                    position: index
-                }))
-            })
-        }
-    }
-
-    const handleDelete = (id: number) => {
-        setPhotos(prevPhotos => {
-            const photoToDelete = prevPhotos.find(p => p.id === id)
-            if (!photoToDelete) return prevPhotos
-
-            if (photoToDelete.status === "new") {
-                return prevPhotos.filter(p => p.id !== id)
-            }
-
-            const updatedPhotos = prevPhotos.filter(p => p.id !== id)
-            return [...updatedPhotos, { ...photoToDelete, status: "deleted", previous_position: photoToDelete.position }]
-        })
-    }
-
-    const handleRestore = (id: number) => {
-        setPhotos(prevPhotos => {
-            const photoToRestore = prevPhotos.find(p => p.id === id)
-            if (!photoToRestore) return prevPhotos
-
-            const updatedPhotos = prevPhotos.filter(p => p.id !== id)
-            const restoredPhoto = { ...photoToRestore, status: "" }
-
-            updatedPhotos.splice(photoToRestore.previous_position ?? 0, 0, restoredPhoto)
-
-            return updatedPhotos.map((photo, index) => ({
-                ...photo,
-                position: index
-            }))
-        })
-    }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -131,7 +62,6 @@ function Edit() {
         <div className={styles.edit}>
             <h1>{t('elephants.editing')} {currentName}</h1>
             <fetcher.Form onSubmit={handleSubmit} className={styles.editForm}>
-                <input type="file" id={fileInputId} multiple accept="image/*" onChange={handleFileChange} className={styles.hiddenFileInput} />
                 <div className={styles.detailsGridArea}>
                     <ElephantDetailFields
                         currentName={currentName}
@@ -144,25 +74,14 @@ function Edit() {
                 </div>
                 <label className={styles.editPhotosLabel}>
                     {t('elephants.photos')}
-                    <div className={styles.editPhotos}>
-                        <DndContext onDragEnd={handleDragEnd}>
-                            <SortableContext items={photos.map(photo => photo.id)}>
-                                {photos.map(photo => (
-                                    <div key={photo.id} className={styles.photoItem}>
-                                        <SortablePhoto photo={photo} />
-                                        <button type="button" onClick={() => handleDelete(photo.id)}>Delete</button>
-                                        {photo.status === "deleted" && <button type="button" onClick={() => handleRestore(photo.id)}>Restore</button>}
-                                    </div>
-                                ))}
-                            </SortableContext>
-                        </DndContext>
-                        <button type="button" onClick={() => document.getElementById(fileInputId)?.click()} className={styles.customUploadButton}>
-                            {t('elephants.addPhotos')}
-                        </button>
-                    </div>
+                    <ElephantPhotos
+                        photos={photos}
+                        fileInputId={fileInputId}
+                        setPhotos={setPhotos}
+                    />
                 </label>
                 <div className={styles.editBio}>
-                    <label className={styles.editFormItem}>
+                    <label>
                         {t('elephants.bio')}
                         <textarea name="elephant[bio]" defaultValue={elephant.bio} />
                     </label>
