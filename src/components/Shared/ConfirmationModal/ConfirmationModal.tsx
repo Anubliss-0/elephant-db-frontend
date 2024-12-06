@@ -26,8 +26,8 @@ function ConfirmationModal() {
                         <div className={classNames(styles.confirmationModal, styles[theme])}>
                             {warningMessage}
                             <div className={styles.confirmationModalButtons}>
-                                <button onClick={handleYes}>{t('yes')}</button>
-                                <button onClick={handleNo}>{t('no')}</button>
+                                <button onClick={handleYes} className={styles.yesButton}>{t('yes')}</button>
+                                <button onClick={handleNo} className={styles.noButton}>{t('no')}</button>
                             </div>
                         </div>
                     </div>

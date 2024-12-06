@@ -13,7 +13,7 @@
 }
 
 .confirmationModal {
-    background-color: $color-background-light;
+    background-color: $color-element-background-light;
     padding: 2rem;
     border-radius: 10px;
     color: black;
@@ -22,7 +22,7 @@
     text-align: center;
 
     &.dark {
-        background-color: $color-background-dark;
+        background-color: $color-element-background-dark;
         color: $color-text-dark;
     }
     
@@ -40,5 +40,21 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
+    }
+}
+
+.yesButton {
+    background-color: $color-button-save-light;
+
+    &.dark {
+        background-color: $color-button-save-dark;
+    }
+}
+
+.noButton {
+    background-color: $color-button-delete-light;
+
+    &.dark {
+        background-color: $color-button-delete-dark;
     }
 }
