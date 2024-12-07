@@ -49,12 +49,18 @@ export function handleDelete(
         const photoToDelete = prevPhotos.find(p => p.id === id)
         if (!photoToDelete) return prevPhotos
 
+        let updatedPhotos;
         if (photoToDelete.status === "new") {
-            return prevPhotos.filter(p => p.id !== id)
+            updatedPhotos = prevPhotos.filter(p => p.id !== id)
+        } else {
+            updatedPhotos = prevPhotos.filter(p => p.id !== id)
+            updatedPhotos = [...updatedPhotos, { ...photoToDelete, status: "deleted", previous_position: photoToDelete.position }]
         }
 
-        const updatedPhotos = prevPhotos.filter(p => p.id !== id)
-        return [...updatedPhotos, { ...photoToDelete, status: "deleted", previous_position: photoToDelete.position }]
+        return updatedPhotos.map((photo, index) => ({
+            ...photo,
+            position: index
+        }))
     })
 }
 

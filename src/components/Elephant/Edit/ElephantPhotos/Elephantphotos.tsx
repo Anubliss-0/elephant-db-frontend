@@ -21,11 +21,7 @@ function ElephantPhotos({ photos, setPhotos, fileInputId }: ElephantPhotosProps)
                 distance: 8,
             },
         })
-    );
-
-    const testFunction = () => {
-        console.log('testFunction')
-    }
+    )
 
     return (
         <>
