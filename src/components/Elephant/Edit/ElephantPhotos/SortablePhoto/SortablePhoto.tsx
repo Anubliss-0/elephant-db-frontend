@@ -2,22 +2,25 @@ import { useSortable } from '@dnd-kit/sortable'
 import styles from './SortablePhoto.module.scss'
 import { CSS } from '@dnd-kit/utilities'
 import { PhotoFormData } from '../../../../../types'
+import { FaUndo } from "react-icons/fa";
 import { MdOutlineDelete } from 'react-icons/md'
 import { useTranslation } from 'react-i18next'
+import classNames from 'classnames'
 
 type SortablePhotoProps = {
     photo: PhotoFormData
     onDelete: () => void
+    onRestore: () => void
 }
 
-export default function SortablePhoto({ photo, onDelete }: SortablePhotoProps) {
+export default function SortablePhoto({ photo, onDelete, onRestore }: SortablePhotoProps) {
     const { t } = useTranslation()
     const isDeleted = photo.status === 'deleted'
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: photo.id })
 
     const style = {
-        transform: isDeleted ? undefined : CSS.Transform.toString(transform),
-        transition: isDeleted ? undefined : transition,
+        transform: CSS.Transform.toString(transform),
+        transition: transition,
     }
 
     return (
@@ -27,16 +30,31 @@ export default function SortablePhoto({ photo, onDelete }: SortablePhotoProps) {
             {...(!isDeleted ? { ...attributes, ...listeners } : {})}
             className={styles.photoItem}
         >
-            <img src={photo.thumbnail_url} alt={`Photo ${photo.id}`} className={styles.photo} />
-            <span className={styles.photoNumber}>{photo.position + 1}</span>
-            <button
-                type="button"
-                onClick={onDelete}
-                aria-label={t('elephants.deletePhoto')}
-                className={styles.deleteButton}
-            >
-                <MdOutlineDelete />
-            </button>
+            <img 
+                src={photo.thumbnail_url} 
+                alt={`Photo ${photo.id}`} 
+                className={classNames(styles.photo, { [styles.deleted]: isDeleted })}
+            />
+            {!isDeleted && <span className={styles.photoNumber}>{photo.position + 1}</span>}
+            {!isDeleted ? (
+                <button
+                    type="button"
+                    onClick={onDelete}
+                    aria-label={t('elephants.deletePhoto')}
+                    className={classNames(styles.deleteButton, styles.button)}
+                >
+                    <MdOutlineDelete />
+                </button>
+            ) : (
+                <button
+                    type="button"
+                    onClick={onRestore}
+                    aria-label={t('elephants.restorePhoto')}
+                    className={classNames(styles.restoreButton, styles.button)}
+                >
+                    <FaUndo />
+                </button>
+            )}
         </div>
     )
 }

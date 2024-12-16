@@ -30,8 +30,7 @@ function ElephantPhotos({ photos, setPhotos, fileInputId }: ElephantPhotosProps)
                     <SortableContext items={photos.map(photo => photo.id)}>
                         {photos.map(photo => (
                             <div key={photo.id} className={styles.photoItem}>
-                                <SortablePhoto photo={photo} onDelete={() => handleDelete(photo.id, setPhotos)} />
-                                {photo.status === "deleted" && <button type="button" onClick={() => handleRestore(photo.id, setPhotos)}>Restore</button>}
+                                <SortablePhoto photo={photo} onDelete={() => handleDelete(photo.id, setPhotos)} onRestore={() => handleRestore(photo.id, setPhotos)} />
                             </div>
                         ))}
                     </SortableContext>
