@@ -72,14 +72,14 @@ function Edit() {
                         habitat={elephant.habitat}
                     />
                 </div>
-                <label className={styles.photosGridArea}>
+                <div className={styles.photosGridArea} aria-label={t('elephants.photos')}>
                     {t('elephants.photos')}
                     <ElephantPhotos
                         photos={photos}
                         fileInputId={fileInputId}
                         setPhotos={setPhotos}
                     />
-                </label>
+                </div>
                 <div className={styles.bioGridArea}>
                     <label>
                         {t('elephants.bio')}

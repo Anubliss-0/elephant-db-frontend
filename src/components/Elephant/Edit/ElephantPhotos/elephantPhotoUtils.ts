@@ -47,7 +47,7 @@ export function handleDelete(
 ) {
     setPhotos(prevPhotos => {
         const photoToDelete = prevPhotos.find(p => p.id === id)
-        if (!photoToDelete) return prevPhotos
+        if (!photoToDelete || photoToDelete.status === "deleted") return prevPhotos
 
         let updatedPhotos;
         if (photoToDelete.status === "new") {
