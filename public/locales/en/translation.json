@@ -31,6 +31,7 @@
         "editing": "Editing",
         "addPhotos": "Add photos",
         "deletePhoto": "Delete photo",
+        "coverPhoto": "Cover photo",
         "save": "Save",
         "delete": "Delete",
         "confirmDelete": "Are you sure you want to delete this elephant?",

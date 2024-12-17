@@ -1,4 +1,6 @@
 import { DragEndEvent } from "@dnd-kit/core"
+import { toast } from 'react-toastify'
+import i18n from '../../../../i18n'
 import { PhotoFormData } from "../../../../types"
 
 export function handleFileChange(
@@ -8,6 +10,14 @@ export function handleFileChange(
 ) {
     const files = event.target.files
     if (files) {
+        const existingNewPhotosCount = photos.filter(photo => photo.status === 'new' || photo.status === '').length
+        const newPhotosCount = files.length
+
+        if (existingNewPhotosCount + newPhotosCount > 5) {
+            toast.error(i18n.t('errors.photoCountLimit'))
+            return
+        }
+
         const newPhotos = Array.from(files).map((file, index) => ({
             id: Date.now() + index,
             status: 'new',

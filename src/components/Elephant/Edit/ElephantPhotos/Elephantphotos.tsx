@@ -5,6 +5,7 @@ import SortablePhoto from "./SortablePhoto/SortablePhoto"
 import styles from './ElephantPhotos.module.scss'
 import { PhotoFormData } from "../../../../types"
 import { handleFileChange, handleRestore, handleDelete, handleDragEnd } from "./elephantPhotoUtils"
+import classNames from 'classnames'
 
 type ElephantPhotosProps = {
     photos: PhotoFormData[]
@@ -14,6 +15,7 @@ type ElephantPhotosProps = {
 
 function ElephantPhotos({ photos, setPhotos, fileInputId }: ElephantPhotosProps) {
     const { t } = useTranslation()
+    const activePhotosCount = photos.filter(photo => photo.status === "new" || photo.status === "").length;
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -23,8 +25,9 @@ function ElephantPhotos({ photos, setPhotos, fileInputId }: ElephantPhotosProps)
         })
     )
 
+
     return (
-        <>
+        <div className={styles.editPhotosContainer}>
             <div className={styles.editPhotos}>
                 <DndContext onDragEnd={(event) => handleDragEnd(event, setPhotos)} sensors={sensors}>
                     <SortableContext items={photos.map(photo => photo.id)}>
@@ -35,12 +38,22 @@ function ElephantPhotos({ photos, setPhotos, fileInputId }: ElephantPhotosProps)
                         ))}
                     </SortableContext>
                 </DndContext>
-                <button type="button" onClick={() => document.getElementById(fileInputId)?.click()} className={styles.customUploadButton}>
-                    {t('elephants.addPhotos')}
-                </button>
-                <input type="file" id={fileInputId} multiple accept="image/*" onChange={(event) => handleFileChange(event, photos, setPhotos)} className={styles.hiddenFileInput} />
             </div>
-        </>
+            <div className={styles.editPhotosFooter}>
+                <div className={styles.editPhotosFooterContent}>
+                    <span>{activePhotosCount} / 5</span>
+                    <input type="file" id={fileInputId} multiple accept="image/*" onChange={(event) => handleFileChange(event, photos, setPhotos)} className={styles.hiddenFileInput} />
+                    <button
+                        type="button"
+                        onClick={() => document.getElementById(fileInputId)?.click()}
+                        className={classNames(styles.customUploadButton, { [styles.disabled]: activePhotosCount >= 5 })}
+                        disabled={activePhotosCount >= 5}
+                    >
+                        {t('elephants.addPhotos')}
+                    </button>
+                </div>
+            </div>
+        </div>
     )
 }
 

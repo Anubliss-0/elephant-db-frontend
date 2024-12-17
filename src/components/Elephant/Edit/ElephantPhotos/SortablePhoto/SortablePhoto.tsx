@@ -30,10 +30,14 @@ export default function SortablePhoto({ photo, onDelete, onRestore }: SortablePh
             {...(!isDeleted ? { ...attributes, ...listeners } : {})}
             className={styles.photoItem}
         >
+            {!isDeleted && photo.position === 0 && <span className={styles.coverPhotoLabel}>{t('elephants.coverPhoto')}</span>}
             <img 
                 src={photo.thumbnail_url} 
                 alt={`Photo ${photo.id}`} 
-                className={classNames(styles.photo, { [styles.deleted]: isDeleted })}
+                className={classNames(styles.photo, { 
+                    [styles.deleted]: isDeleted,
+                    [styles.coverPhoto]: !isDeleted && photo.position === 0 
+                })}
             />
             {!isDeleted && <span className={styles.photoNumber}>{photo.position + 1}</span>}
             {!isDeleted ? (
