@@ -16,11 +16,11 @@ $color-button-save-light: #2196F3;
 $color-button-delete-light: #F44336;
 $color-button-restore-light: #4CAF50;
 $color-button-clear-filter-light: #9E9E9E;
-$color-button-standard-light: #9E9E9E;
+$color-button-standard-light: #ff6f61;
 $color-desktop-container-light: #ffffff;
 
 // dark theme colors
-$color-page-background-dark: #2c2f33;
+$color-page-background-dark: #161638;
 $color-element-background-dark: #3a3f44;
 $color-accent-dark: #a44138;
 $color-background-dark: #212529;
@@ -33,5 +33,17 @@ $color-button-save-dark: #42A5F5;
 $color-button-delete-dark: #EF5350;
 $color-button-restore-dark: #4CAF50;
 $color-button-clear-filter-dark: #BDBDBD;
-$color-button-standard-dark: #9E9E9E;
+$color-button-standard-dark: #a44138;
 $color-desktop-container-dark: #292a2b;
+
+$background-color-dark: #161638;   // Main background color
+$primary-color-dark: #1B435E;      // Primary elements like headers or buttons
+$secondary-color-dark: #38667E;    // Secondary elements like subheadings or links
+$accent-color-dark: #563457;       // Accent elements like highlights or call-to-action buttons
+$highlight-color-dark: #3A2B50;    // Highlights or borders
+
+$background-color-light: #FFFFFF;   // Main background color
+$primary-color-light: #F0F0F0;      // Primary elements like headers or buttons
+$secondary-color-light: #D9D9D9;    // Secondary elements like subheadings or links
+$accent-color-light: #A3A3A3;       // Accent elements like highlights or call-to-action buttons
+$highlight-color-light: #C0C0C0;    // Highlights or borders

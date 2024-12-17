@@ -60,20 +60,20 @@ function NewNavBar() {
     };
 
     return (
-        <nav className={themedClass(styles.nav)}>
+        <nav className={classNames(styles.nav, styles[theme])}>
             <div className={styles.leftSide}>
-                <div className={styles.logoContainer}>
+                <div className={classNames(styles.logoContainer, styles[theme])}>
                     <Logo className={styles.logo} />
                     <span className={styles.logoText}>EPDB</span>
                 </div>
             </div>
 
-            <div className={themedClass(styles.rightSide)}>
-                <Link className={themedClass(styles.navLink)} to="/elephants">{t('navBar.exploreElephants')}</Link>
-                <Link className={themedClass(styles.navLink)} to="/new_elephant">{t('navBar.addElephant')}</Link>
+            <div className={classNames(styles.rightSide, styles[theme])}>
+                <Link className={classNames(styles.navLink, styles[theme])} to="/elephants">{t('navBar.exploreElephants')}</Link>
+                <Link className={classNames(styles.navLink, styles[theme])} to="/new_elephant">{t('navBar.addElephant')}</Link>
 
                 {user.userName && (
-                    <div className={themedClass(styles.navLink)}>
+                    <div className={classNames(styles.navLink, styles[theme])}>
                         <button
                             className={styles.profileButton}
                             onClick={handleButtonClick}
@@ -84,7 +84,7 @@ function NewNavBar() {
                     </div>
                 )}
                 {!user.userName && (
-                    <div className={themedClass(styles.navLink)}>
+                    <div className={classNames(styles.navLink, styles[theme])}>
                         <button
                             className={styles.profileButton}
                             onClick={handleButtonClick}

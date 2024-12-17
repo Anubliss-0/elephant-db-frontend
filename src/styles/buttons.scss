@@ -2,7 +2,7 @@
 
 button {
     @include text-body;
-    background-color: $color-button-standard-light;
+    background-color: $accent-color-light;
     padding: 0.5rem 1rem;
     border-radius: 4px;
     border: none;
@@ -20,7 +20,7 @@ button {
 
 @mixin dark-button-styles {
     button {
-        background-color: $color-button-standard-dark;
+        background-color: $accent-color-dark;
 
         &.green {
             background-color: $color-button-login-dark;
