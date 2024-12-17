@@ -27,7 +27,14 @@ export function handleFileChange(
             previous_position: photos.length + index
         }))
 
-        setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos])
+        setPhotos((prevPhotos) => {
+            const nonDeletedPhotos = prevPhotos.filter(photo => photo.status !== 'deleted')
+            const deletedPhotos = prevPhotos.filter(photo => photo.status === 'deleted')
+            return [...nonDeletedPhotos, ...newPhotos, ...deletedPhotos].map((photo, index) => ({
+                ...photo,
+                position: index
+            }))
+        })
     }
 }
 
