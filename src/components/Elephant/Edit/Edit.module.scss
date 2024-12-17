@@ -10,16 +10,11 @@
     max-width: 1000px;
     margin: 3rem;
     gap: 2rem;
-    background-color: $color-primary-light;
 
     @media (max-width: $max-width-phone) {
         background-color: transparent;
         padding: 1rem;
         margin: 0;
-    }
-
-    &.dark {
-        background-color: $color-primary-dark;
     }
 }
 
@@ -63,13 +58,4 @@
         @include text-body;
         height: 8rem;
     }
-}
-
-.saveButton {
-    background-color: $color-primary-light;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    border: none;
-    color: #fff;
-    text-align: center;
 }

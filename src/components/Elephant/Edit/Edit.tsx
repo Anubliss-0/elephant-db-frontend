@@ -61,7 +61,7 @@ function Edit() {
     }
 
     return (
-        <div className={classNames(styles.edit, styles[theme])}>
+        <div className={classNames(styles.edit, styles[theme], 'desktopContainer', { dark: theme === 'dark' })}>
             <h1>{t('elephants.editing')} {currentName}</h1>
             <fetcher.Form onSubmit={handleSubmit} className={styles.editForm}>
                 <div className={styles.detailsGridArea}>

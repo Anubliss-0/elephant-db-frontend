@@ -1,6 +1,8 @@
 @import "./styles/variables.scss";
 @import "./styles/utilities.scss";
 @import "./styles/typography.scss";
+@import "./styles/inputs.scss";
+@import "./styles/buttons.scss";
 
 * {
     box-sizing: border-box;
@@ -17,6 +19,9 @@ body {
     &.dark {
         background-color: $color-page-background-dark;
         color: $color-text-dark;
+        @include dark-input-styles;
+        @include dark-textarea-styles;
+        @include dark-button-styles;
     }
 }
 
@@ -44,4 +49,12 @@ h2 {
 h3 {
     margin: 0;
     @include text-style-h3;
+}
+
+.desktopContainer {
+    background-color: $color-desktop-container-light;
+
+    &.dark {
+        background-color: $color-desktop-container-dark;
+    }
 }

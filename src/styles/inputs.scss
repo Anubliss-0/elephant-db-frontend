@@ -1,0 +1,29 @@
+input {
+    @include text-body;
+    background-color: $color-primary-light;
+    padding: 0.5rem;
+    border: 1px solid $color-primary-light;
+    border-radius: 4px;
+}
+
+@mixin dark-input-styles {
+    input {
+        color: $color-text-dark;
+        background-color: $color-primary-dark;
+    }
+}
+
+textarea {
+    @include text-body;
+    background-color: $color-primary-light;
+    padding: 0.5rem;
+    border: 1px solid $color-primary-light;
+    border-radius: 4px;
+}
+
+@mixin dark-textarea-styles {
+    textarea {
+        color: $color-text-dark;
+        background-color: $color-primary-dark;
+    }
+}

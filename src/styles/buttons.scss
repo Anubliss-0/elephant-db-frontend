@@ -1,0 +1,33 @@
+@import "./utilities.scss";
+
+button {
+    @include text-body;
+    background-color: $color-button-standard-light;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: none;
+    color: #fff;
+    text-align: center;
+
+    &.green {
+        background-color: $color-button-login-light;
+    }
+
+    &.red {
+        background-color: $color-button-delete-light;
+    }
+}
+
+@mixin dark-button-styles {
+    button {
+        background-color: $color-button-standard-dark;
+
+        &.green {
+            background-color: $color-button-login-dark;
+        }
+
+        &.red {
+            background-color: $color-button-delete-dark;
+        }
+    }
+}
