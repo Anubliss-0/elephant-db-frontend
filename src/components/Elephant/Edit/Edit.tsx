@@ -60,11 +60,18 @@ function Edit() {
         fetcher.submit(formData, { method: 'PATCH', encType: 'multipart/form-data' })
     }
 
+    const containerClasses = classNames(
+        styles.edit,
+        styles[theme],
+        'desktopContainer',
+        { dark: theme === 'dark' }
+    );
+
     return (
-        <div className={classNames(styles.edit, styles[theme], 'desktopContainer', { dark: theme === 'dark' })}>
+        <div className={containerClasses}>
             <h1>{t('elephants.editing')} {currentName}</h1>
             <fetcher.Form onSubmit={handleSubmit} className={styles.editForm}>
-                <div className={styles.detailsGridArea}>
+                <div className={classNames(styles.detailsGridArea, styles[theme])}>
                     <ElephantDetailFields
                         currentName={currentName}
                         setCurrentName={setCurrentName}
@@ -74,7 +81,7 @@ function Edit() {
                         habitat={elephant.habitat}
                     />
                 </div>
-                <div className={styles.photosGridArea} aria-label={t('elephants.photos')}>
+                <div className={classNames(styles.photosGridArea, styles[theme])} aria-label={t('elephants.photos')}>
                     {t('elephants.photos')}
                     <ElephantPhotos
                         photos={photos}
@@ -82,13 +89,13 @@ function Edit() {
                         setPhotos={setPhotos}
                     />
                 </div>
-                <div className={styles.bioGridArea}>
+                <div className={classNames(styles.bioGridArea, styles[theme])}>
                     <label>
                         {t('elephants.bio')}
                         <textarea name="elephant[bio]" defaultValue={elephant.bio} />
                     </label>
                 </div>
-                <button type="submit" className={styles.saveButton}>{t('elephants.save')}</button>
+                <button type="submit" className={classNames(styles.saveButton, styles[theme])}>{t('elephants.save')}</button>
             </fetcher.Form>
         </div>
     )
