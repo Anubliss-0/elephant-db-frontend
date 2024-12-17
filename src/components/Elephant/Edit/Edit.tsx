@@ -2,10 +2,11 @@ import { useState, useEffect, useId } from 'react'
 import { useLocation, useFetcher } from 'react-router-dom'
 import styles from './Edit.module.scss'
 import { useTranslation } from 'react-i18next'
+import classNames from 'classnames'
 import { PhotoFormData } from '../../../types'
 import ElephantDetailFields from './ElephantDetails/ElephantDetailFields'
 import ElephantPhotos from './ElephantPhotos/Elephantphotos'
-
+import { useTheme } from '../../../contexts/ThemeContext.tsx'
 type Elephant = {
     id: string
     name: string
@@ -23,6 +24,7 @@ type Elephant = {
 }
 
 function Edit() {
+    const { theme } = useTheme()
     const { t } = useTranslation()
     const fetcher = useFetcher()
     const location = useLocation()
@@ -59,7 +61,7 @@ function Edit() {
     }
 
     return (
-        <div className={styles.edit}>
+        <div className={classNames(styles.edit, styles[theme])}>
             <h1>{t('elephants.editing')} {currentName}</h1>
             <fetcher.Form onSubmit={handleSubmit} className={styles.editForm}>
                 <div className={styles.detailsGridArea}>

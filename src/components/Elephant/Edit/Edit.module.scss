@@ -10,7 +10,17 @@
     max-width: 1000px;
     margin: 3rem;
     gap: 2rem;
-    background-color: $color-primary-dark;
+    background-color: $color-primary-light;
+
+    @media (max-width: $max-width-phone) {
+        background-color: transparent;
+        padding: 1rem;
+        margin: 0;
+    }
+
+    &.dark {
+        background-color: $color-primary-dark;
+    }
 }
 
 .editForm {
@@ -24,7 +34,7 @@
         "details photos"
         "bio bio";
 
-    @media (max-width: 600px) {
+    @media (max-width: $max-width-phone) {
         grid-template-columns: 1fr;
         grid-template-areas:
             "details"
@@ -50,6 +60,8 @@
 
     textarea {
         width: 100%;
+        @include text-body;
+        height: 8rem;
     }
 }
 

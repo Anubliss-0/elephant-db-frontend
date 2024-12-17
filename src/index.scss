@@ -30,6 +30,10 @@ body {
 h1 {
     margin: 0;
     @include text-style-h1;
+
+    @media (max-width: $max-width-phone) {
+        @include text-style-h1-small;
+    }
 }
 
 h2 {
