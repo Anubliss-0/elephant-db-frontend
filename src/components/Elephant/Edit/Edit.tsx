@@ -7,6 +7,7 @@ import { PhotoFormData } from '../../../types'
 import ElephantDetailFields from './ElephantDetails/ElephantDetailFields'
 import ElephantPhotos from './ElephantPhotos/Elephantphotos'
 import { useTheme } from '../../../contexts/ThemeContext.tsx'
+
 type Elephant = {
     id: string
     name: string
