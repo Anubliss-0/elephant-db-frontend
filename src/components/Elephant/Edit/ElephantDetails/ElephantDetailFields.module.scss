@@ -1,17 +1,14 @@
 @import '../../../../styles/utilities.scss';
 
-.editFormItem {
-    @include flex-column(start, start);
-    gap: 0.5rem;
-    width: 100%;
+.detailFieldsContainer {
+    @include flex-column(space-between, start);
+    height: 100%;
 
-    input {
-        width: 100%;
-
-        &:focus {
-            outline: none;
-            border-color: $color-primary-light;
-            box-shadow: 0 0 0 2px rgba($color-primary-light, 0.2);
-        }
+    @media (max-width: $max-width-phone) {
+        gap: 1rem;
     }
+}
+
+.editFormItem {
+    width: 100%;
 }

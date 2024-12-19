@@ -14,7 +14,7 @@ function ElephantDetailFields({ currentName, setCurrentName, age, species, gende
     const { t } = useTranslation()
 
     return (
-        <>
+        <div className={styles.detailFieldsContainer}>
             <label className={styles.editFormItem}>
                 {t('elephants.name')}
                 <input type="text" name="elephant[name]" defaultValue={currentName} onChange={(e) => setCurrentName(e.target.value)} />
@@ -35,7 +35,7 @@ function ElephantDetailFields({ currentName, setCurrentName, age, species, gende
                 {t('elephants.habitat')}
                 <input type="text" name="elephant[habitat]" defaultValue={habitat} />
             </label>
-        </>
+        </div>
     )
 }
 

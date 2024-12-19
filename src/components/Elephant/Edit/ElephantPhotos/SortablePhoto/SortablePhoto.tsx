@@ -6,6 +6,7 @@ import { FaUndo } from "react-icons/fa";
 import { MdOutlineDelete } from 'react-icons/md'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
+import { useTheme } from '../../../../../contexts/ThemeContext';
 
 type SortablePhotoProps = {
     photo: PhotoFormData
@@ -14,8 +15,10 @@ type SortablePhotoProps = {
 }
 
 export default function SortablePhoto({ photo, onDelete, onRestore }: SortablePhotoProps) {
+    const { theme } = useTheme()
     const { t } = useTranslation()
     const isDeleted = photo.status === 'deleted'
+    const isCoverPhoto = photo.position === 0
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: photo.id })
 
     const style = {
@@ -30,13 +33,13 @@ export default function SortablePhoto({ photo, onDelete, onRestore }: SortablePh
             {...(!isDeleted ? { ...attributes, ...listeners } : {})}
             className={styles.photoItem}
         >
-            {!isDeleted && photo.position === 0 && <span className={styles.coverPhotoLabel}>{t('elephants.coverPhoto')}</span>}
-            <img 
-                src={photo.thumbnail_url} 
-                alt={`Photo ${photo.id}`} 
-                className={classNames(styles.photo, { 
+            <img
+                src={photo.thumbnail_url}
+                alt={`Photo ${photo.id}`}
+                className={classNames(styles.photo, {
                     [styles.deleted]: isDeleted,
-                    [styles.coverPhoto]: !isDeleted && photo.position === 0 
+                    [styles.coverPhoto]: !isDeleted && isCoverPhoto,
+                    [styles[theme]]: !isDeleted && isCoverPhoto
                 })}
             />
             {!isDeleted && <span className={styles.photoNumber}>{photo.position + 1}</span>}
@@ -45,7 +48,7 @@ export default function SortablePhoto({ photo, onDelete, onRestore }: SortablePh
                     type="button"
                     onClick={onDelete}
                     aria-label={t('elephants.deletePhoto')}
-                    className={classNames(styles.deleteButton, styles.button)}
+                    className={classNames(styles.photoButton, styles.deleteButton, styles[theme])}
                 >
                     <MdOutlineDelete />
                 </button>
@@ -54,7 +57,7 @@ export default function SortablePhoto({ photo, onDelete, onRestore }: SortablePh
                     type="button"
                     onClick={onRestore}
                     aria-label={t('elephants.restorePhoto')}
-                    className={classNames(styles.restoreButton, styles.button)}
+                    className={classNames(styles.photoButton, styles.restoreButton, styles[theme])}
                 >
                     <FaUndo />
                 </button>

@@ -6,6 +6,7 @@ import styles from './ElephantPhotos.module.scss'
 import { PhotoFormData } from "../../../../types"
 import { handleFileChange, handleRestore, handleDelete, handleDragEnd } from "./elephantPhotoUtils"
 import classNames from 'classnames'
+import { useTheme } from "../../../../contexts/ThemeContext"
 
 type ElephantPhotosProps = {
     photos: PhotoFormData[]
@@ -14,6 +15,7 @@ type ElephantPhotosProps = {
 }
 
 function ElephantPhotos({ photos, setPhotos, fileInputId }: ElephantPhotosProps) {
+    const { theme } = useTheme()
     const { t } = useTranslation()
     const activePhotosCount = photos.filter(photo => photo.status === "new" || photo.status === "").length;
 
@@ -27,7 +29,7 @@ function ElephantPhotos({ photos, setPhotos, fileInputId }: ElephantPhotosProps)
 
 
     return (
-        <div className={styles.editPhotosContainer}>
+        <div className={classNames(styles.editPhotosContainer, styles[theme])}>
             <div className={styles.editPhotos}>
                 <DndContext onDragEnd={(event) => handleDragEnd(event, setPhotos)} sensors={sensors}>
                     <SortableContext items={photos.map(photo => photo.id)}>
@@ -46,7 +48,7 @@ function ElephantPhotos({ photos, setPhotos, fileInputId }: ElephantPhotosProps)
                     <button
                         type="button"
                         onClick={() => document.getElementById(fileInputId)?.click()}
-                        className={classNames(styles.customUploadButton, { [styles.disabled]: activePhotosCount >= 5 })}
+                        className={classNames({ [styles.disabled]: activePhotosCount >= 5 })}
                         disabled={activePhotosCount >= 5}
                     >
                         {t('elephants.addPhotos')}

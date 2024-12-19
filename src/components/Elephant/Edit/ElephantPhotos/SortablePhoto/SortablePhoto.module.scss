@@ -14,16 +14,13 @@
 }
 
 .coverPhoto {
-    border: 3px solid green;
-}
+    border: 4px solid $accent-color-light;
+    box-shadow: 0 0 10px $accent-color-light;
 
-.coverPhotoLabel {
-    position: absolute;
-    top: -12px;
-    background-color: green;
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
+    &.dark {
+        border: 4px solid $accent-color-dark;
+        box-shadow: 0 0 10px $accent-color-dark;
+    }
 }
 
 .photoNumber {
@@ -36,7 +33,7 @@
     border-radius: 4px;
 }
 
-.button {
+.photoButton {
     cursor: pointer;
     font-size: 1.5rem;
     color: white;
@@ -51,10 +48,18 @@
 
 .deleteButton {
     background-color: $color-button-delete-light;
+
+    &.dark {
+        background-color: $color-button-delete-dark;
+    }
 }
 
 .restoreButton {
     background-color: $color-button-restore-light;
+
+    &.dark {
+        background-color: $color-button-restore-dark;
+    }
 }
 
 .deleted {
