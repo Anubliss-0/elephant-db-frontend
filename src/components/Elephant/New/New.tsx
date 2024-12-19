@@ -1,33 +1,45 @@
-import { useState } from "react"
+import { useState, useId } from "react"
 import { Form, useSubmit } from "react-router-dom"
-import PhotoUploader from "../PhotoUploader/PhotoUploader"
-import { Photo } from "../../../types"
 import * as ElephantOptions from "../../../constants/elephantOptions"
-function New() {
-    const [photos, setPhotos] = useState<Photo[]>([])
-    const submit = useSubmit()
+import classNames from 'classnames'
+import styles from './New.module.scss'
+import { useTheme } from "../../../contexts/ThemeContext"
+import ElephantPhotos from "../Edit/ElephantPhotos/Elephantphotos"
+import { PhotoFormData } from "../../../types"
 
-    const handlePhotosChange = (updatedPhotos: Photo[]) => {
-        setPhotos(updatedPhotos)
-    }
+function New() {
+    const { theme } = useTheme()
+    const submit = useSubmit()
+    const [photos, setPhotos] = useState<PhotoFormData[]>([])
+    const fileInputId = useId()
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-
         const formData = new FormData(event.currentTarget)
+
         photos.forEach((photo, index) => {
+            formData.append(`elephant[photos_attributes][${index}][id]`, photo.id.toString())
             formData.append(`elephant[photos_attributes][${index}][position]`, photo.position.toString())
-            if (photo.file) {
-                formData.append(`elephant[photos_attributes][${index}][image]`, photo.file)
+            formData.append(`elephant[photos_attributes][${index}][status]`, photo.status)
+            if (photo.image) {
+                formData.append(`elephant[photos_attributes][${index}][image]`, photo.image)
             }
         })
-        submit(formData, { method: 'post', encType: 'multipart/form-data' })
+
+        submit(formData, { method: 'POST', encType: 'multipart/form-data' })
     }
 
+    const containerClasses = classNames(
+        styles.new,
+        styles[theme],
+        'desktopContainer',
+        { dark: theme === 'dark' }
+    )
+
     return (
-        <div>
+        <div className={containerClasses}>
             <h1>Create a New Elephant</h1>
-            <Form method="post" onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit}>
                 <label>
                     Name:
                     <input type="text" name="elephant[name]" required />
@@ -74,7 +86,11 @@ function New() {
                     </select>
                 </label>
 
-                <PhotoUploader photos={photos} onPhotosChange={handlePhotosChange} />
+                <ElephantPhotos
+                    photos={photos}
+                    fileInputId={fileInputId}
+                    setPhotos={setPhotos}
+                />
 
                 <button type="submit">Create Elephant</button>
             </Form>

@@ -1,0 +1,8 @@
+@import '../../../styles/variables.scss';
+@import '../../../styles/utilities.scss';
+@import '../../../styles/typography.scss';
+
+.new {
+    @include flex-column(start, start);
+    gap: 1rem;
+}

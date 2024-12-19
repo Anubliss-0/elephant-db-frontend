@@ -52,6 +52,17 @@ h3 {
 
 .desktopContainer {
     background-color: $color-desktop-container-light;
+    padding: 3rem;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 1000px;
+    margin: 3rem;
+
+    @media (max-width: $max-width-phone) {
+        padding: 1rem;
+        margin: 0;
+        border-radius: 0;
+    }
 
     &.dark {
         background-color: $primary-color-dark;

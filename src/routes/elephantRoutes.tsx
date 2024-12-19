@@ -68,15 +68,19 @@ const elephantRoutes = [
     errorElement: <ErrorPage />
   },
 
-  // Create Elephant
   {
     path: "new_elephant",
     element: <New />,
     action: async ({ request }: ActionFunctionArgs) => {
-      const formData = await request.formData()
-      const response = await createElephant(formData)
-      const newElephantId = response.data.data.id
-      return redirect(`/elephants/${newElephantId}`)
+      try {
+        const formData = await request.formData()
+        const response = await createElephant(formData)
+        toast.success(i18n.t("elephants.created"))
+        return redirect(`/elephants/${response.data.data.id}`)
+      } catch (error: any) {
+        const errorMessage = error.response.data.error || error.response.data;
+        return toast.error(i18n.t(errorMessage))
+      }
     },
     errorElement: <ErrorPage />
   }
