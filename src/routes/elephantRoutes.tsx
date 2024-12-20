@@ -1,4 +1,4 @@
-import { getElephantsByQuery, getElephantById, createElephant, deleteElephant, updateElephant, getAllElephants } from '../utils/api'
+import { getElephantById, createElephant, deleteElephant, updateElephant, getAllElephants } from '../utils/api'
 import { redirect, LoaderFunctionArgs, ActionFunctionArgs } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import i18n from '../i18n'
