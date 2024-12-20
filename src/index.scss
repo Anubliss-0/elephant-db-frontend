@@ -21,6 +21,7 @@ body {
         @include dark-input-styles;
         @include dark-textarea-styles;
         @include dark-button-styles;
+        @include dark-select-styles;
     }
 }
 

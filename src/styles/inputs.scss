@@ -8,6 +8,24 @@ input {
     width: 100%;
 }
 
+select {
+    @include text-body;
+    background-color: $secondary-color-light;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: 2px solid $highlight-color-light;
+    border-radius: 0.5rem;
+    width: 100%;
+}
+
+@mixin dark-select-styles {
+    select {
+        color: $color-text-dark;
+        background-color: $secondary-color-dark;
+        border: 2px solid $highlight-color-dark;
+    }
+}
+
 @mixin dark-input-styles {
     input {
         color: $color-text-dark;

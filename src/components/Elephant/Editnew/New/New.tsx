@@ -2,11 +2,11 @@ import { useState, useId } from "react"
 import { Form, useSubmit } from "react-router-dom"
 import * as ElephantOptions from "../../../../constants/elephantOptions"
 import classNames from 'classnames'
-import styles from '../Edit/Edit.module.scss'
+import styles from '../Edit.module.scss'
 import { useTheme } from "../../../../contexts/ThemeContext"
 import ElephantPhotos from "../../Shared/ElephantPhotos/Elephantphotos"
 import { PhotoFormData } from "../../../../types"
-import ElephantDetailFields from "../../Shared/ElephantDetails/ElephantDetailFields"
+import ElephantDetailFields from "../ElephantDetails/ElephantDetailFields"
 import { useTranslation } from "react-i18next"
 
 function New() {

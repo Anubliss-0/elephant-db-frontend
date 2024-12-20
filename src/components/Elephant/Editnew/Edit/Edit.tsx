@@ -3,10 +3,10 @@ import { useLocation, useFetcher } from 'react-router-dom'
 import styles from '../Edit.module.scss'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
-import { PhotoFormData } from '../../../types.ts'
-import ElephantDetailFields from '../Editnew/ElephantDetails/ElephantDetailFields.tsx'
-import ElephantPhotos from '../Shared/ElephantPhotos/Elephantphotos.tsx'
-import { useTheme } from '../../../contexts/ThemeContext.tsx'
+import { PhotoFormData } from '../../../../types.ts'
+import ElephantDetailFields from '../ElephantDetails/ElephantDetailFields.tsx'
+import ElephantPhotos from '../../Shared/ElephantPhotos/Elephantphotos.tsx'
+import { useTheme } from '../../../../contexts/ThemeContext.tsx'
 
 type Elephant = {
     id: string

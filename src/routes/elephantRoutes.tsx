@@ -2,10 +2,10 @@ import { getElephantsByQuery, getElephantById, createElephant, deleteElephant, u
 import { redirect, LoaderFunctionArgs, ActionFunctionArgs } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import i18n from '../i18n'
-import New from '../components/Elephant/New/New'
+import New from '../components/Elephant/Editnew/New/New'
 import ErrorPage from '../ErrorPage'
 import NewIndex from '../components/Elephant/Index/NewIndex'
-import Edit from '../components/Elephant/Edit/Edit'
+import Edit from '../components/Elephant/EditNew/Edit/Edit'
 import NewShow from '../components/Elephant/Show/NewShow'
 
 const elephantRoutes = [
