@@ -1,0 +1,13 @@
+@import '../../styles/variables.scss';
+@import '../../styles/utilities.scss';
+
+.pageContainer {
+    @include flex-column(start, center);
+    width: 100%;
+    min-height: calc(100vh - $navbar-height);
+    padding: 3rem 1rem;
+
+    @media (max-width: $max-width-phone) {
+        padding: 0;
+    }
+}

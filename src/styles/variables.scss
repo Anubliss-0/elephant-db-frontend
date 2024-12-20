@@ -1,5 +1,5 @@
 /* media queries */
-$max-width-tablet: 1165px;
+$max-width-tablet: 1140px;
 $max-width-phone: 875px;
 
 // default colors
@@ -47,3 +47,5 @@ $primary-color-light: #F0F0F0;      // Primary elements like headers or buttons
 $secondary-color-light: #D9D9D9;    // Secondary elements like subheadings or links
 $accent-color-light: #ff6f61;       // Accent elements like highlights or call-to-action buttons
 $highlight-color-light: #e85e51;    // Highlights or borders
+
+$navbar-height: 5rem;

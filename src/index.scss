@@ -10,20 +10,11 @@ body {
     @include text-body;
     background-color: $color-page-background-light;
     color: $color-text-light;
-    display: flex;
-    justify-content: center;
 
     &.dark {
         background-color: $background-color-dark;
         color: $color-text-dark;
     }
-}
-
-#root {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 2000px;
 }
 
 h1 {
@@ -43,23 +34,4 @@ h2 {
 h3 {
     margin: 0;
     @include text-style-h3;
-}
-
-.desktopContainer {
-    background-color: $color-desktop-container-light;
-    padding: 3rem;
-    border-radius: 1rem;
-    width: 100%;
-    max-width: 1000px;
-    margin: 3rem;
-
-    @media (max-width: $max-width-phone) {
-        padding: 1rem;
-        margin: 0;
-        border-radius: 0;
-    }
-
-    &.dark {
-        background-color: $primary-color-dark;
-    }
 }

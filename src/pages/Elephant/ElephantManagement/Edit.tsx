@@ -9,6 +9,7 @@ import ElephantPhotos from './ElephantPhotos/Elephantphotos.tsx'
 import Button from '../../../components/Button/Button'
 import { useTheme } from '../../../contexts/ThemeContext.tsx'
 import Input from '../../../components/Inputs/Input.tsx'
+import PageContainer from '../../../components/PageContainer/PageContainer'
 
 type Elephant = {
     id: string
@@ -63,41 +64,36 @@ function Edit() {
         fetcher.submit(formData, { method: 'PATCH', encType: 'multipart/form-data' })
     }
 
-    const containerClasses = classNames(
-        styles.edit,
-        styles[theme],
-        'desktopContainer',
-        { dark: theme === 'dark' }
-    )
-
     return (
-        <div className={containerClasses}>
-            <h1>{t('elephants.editing')} {currentName}</h1>
-            <fetcher.Form onSubmit={handleSubmit} className={styles.editForm}>
-                <div className={classNames(styles.detailsGridArea, styles[theme])}>
-                    <ElephantDetailFields
-                        currentName={currentName}
-                        setCurrentName={setCurrentName}
-                        age={elephant.age}
-                        species={elephant.species}
-                        gender={elephant.gender}
-                        habitat={elephant.habitat}
-                    />
-                </div>
-                <div className={classNames(styles.photosGridArea, styles[theme])} aria-label={t('elephants.photos')}>
-                    {t('elephants.photos')}
-                    <ElephantPhotos
-                        photos={photos}
-                        fileInputId={fileInputId}
-                        setPhotos={setPhotos}
-                    />
-                </div>
-                <div className={classNames(styles.bioGridArea, styles[theme])}>
-                    <Input name="elephant[bio]" label={t('elephants.bio')} type="textarea" defaultValue={elephant.bio} required />
-                </div>
-                <Button type="submit">{t('elephants.save')}</Button>
-            </fetcher.Form>
-        </div>
+        <PageContainer>
+            <div className={classNames(styles.edit, styles[theme])}>
+                <h1>{t('elephants.editing')} {currentName}</h1>
+                <fetcher.Form onSubmit={handleSubmit} className={styles.editForm}>
+                    <div className={classNames(styles.detailsGridArea, styles[theme])}>
+                        <ElephantDetailFields
+                            currentName={currentName}
+                            setCurrentName={setCurrentName}
+                            age={elephant.age}
+                            species={elephant.species}
+                            gender={elephant.gender}
+                            habitat={elephant.habitat}
+                        />
+                    </div>
+                    <div className={classNames(styles.photosGridArea, styles[theme])} aria-label={t('elephants.photos')}>
+                        {t('elephants.photos')}
+                        <ElephantPhotos
+                            photos={photos}
+                            fileInputId={fileInputId}
+                            setPhotos={setPhotos}
+                        />
+                    </div>
+                    <div className={classNames(styles.bioGridArea, styles[theme])}>
+                        <Input name="elephant[bio]" label={t('elephants.bio')} type="textarea" defaultValue={elephant.bio} required />
+                    </div>
+                    <Button type="submit">{t('elephants.save')}</Button>
+                </fetcher.Form>
+            </div>
+        </PageContainer>
     )
 }
 
