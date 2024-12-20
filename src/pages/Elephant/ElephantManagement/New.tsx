@@ -1,6 +1,5 @@
 import { useState, useId } from "react"
 import { Form, useSubmit } from "react-router-dom"
-import * as ElephantOptions from "../../../constants/elephantOptions"
 import classNames from 'classnames'
 import styles from './ElephantManagement.module.scss'
 import { useTheme } from "../../../contexts/ThemeContext"
