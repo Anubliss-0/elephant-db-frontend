@@ -6,6 +6,7 @@ import { useTheme } from "../../../contexts/ThemeContext"
 import ElephantPhotos from "./ElephantPhotos/Elephantphotos"
 import { PhotoFormData } from "../../../types"
 import ElephantDetailFields from "./ElephantDetailFields/ElephantDetailFields"
+import Button from "../../../components/Button/Button"
 import { useTranslation } from "react-i18next"
 
 function New() {
@@ -65,7 +66,7 @@ function New() {
                         <textarea name="elephant[bio]" />
                     </label>
                 </div>
-                <button type="submit" className={classNames(styles.saveButton, styles[theme])}>{t('elephants.save')}</button>
+                <Button type="submit">{t('elephants.save')}</Button>
             </Form>
         </div>
     )

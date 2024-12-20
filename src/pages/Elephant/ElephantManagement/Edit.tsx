@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import { PhotoFormData } from '../../../types.ts'
 import ElephantDetailFields from './ElephantDetailFields/ElephantDetailFields'
 import ElephantPhotos from './ElephantPhotos/Elephantphotos.tsx'
+import Button from '../../../components/Button/Button'
 import { useTheme } from '../../../contexts/ThemeContext.tsx'
 
 type Elephant = {
@@ -96,7 +97,7 @@ function Edit() {
                         <textarea name="elephant[bio]" defaultValue={elephant.bio} />
                     </label>
                 </div>
-                <button type="submit" className={classNames(styles.saveButton, styles[theme])}>{t('elephants.save')}</button>
+                <Button type="submit">{t('elephants.save')}</Button>
             </fetcher.Form>
         </div>
     )

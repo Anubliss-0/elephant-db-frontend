@@ -1,0 +1,25 @@
+@import "../../styles/utilities.scss";
+@import "../../styles/typography.scss";
+
+.button {
+    @include text-body;
+    background-color: $accent-color-light;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    text-align: center;
+    color: white;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.dark {
+        background-color: $accent-color-dark;
+    }
+
+    &.disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+}

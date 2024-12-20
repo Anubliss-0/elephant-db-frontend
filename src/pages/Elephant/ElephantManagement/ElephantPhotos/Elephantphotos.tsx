@@ -7,6 +7,7 @@ import { PhotoFormData } from "../../../../types"
 import { handleFileChange, handleRestore, handleDelete, handleDragEnd } from "./elephantPhotoUtils"
 import classNames from 'classnames'
 import { useTheme } from "../../../../contexts/ThemeContext"
+import Button from "../../../../components/Button/Button"
 
 type ElephantPhotosProps = {
     photos: PhotoFormData[]
@@ -27,7 +28,6 @@ function ElephantPhotos({ photos, setPhotos, fileInputId }: ElephantPhotosProps)
         })
     )
 
-
     return (
         <div className={classNames(styles.editPhotosContainer, styles[theme])}>
             <div className={styles.editPhotos}>
@@ -45,14 +45,12 @@ function ElephantPhotos({ photos, setPhotos, fileInputId }: ElephantPhotosProps)
                 <div className={styles.editPhotosFooterContent}>
                     <span>{activePhotosCount} / 5</span>
                     <input type="file" id={fileInputId} multiple accept="image/*" onChange={(event) => handleFileChange(event, photos, setPhotos)} className={styles.hiddenFileInput} />
-                    <button
-                        type="button"
+                    <Button
                         onClick={() => document.getElementById(fileInputId)?.click()}
-                        className={classNames({ [styles.disabled]: activePhotosCount >= 5 })}
                         disabled={activePhotosCount >= 5}
                     >
                         {t('elephants.addPhotos')}
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

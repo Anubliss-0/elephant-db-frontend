@@ -1,7 +1,6 @@
 @import "./styles/utilities.scss";
 @import "./styles/typography.scss";
 @import "./styles/inputs.scss";
-@import "./styles/buttons.scss";
 
 * {
     box-sizing: border-box;
@@ -20,7 +19,6 @@ body {
         color: $color-text-dark;
         @include dark-input-styles;
         @include dark-textarea-styles;
-        @include dark-button-styles;
         @include dark-select-styles;
     }
 }
