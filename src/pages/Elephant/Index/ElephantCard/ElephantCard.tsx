@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import classNames from "classnames"
-import { useTheme } from "../../../contexts/ThemeContext"
-import { ElephantIndexData } from "../../../types"
+import { useTheme } from "../../../../contexts/ThemeContext"
+import { ElephantIndexData } from "../../../../types"
 import styles from "./ElephantCard.module.scss"
 
 type ElephantCardProps = {

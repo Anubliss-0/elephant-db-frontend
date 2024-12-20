@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import i18n from '../i18n'
 import New from '../pages/Elephant/ElephantManagement/New'
 import ErrorPage from '../ErrorPage'
-import NewIndex from '../components/Elephant/Index/NewIndex'
+import Index from '../pages/Elephant/Index/Index'
 import Edit from '../pages/Elephant/ElephantManagement/Edit'
 import Show from '../pages/Elephant/Show/Show'
 
@@ -12,7 +12,7 @@ const elephantRoutes = [
   // Elephant Index
   {
     path: "elephants",
-    element: <NewIndex />,
+    element: <Index />,
     action: async ({ request }: ActionFunctionArgs) => {
       const formData = await request.formData()
       const page = formData.get("page")
