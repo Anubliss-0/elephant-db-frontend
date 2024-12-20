@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
 import { PhotoFormData } from '../../../types.ts'
 import ElephantDetailFields from '../Editnew/ElephantDetails/ElephantDetailFields.tsx'
-import ElephantPhotos from '../Shared/ElephantPhotos/Elephantphotos.tsx'
+import ElephantPhotos from '../../../pages/Elephant/ElephantManagement/ElephantPhotos/Elephantphotos.tsx'
 import { useTheme } from '../../../contexts/ThemeContext.tsx'
 
 type Elephant = {
