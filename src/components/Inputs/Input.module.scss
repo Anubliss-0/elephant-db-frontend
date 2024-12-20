@@ -1,0 +1,35 @@
+@import "../../styles/utilities.scss";
+@import "../../styles/typography.scss";
+
+.inputLabel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+
+    input,
+    select,
+    textarea {
+        @include text-body;
+        padding: 0.5rem;
+        border: 2px solid;
+        border-radius: 0.5rem;
+        width: 100%;
+        background-color: $secondary-color-light;
+        border-color: $highlight-color-light;
+    }
+
+    textarea {
+        height: 150px;
+    }
+
+    &.dark {
+        input,
+        select,
+        textarea {
+            color: $color-text-dark;
+            background-color: $secondary-color-dark;
+            border-color: $highlight-color-dark;
+        }
+    }
+}
