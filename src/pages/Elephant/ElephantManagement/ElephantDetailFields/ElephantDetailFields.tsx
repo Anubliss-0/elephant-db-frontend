@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import * as ElephantOptions from '../../../../constants/elephantOptions'
 import styles from './ElephantDetailFields.module.scss'
+import Input from '../../../../components/Inputs/Input'
 
 type ElephantDetailsProps = {
     currentName: string
@@ -16,38 +17,49 @@ function ElephantDetailFields({ currentName, setCurrentName, age, species, gende
 
     return (
         <div className={styles.detailFieldsContainer}>
-            <label className={styles.editFormItem}>
-                {t('elephants.name')}
-                <input type="text" name="elephant[name]" defaultValue={currentName} onChange={(e) => setCurrentName(e.target.value)} required />
-            </label>
-            <label className={styles.editFormItem}>
-                {t('elephants.age')}
-                <input type="number" name="elephant[age]" defaultValue={age} required />
-            </label>
-            <label className={styles.editFormItem}>
-                {t('elephants.species')}
-                <select name="elephant[species]" defaultValue={species} required>
-                    {ElephantOptions.speciesOptions.map(option => (
-                        <option key={option} value={option}>{option}</option>
-                    ))}
-                </select>
-            </label>
-            <label className={styles.editFormItem}>
-                {t('elephants.gender')}
-                <select name="elephant[gender]" defaultValue={gender} required>
-                    {ElephantOptions.genderOptions.map(option => (
-                        <option key={option} value={option}>{option}</option>
-                    ))}
-                </select>
-            </label>
-            <label className={styles.editFormItem}>
-                {t('elephants.habitat')}
-                <select name="elephant[habitat]" defaultValue={habitat} required>
-                    {ElephantOptions.habitatOptions.map(option => (
-                        <option key={option} value={option}>{option}</option>
-                    ))}
-                </select>
-            </label>
+            <Input
+                label={t('elephants.name')}
+                type="text"
+                name="elephant[name]"
+                defaultValue={currentName}
+                onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setCurrentName(e.target.value)}
+                required
+            />
+
+            <Input
+                label={t('elephants.age')}
+                type="number"
+                name="elephant[age]"
+                defaultValue={age}
+                required
+            />
+
+            <Input
+                label={t('elephants.species')}
+                type="select"
+                options={ElephantOptions.speciesOptions}
+                name="elephant[species]"
+                defaultValue={species}
+                required
+            />
+
+            <Input
+                label={t('elephants.gender')}
+                type="select"
+                options={ElephantOptions.genderOptions}
+                name="elephant[gender]"
+                defaultValue={gender}
+                required
+            />
+
+            <Input
+                label={t('elephants.habitat')}
+                type="select"
+                options={ElephantOptions.habitatOptions}
+                name="elephant[habitat]"
+                defaultValue={habitat}
+                required
+            />
         </div>
     )
 }

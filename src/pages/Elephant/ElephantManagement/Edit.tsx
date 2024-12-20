@@ -8,6 +8,7 @@ import ElephantDetailFields from './ElephantDetailFields/ElephantDetailFields'
 import ElephantPhotos from './ElephantPhotos/Elephantphotos.tsx'
 import Button from '../../../components/Button/Button'
 import { useTheme } from '../../../contexts/ThemeContext.tsx'
+import Input from '../../../components/Inputs/Input.tsx'
 
 type Elephant = {
     id: string
@@ -92,10 +93,7 @@ function Edit() {
                     />
                 </div>
                 <div className={classNames(styles.bioGridArea, styles[theme])}>
-                    <label>
-                        {t('elephants.bio')}
-                        <textarea name="elephant[bio]" defaultValue={elephant.bio} />
-                    </label>
+                    <Input name="elephant[bio]" label={t('elephants.bio')} type="textarea" defaultValue={elephant.bio} required />
                 </div>
                 <Button type="submit">{t('elephants.save')}</Button>
             </fetcher.Form>
