@@ -6,7 +6,7 @@ import New from '../pages/Elephant/ElephantManagement/New'
 import ErrorPage from '../ErrorPage'
 import NewIndex from '../components/Elephant/Index/NewIndex'
 import Edit from '../pages/Elephant/ElephantManagement/Edit'
-import NewShow from '../components/Elephant/Show/NewShow'
+import Show from '../pages/Elephant/Show/Show'
 
 const elephantRoutes = [
   // Elephant Index
@@ -28,7 +28,7 @@ const elephantRoutes = [
   // Elephant Show
   {
     path: "elephants/:id",
-    element: <NewShow />,
+    element: <Show />,
     loader: async ({ params }: LoaderFunctionArgs) => {
       const response = await getElephantById(params.id as string)
       return { elephant: response.data.data.attributes }
