@@ -13,11 +13,14 @@
 }
 
 .pageContent {
-    width: 100%;
     max-width: $max-width-tablet;
     padding: 1rem;
     background-color: $primary-color-light;
     border-radius: 1rem;
+
+    &.fullWidth {
+        width: 100%;
+    }
 
     &.dark {
         background-color: $primary-color-dark;
