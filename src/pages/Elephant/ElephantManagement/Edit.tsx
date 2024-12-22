@@ -27,31 +27,54 @@ type Elephant = {
     user_profile_image_url: string
 }
 
-function Edit() {
+type EditProps = {
+    editMode: boolean
+}
+
+function Edit({ editMode }: EditProps) {
     const { theme } = useTheme()
     const { t } = useTranslation()
     const fetcher = useFetcher()
     const location = useLocation()
-    const elephant = location.state.elephant as Elephant
+    const [elephant, setElephant] = useState<Elephant | null>(null)
     const [photos, setPhotos] = useState<PhotoFormData[]>([])
-    const [currentName, setCurrentName] = useState(elephant.name)
+    const [currentName, setCurrentName] = useState('')
     const fileInputId = useId()
 
     useEffect(() => {
-        setPhotos(elephant.photos.map((photo) => ({
+        if (editMode) {
+            const { elephant } = location.state
+            setElephant(elephant)
+            setCurrentName(elephant.name)
+        } else {
+            setElephant(null)
+        }
+    }, [editMode, location.state])
+
+    useEffect(() => {
+        if (elephant) {
+            setPhotos(mapPhotos(elephant.photos))
+        }
+    }, [elephant])
+
+    const mapPhotos = (photos: PhotoFormData[]) => 
+        photos.map(photo => ({
             id: photo.id,
             status: '',
             position: photo.position,
             image: null,
             thumbnail_url: photo.thumbnail_url,
             previous_position: photo.position
-        })))
-    }, [elephant])
+        }))
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const formData = new FormData(event.currentTarget)
+        appendPhotosToFormData(formData, photos)
+        fetcher.submit(formData, { method: 'PATCH', encType: 'multipart/form-data' })
+    }
 
+    const appendPhotosToFormData = (formData: FormData, photos: PhotoFormData[]) => {
         photos.forEach((photo, index) => {
             formData.append(`elephant[photos_attributes][${index}][id]`, photo.id.toString())
             formData.append(`elephant[photos_attributes][${index}][position]`, photo.position.toString())
@@ -60,36 +83,36 @@ function Edit() {
                 formData.append(`elephant[photos_attributes][${index}][image]`, photo.image)
             }
         })
-
-        fetcher.submit(formData, { method: 'PATCH', encType: 'multipart/form-data' })
     }
+
+    const getClassNames = (baseClass: string) => classNames(baseClass, styles[theme])
 
     return (
         <PageContainer>
-            <div className={classNames(styles.edit, styles[theme])}>
-                <h1>{t('elephants.editing')} {currentName}</h1>
+            <div className={getClassNames(styles.edit)}>
+                <h1>{editMode ? `${t('elephants.editing')} ${currentName}` : t('elephants.creating')}</h1>
                 <fetcher.Form onSubmit={handleSubmit} className={styles.editFormGrid}>
-                    <div className={classNames(styles.detailsGridArea, styles[theme])}>
+                    <div className={getClassNames(styles.detailsGridArea)}>
                         <ElephantDetailFields
                             currentName={currentName}
                             setCurrentName={setCurrentName}
-                            age={elephant.age}
-                            species={elephant.species}
-                            gender={elephant.gender}
-                            habitat={elephant.habitat}
+                            age={elephant?.age || 0}
+                            species={elephant?.species || ''}
+                            gender={elephant?.gender || ''}
+                            habitat={elephant?.habitat || ''}
                         />
                     </div>
-                    <div className={classNames(styles.photosGridArea, styles[theme])} >
+                    <div className={getClassNames(styles.photosGridArea)}>
                         <ElephantPhotos
                             photos={photos}
                             fileInputId={fileInputId}
                             setPhotos={setPhotos}
                         />
                     </div>
-                    <div className={classNames(styles.bioGridArea, styles[theme])}>
-                        <Input name="elephant[bio]" label={t('elephants.bio')} type="textarea" defaultValue={elephant.bio} required />
+                    <div className={getClassNames(styles.bioGridArea)}>
+                        <Input name="elephant[bio]" label={t('elephants.bio')} type="textarea" defaultValue={elephant?.bio || ''} required />
                     </div>
-                    <Button type="submit">{t('elephants.save')}</Button>
+                    <Button type="submit">{t(editMode ? 'elephants.save' : 'elephants.create')}</Button>
                 </fetcher.Form>
             </div>
         </PageContainer>

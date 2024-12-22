@@ -51,7 +51,7 @@ const elephantRoutes = [
   // Elephant Edit
   {
     path: "elephants/:id/edit",
-    element: <Edit />,
+    element: <Edit editMode={true} />,
     action: async ({ request, params }: ActionFunctionArgs) => {
       const id = params.id as string
 
@@ -68,9 +68,10 @@ const elephantRoutes = [
     errorElement: <ErrorPage />
   },
 
+  // Elephant New
   {
     path: "new_elephant",
-    element: <New />,
+    element: <Edit editMode={false} />,
     action: async ({ request }: ActionFunctionArgs) => {
       try {
         const formData = await request.formData()
