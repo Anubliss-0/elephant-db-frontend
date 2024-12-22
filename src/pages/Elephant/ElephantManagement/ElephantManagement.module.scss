@@ -4,7 +4,6 @@
 
 .edit {
     @include flex-column(start, start);
-    width: 100%;
     gap: 1rem;
 }
 
