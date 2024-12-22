@@ -5,22 +5,10 @@
 .edit {
     @include flex-column(start, start);
     width: 100%;
-    max-width: $max-width-tablet;
     gap: 1rem;
-    padding: 1rem;
-    background-color: $primary-color-light;
-    border-radius: 1rem;
-
-    &.dark {
-        background-color: $primary-color-dark;
-    }
-
-    @media (max-width: $max-width-phone) {
-        border-radius: 0;
-    }
 }
 
-.editForm {
+.editFormGrid {
     gap: 1rem;
     width: 100%;
     display: grid;
@@ -41,15 +29,10 @@
 
 .detailsGridArea {
     grid-area: details;
-    height: 100%;
 }
 
 .photosGridArea {
-    @include flex-column(start, start);
     grid-area: photos;
-    height: 100%;
-    width: 100%;
-    gap: 0.5rem;
 }
 
 .bioGridArea {

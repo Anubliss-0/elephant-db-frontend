@@ -2,40 +2,39 @@
 @import '../../../../styles/utilities.scss';
 
 .editPhotosContainer {
+    @include flex-column(start, start);
+    height: 100%;
+}
+
+.editPhotos {
+    @include flex-column(space-between, start);
     background-color: $secondary-color-light;
     border: 2px solid $highlight-color-light;
     border-radius: 0.5rem;
-    padding: 1.5rem 1.5rem 1rem 1.5rem;
-    height: 100%;
+    padding: 1rem;
+    margin-top: 0.5rem;
     width: 100%;
-
+    height: 100%;
+    
     &.dark {
         background-color: $secondary-color-dark;
         border: 2px solid $highlight-color-dark;
     }
 }
 
-.editPhotos {
+.photosGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
     gap: 1rem;
     position: relative;
     width: 100%;
-
-    >div {
-        @include flex-column(center, center);
-        position: relative;
-    }
 }
 
 .editPhotosFooter {
     @include flex-row(end, center);
     padding-top: 1rem;
-}
-
-.editPhotosFooterContent {
-    @include flex-row(center, center);
     gap: 1rem;
+    width: 100%;
 }
 
 .hiddenFileInput {

@@ -29,20 +29,19 @@ function ElephantPhotos({ photos, setPhotos, fileInputId }: ElephantPhotosProps)
     )
 
     return (
-        <div className={classNames(styles.editPhotosContainer, styles[theme])}>
-            <div className={styles.editPhotos}>
-                <DndContext onDragEnd={(event) => handleDragEnd(event, setPhotos)} sensors={sensors}>
-                    <SortableContext items={photos.map(photo => photo.id)}>
-                        {photos.map(photo => (
-                            <div key={photo.id} className={styles.photoItem}>
-                                <SortablePhoto photo={photo} onDelete={() => handleDelete(photo.id, setPhotos)} onRestore={() => handleRestore(photo.id, setPhotos)} />
-                            </div>
-                        ))}
-                    </SortableContext>
-                </DndContext>
-            </div>
-            <div className={styles.editPhotosFooter}>
-                <div className={styles.editPhotosFooterContent}>
+        <div className={styles.editPhotosContainer}>
+            {t('elephants.photos')}
+            <div className={classNames(styles.editPhotos, styles[theme])} aria-label={t('elephants.photos')}>
+                <div className={classNames(styles.photosGrid, styles[theme])}>
+                    <DndContext onDragEnd={(event) => handleDragEnd(event, setPhotos)} sensors={sensors}>
+                        <SortableContext items={photos.map(photo => photo.id)}>
+                            {photos.map(photo => (
+                                <SortablePhoto photo={photo} onDelete={() => handleDelete(photo.id, setPhotos)} onRestore={() => handleRestore(photo.id, setPhotos)} key={photo.id} />
+                            ))}
+                        </SortableContext>
+                    </DndContext>
+                </div>
+                <div className={styles.editPhotosFooter}>
                     <span>{activePhotosCount} / 5</span>
                     <input type="file" id={fileInputId} multiple accept="image/*" onChange={(event) => handleFileChange(event, photos, setPhotos)} className={styles.hiddenFileInput} />
                     <Button

@@ -1,6 +1,7 @@
 import styles from './PageContainer.module.scss'
 import { useTheme } from '../../contexts/ThemeContext'
 import classNames from 'classnames'
+
 type PageContainerProps = {
     children: React.ReactNode
 }
@@ -8,7 +9,9 @@ type PageContainerProps = {
 function PageContainer({ children }: PageContainerProps) {
     const { theme } = useTheme()
     return <div className={classNames(styles.pageContainer, styles[theme])}>
-        {children}
+        <div className={classNames(styles.pageContent, styles[theme])}>
+            {children}
+        </div>
     </div>
 }
 

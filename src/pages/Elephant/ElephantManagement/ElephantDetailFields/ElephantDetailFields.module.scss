@@ -2,13 +2,5 @@
 
 .detailFieldsContainer {
     @include flex-column(space-between, start);
-    height: 100%;
-
-    @media (max-width: $max-width-phone) {
-        gap: 1rem;
-    }
-}
-
-.editFormItem {
-    width: 100%;
+    gap: 1rem;
 }

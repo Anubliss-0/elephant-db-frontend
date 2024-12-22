@@ -68,7 +68,7 @@ function Edit() {
         <PageContainer>
             <div className={classNames(styles.edit, styles[theme])}>
                 <h1>{t('elephants.editing')} {currentName}</h1>
-                <fetcher.Form onSubmit={handleSubmit} className={styles.editForm}>
+                <fetcher.Form onSubmit={handleSubmit} className={styles.editFormGrid}>
                     <div className={classNames(styles.detailsGridArea, styles[theme])}>
                         <ElephantDetailFields
                             currentName={currentName}
@@ -79,8 +79,7 @@ function Edit() {
                             habitat={elephant.habitat}
                         />
                     </div>
-                    <div className={classNames(styles.photosGridArea, styles[theme])} aria-label={t('elephants.photos')}>
-                        {t('elephants.photos')}
+                    <div className={classNames(styles.photosGridArea, styles[theme])} >
                         <ElephantPhotos
                             photos={photos}
                             fileInputId={fileInputId}

@@ -11,3 +11,19 @@
         padding: 0;
     }
 }
+
+.pageContent {
+    width: 100%;
+    max-width: $max-width-tablet;
+    padding: 1rem;
+    background-color: $primary-color-light;
+    border-radius: 1rem;
+
+    &.dark {
+        background-color: $primary-color-dark;
+    }
+
+    @media (max-width: $max-width-phone) {
+        border-radius: 0;
+    }
+}
