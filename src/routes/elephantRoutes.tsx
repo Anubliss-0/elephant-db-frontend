@@ -77,9 +77,9 @@ const elephantRoutes = [
         const formData = await request.formData()
         const response = await createElephant(formData)
         toast.success(i18n.t("elephants.created"))
-        return redirect(`/elephants/${response.data.data.id}`)
+        return redirect(`/elephants/${response.data.id}`)
       } catch (error: any) {
-        const errorMessage = error.response.data.error || error.response.data;
+        const errorMessage = error.response.data.errors || error.response.data;
         return toast.error(i18n.t(errorMessage))
       }
     },

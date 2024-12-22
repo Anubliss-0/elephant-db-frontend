@@ -46,16 +46,13 @@ function Edit({ editMode }: EditProps) {
             const { elephant } = location.state
             setElephant(elephant)
             setCurrentName(elephant.name)
+            setPhotos(mapPhotos(elephant.photos))
         } else {
             setElephant(null)
+            setPhotos([])
+            setCurrentName('')
         }
     }, [editMode, location.state])
-
-    useEffect(() => {
-        if (elephant) {
-            setPhotos(mapPhotos(elephant.photos))
-        }
-    }, [elephant])
 
     const mapPhotos = (photos: PhotoFormData[]) => 
         photos.map(photo => ({
