@@ -85,7 +85,7 @@ function Edit({ editMode }: EditProps) {
     const getClassNames = (baseClass: string) => classNames(baseClass, styles[theme])
 
     return (
-        <PageContainer>
+        <PageContainer fullWidth={true}>
             <div className={getClassNames(styles.edit)}>
                 <h1>{editMode ? `${t('elephants.editing')} ${currentName}` : t('elephants.creating')}</h1>
                 <fetcher.Form onSubmit={handleSubmit} className={styles.editFormGrid}>
