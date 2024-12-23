@@ -10,15 +10,17 @@ type ButtonProps = {
   type?: 'button' | 'submit' | 'reset'
   to?: string
   state?: any
+  className?: string
 }
 
-function Button({ children, onClick, disabled = false, type = 'button', to, state }: ButtonProps) {
+function Button({ children, onClick, disabled = false, type = 'button', to, state, className }: ButtonProps) {
   const { theme } = useTheme()
   
   const buttonClasses = classNames(
     styles.button,
     { [styles.disabled]: disabled },
-    styles[theme]
+    styles[theme],
+    className
   )
 
   if (to) {
