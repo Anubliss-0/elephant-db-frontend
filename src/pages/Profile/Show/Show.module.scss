@@ -45,6 +45,8 @@
 }
 
 .profileImage {
+    @include flex-row(center, center);
+    width: 100%;
     grid-area: image;
 
     label {

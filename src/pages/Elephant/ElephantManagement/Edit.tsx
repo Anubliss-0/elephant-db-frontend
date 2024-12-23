@@ -1,6 +1,6 @@
 import { useState, useEffect, useId } from 'react'
 import { useLocation, useFetcher } from 'react-router-dom'
-import styles from './ElephantManagement.module.scss'
+import styles from './Edit.module.scss'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
 import { PhotoFormData } from '../../../types.ts'
