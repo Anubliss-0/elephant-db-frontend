@@ -4,13 +4,12 @@ import classNames from 'classnames'
 
 type PageContainerProps = {
     children: React.ReactNode,
-    fullWidth?: boolean
 }
 
-function PageContainer({ children, fullWidth = false }: PageContainerProps) {
+function PageContainer({ children }: PageContainerProps) {
     const { theme } = useTheme()
     return <div className={classNames(styles.pageContainer, styles[theme])}>
-        <div className={classNames(styles.pageContent, styles[theme], { [styles.fullWidth]: fullWidth })}>
+        <div className={classNames(styles.contentContainer, styles[theme])}>
             {children}
         </div>
     </div>

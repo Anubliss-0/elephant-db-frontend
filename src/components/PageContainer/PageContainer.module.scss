@@ -2,7 +2,7 @@
 @import '../../styles/utilities.scss';
 
 .pageContainer {
-    @include flex-column(start, center);
+    @include flex-row(center, start);
     width: 100%;
     min-height: calc(100vh - $navbar-height);
     padding: 3rem 1rem;
@@ -12,15 +12,13 @@
     }
 }
 
-.pageContent {
+.contentContainer {
+    @include flex-row(center, start);
+    width: 100%;
     max-width: $max-width-tablet;
     padding: 1rem;
     background-color: $primary-color-light;
     border-radius: 1rem;
-
-    &.fullWidth {
-        width: 100%;
-    }
 
     &.dark {
         background-color: $primary-color-dark;
