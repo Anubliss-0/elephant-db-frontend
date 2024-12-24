@@ -2,7 +2,6 @@ import { getElephantById, createElephant, deleteElephant, updateElephant, getAll
 import { redirect, LoaderFunctionArgs, ActionFunctionArgs } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import i18n from '../i18n'
-import New from '../pages/Elephant/ElephantManagement/New'
 import ErrorPage from '../ErrorPage'
 import Index from '../pages/Elephant/Index/Index'
 import Edit from '../pages/Elephant/ElephantManagement/Edit'

@@ -1,4 +1,3 @@
-import PageContainer from "../../../components/PageContainer/PageContainer"
 import { useLoaderData } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import styles from "./Show.module.scss"
@@ -22,35 +21,36 @@ function Show() {
     console.log(profile)
 
     return (
-        <PageContainer>
-            <div className={styles.show}>
-                <div className={styles.profileHeader}>
-                    <h1>{profile.name}</h1>
-                    {profile.can_edit && <Button to={`/profiles/${profile.user_id}/edit`} state={{ profile: profile }}>{t('profiles.edit')}</Button>}
-                </div>
-                <div className={styles.profileGrid}>
-                    <div className={styles.profileDetails}>
-                        <label>{t('profiles.gender')}
-                            <p>{profile.gender}</p>
-                        </label>
-                        <label>{t('profiles.location')}
-                            <p>{profile.location}</p>
-                        </label>
-                        <label>{t('profiles.elephants_count')}
-                            <p>{profile.elephants_count}</p>
-                        </label>
-                        <label>{t('profiles.member_since')}
-                            <p>{formattedDate}</p>
-                        </label>
+        <div className={styles.show}>
+            <div className={styles.profileHeader}>
+                <h1>{profile.name}</h1>
+                {profile.can_edit && <Button to={`/profiles/${profile.user_id}/edit`} state={{ profile: profile }}>{t('profiles.edit')}</Button>}
+            </div>
+            <div>
+                <div className={styles.profileDetails}>
+                    <div className={styles.profileDetail}>
+                        <strong>{t('profiles.gender')}</strong>
+                        <p>{profile.gender}</p>
                     </div>
-                    <div className={styles.profileImage}>
-                        <label>{t('profiles.profile_image')}
-                            <img src={profile.profileimage_url} alt={profile.name} />
-                        </label>
+                    <div className={styles.profileDetail}>
+                        <strong>{t('profiles.location')}</strong>
+                        <p>{profile.location}</p>
+                    </div>
+                    <div className={styles.profileDetail}>
+                        <strong>{t('profiles.elephants_count')}</strong>
+                        <p>{profile.elephants_count}</p>
+                    </div>
+                    <div className={styles.profileDetail}>
+                        <strong>{t('profiles.member_since')}</strong>
+                        <p>{formattedDate}</p>
                     </div>
                 </div>
             </div>
-        </PageContainer>
+            <div className={styles.profileImage}>
+                <strong>{t('profiles.profile_image')}</strong>
+                <img src={profile.profileimage_url} alt={profile.name} />
+            </div>
+        </div>
     )
 }
 
