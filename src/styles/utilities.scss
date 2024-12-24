@@ -31,6 +31,14 @@
   }
 }
 
+@mixin responsive-flex($flex-basis) {
+  flex: 0 1 $flex-basis;
+
+  @include respond-to-phone {
+    flex: 1 0 100%;
+  }
+}
+
 @mixin text-center {
   text-align: center;
 }
