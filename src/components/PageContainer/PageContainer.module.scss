@@ -4,7 +4,7 @@
 .pageContainer {
     @include flex-row(center, start);
     width: 100%;
-    min-height: calc(100vh - $navbar-height);
+    height: calc(100vh - $navbar-height);
     padding: 3rem 1rem;
 
     @media (max-width: $max-width-phone) {
@@ -19,7 +19,6 @@
 
         @media (max-width: $max-width-phone) {
             border-radius: 0;
-            width: 100%;
             height: 100%;
         }
     }
