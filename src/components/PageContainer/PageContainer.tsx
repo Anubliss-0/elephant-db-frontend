@@ -9,9 +9,7 @@ type PageContainerProps = {
 function PageContainer({ children }: PageContainerProps) {
     const { theme } = useTheme()
     return <div className={classNames(styles.pageContainer, styles[theme])}>
-        <div className={classNames(styles.contentContainer, styles[theme])}>
-            {children}
-        </div>
+        {children}
     </div>
 }
 

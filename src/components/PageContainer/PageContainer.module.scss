@@ -10,21 +10,23 @@
     @media (max-width: $max-width-phone) {
         padding: 0;
     }
-}
 
-.contentContainer {
-    @include flex-row(center, start);
-    width: 100%;
-    max-width: $max-width-tablet;
-    padding: 1rem;
-    background-color: $primary-color-light;
-    border-radius: 1rem;
+    > div {
+        background-color: $primary-color-light;
+        padding: 1rem;
+        max-width: $max-width-tablet;
+        border-radius: 1rem;
 
-    &.dark {
-        background-color: $primary-color-dark;
+        @media (max-width: $max-width-phone) {
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+        }
     }
 
-    @media (max-width: $max-width-phone) {
-        border-radius: 0;
+    &.dark {
+        > div {
+            background-color: $primary-color-dark;
+        }
     }
 }
