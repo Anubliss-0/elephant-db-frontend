@@ -4,7 +4,6 @@
 .pageContainer {
     @include flex-row(center, start);
     width: 100%;
-    height: calc(100vh - $navbar-height);
     padding: 3rem 1rem;
 
     @media (max-width: $max-width-phone) {

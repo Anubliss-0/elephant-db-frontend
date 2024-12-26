@@ -8,6 +8,11 @@
     gap: 1rem;
 }
 
+.header {
+    @include flex-row(space-between, center);
+    width: 100%;
+}
+
 .editFormGrid {
     gap: 1rem;
     width: 100%;

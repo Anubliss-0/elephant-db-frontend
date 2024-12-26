@@ -10,6 +10,7 @@ import Button from '../../../components/Button/Button'
 import { useTheme } from '../../../contexts/ThemeContext.tsx'
 import Input from '../../../components/Inputs/Input.tsx'
 import PageContainer from '../../../components/PageContainer/PageContainer'
+import { useConfirmation } from '../../../contexts/ConfirmationContext'
 
 type Elephant = {
     id: string
@@ -40,7 +41,7 @@ function Edit({ editMode }: EditProps) {
     const [photos, setPhotos] = useState<PhotoFormData[]>([])
     const [currentName, setCurrentName] = useState('')
     const fileInputId = useId()
-
+    const { setShowWarning, setWarningMessage, setOnConfirm } = useConfirmation()
     useEffect(() => {
         if (editMode) {
             const { elephant } = location.state
@@ -82,12 +83,23 @@ function Edit({ editMode }: EditProps) {
         })
     }
 
+    const handleDelete = () => {
+        setShowWarning(true)
+        setWarningMessage(t('elephants.deleteConfirmation'))
+        setOnConfirm(() => () => {
+            fetcher.submit(null, { method: 'DELETE' })
+        })
+    }
+
     const getClassNames = (baseClass: string) => classNames(baseClass, styles[theme])
 
     return (
         <PageContainer>
             <div className={getClassNames(styles.edit)}>
-                <h1>{editMode ? `${t('elephants.editing')} ${currentName}` : t('elephants.creating')}</h1>
+                <div className={styles.header}>
+                    <h1>{editMode ? `${t('elephants.editing')} ${currentName}` : t('elephants.creating')}</h1>
+                    <Button danger={true} onClick={handleDelete}>{t('elephants.delete')}</Button>
+                </div>
                 <fetcher.Form onSubmit={handleSubmit} className={styles.editFormGrid}>
                     <div className={getClassNames(styles.detailsGridArea)}>
                         <ElephantDetailFields
