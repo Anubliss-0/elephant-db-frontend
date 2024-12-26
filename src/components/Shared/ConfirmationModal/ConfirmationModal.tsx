@@ -2,6 +2,7 @@ import { useConfirmation } from '../../../contexts/ConfirmationContext'
 import { useTheme } from '../../../contexts/ThemeContext'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
+import Button from '../../Button/Button'
 import styles from './ConfirmationModal.module.scss'
 
 function ConfirmationModal() {
@@ -26,8 +27,8 @@ function ConfirmationModal() {
                         <div className={classNames(styles.confirmationModal, styles[theme])}>
                             {warningMessage}
                             <div className={styles.confirmationModalButtons}>
-                                <button onClick={handleYes} className={styles.yesButton}>{t('yes')}</button>
-                                <button onClick={handleNo} className={styles.noButton}>{t('no')}</button>
+                                <Button onClick={handleYes} danger={true}>{t('yes')}</Button>
+                                <Button onClick={handleNo}>{t('no')}</Button>
                             </div>
                         </div>
                     </div>
