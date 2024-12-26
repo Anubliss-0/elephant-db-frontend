@@ -10,11 +10,12 @@ type InputType = {
     type: string
     options?: string[]
     defaultValue?: string | number
+    placeholder?: string
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
     required?: boolean
 }
 
-function Input({ name, label, type, options, defaultValue, onChange, required }: InputType) {
+function Input({ name, label, type, options, defaultValue, placeholder, onChange, required }: InputType) {
     const { theme } = useTheme()
 
     return (
@@ -22,7 +23,7 @@ function Input({ name, label, type, options, defaultValue, onChange, required }:
             {label}
             {type === 'select' && options && <Select options={options} name={name} required={required} />}
             {type === 'textarea' && <TextArea name={name} defaultValue={defaultValue} required={required} onChange={onChange} />}
-            {type !== 'select' && type !== 'textarea' && <input type={type} name={name} defaultValue={defaultValue} required={required} onChange={onChange} />}
+            {type !== 'select' && type !== 'textarea' && <input type={type} name={name} defaultValue={defaultValue} required={required} onChange={onChange} placeholder={placeholder} />}
         </label>
     )
 }
