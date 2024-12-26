@@ -1,11 +1,10 @@
-import { useLoaderData, Link, useFetcher } from 'react-router-dom'
-import { useConfirmation } from '../../../contexts/ConfirmationContext.tsx'
+import { useLoaderData } from 'react-router-dom'
 import ImageGallery from 'react-image-gallery'
 import { useTranslation } from 'react-i18next'
-import classNames from 'classnames'
 import 'react-image-gallery/styles/scss/image-gallery.scss'
 import styles from './Show.module.scss'
-import { useTheme } from '../../../contexts/ThemeContext.tsx'
+import Button from '../../../components/Button/Button.tsx'
+import classNames from 'classnames'
 
 type Photo = {
     id: number
@@ -40,12 +39,9 @@ type ImageGalleryItem = {
     loading: 'lazy' | 'eager' | undefined
 }
 
-function NewShow() {
-    const { theme } = useTheme()
-    const { setShowWarning, setWarningMessage, setOnConfirm } = useConfirmation()
+function Show() {
     const { elephant } = useLoaderData() as { elephant: Elephant }
     const { t } = useTranslation()
-    const fetcher = useFetcher()
 
     const images: ImageGalleryItem[] = elephant.photos.map(photo => ({
         original: photo.medium_url,
@@ -54,68 +50,39 @@ function NewShow() {
         loading: 'eager',
     }))
 
-    const handleDelete = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        setShowWarning(true)
-        setWarningMessage(t('elephants.confirmDelete'))
-        setOnConfirm(() => () => {
-            fetcher.submit(null, { method: 'DELETE' })
-        })
-    }
-
     return (
-        <div className={classNames(styles.show, styles[theme])}>
-            <div className={styles.top}>
-                <div className={styles.topInfo}>
-                    <h1>{elephant.name}</h1>
-                    <div className={styles.topInfoItem}>
-                        <h3>{t('elephants.species')}:</h3>
-                        <p>{elephant.species}</p>
-                    </div>
-                    <div className={styles.topInfoItem}>
-                        <h3>{t('elephants.habitat')}:</h3>
-                        <p>{elephant.habitat}</p>
-                    </div>
-                    <div className={styles.topInfoItem}>
-                        <h3>{t('elephants.age')}:</h3>
-                        <p>{elephant.age}</p>
-                    </div>
-                    <div className={styles.topInfoItem}>
-                        <h3>{t('elephants.gender')}:</h3>
-                        <p>{elephant.gender}</p>
-                    </div>
-                    <div className={styles.topInfoItem}>
-                        <h3>{t('elephants.createdAt')}:</h3>
-                        <p>{elephant.created_at}</p>
-                    </div>
-                    <div className={styles.topInfoItem}>
-                        <h3>{t('elephants.updatedAt')}:</h3>
-                        <p>{elephant.updated_at}</p>
-                    </div>
-                    <div className={styles.userInfo}>
-                        <h3>{t('elephants.creator')}:</h3>
-                        <Link to={`/profiles/${elephant.profile_id}`} className={styles.userInfoLink}>
-                            <p>{elephant.user_name}</p>
-                            {elephant.user_profile_image_url && <img src={elephant.user_profile_image_url} alt={`${elephant.user_name}'s profile`} />}
-                        </Link>
-                    </div>
-                    {elephant.can_edit && (
-                        <div className={styles.editContainer}>
-                            <Link to={`/elephants/${elephant.id}/edit`} state={{ elephant: elephant }} className={styles.editLink}>{t('elephants.edit')}</Link>
-                            <fetcher.Form method="DELETE" className={styles.deleteForm} onSubmit={handleDelete}>
-                                <button type="submit">{t('elephants.delete')}</button>
-                            </fetcher.Form>
-                        </div>
-                    )}
-                </div>
-                <ImageGallery items={images} thumbnailPosition='right' showPlayButton={false} />
+        <div className={styles.show}>
+            <div className={styles.header}>
+                <h1>{elephant.name}</h1>
+                {elephant.can_edit && <Button to={`/elephants/${elephant.id}/edit`} state={{ elephant: elephant }}>{t('elephants.edit')}</Button>}
             </div>
-            <div className={styles.bio}>
-                <h2>{t('elephants.bio')}:</h2>
+            <div className={styles.details}>
+                <div className={styles.detail}>
+                    <strong>{t('elephants.species')}</strong>
+                    <span>{elephant.species}</span>
+                </div>
+                <div className={styles.detail}>
+                    <strong>{t('elephants.habitat')}</strong>
+                    <span>{elephant.habitat}</span>
+                </div>
+                <div className={styles.detail}>
+                    <strong>{t('elephants.age')}</strong>
+                    <span>{elephant.age}</span>
+                </div>
+                <div className={styles.detail}>
+                    <strong>{t('elephants.gender')}</strong>
+                    <span>{elephant.gender}</span>
+                </div>
+            </div>
+            <div className={styles.photos}>
+                <ImageGallery items={images} showThumbnails={false} showPlayButton={false} />
+            </div>
+            <div className={classNames(styles.bio, styles.detail)}>
+                <strong>{t('elephants.bio')}:</strong>
                 <p>{elephant.bio}</p>
             </div>
         </div>
     )
 }
 
-export default NewShow
+export default Show

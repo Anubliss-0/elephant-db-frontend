@@ -3,100 +3,54 @@
 @import '../../../styles/typography.scss';
 
 .show {
-    @include flex-column(start, start);
-    padding: 3rem;
-    border-radius: 1rem;
-    width: 100%;
-    max-width: 1000px;
-    margin: 3rem;
-    gap: 2rem;
-    background-color: $color-element-background-light;
+    @include responsive-flex($outlet-medium-width);
+    display: grid;
+    gap: 1rem;
+    grid-template-areas: 
+        "header header"
+        "details photos"
+        "bio bio";
+    grid-template-columns: 1fr minmax(200px, 350px);
 
-    &.dark {
-        background-color: $color-element-background-dark;
+    @include respond-to-phone {
+        grid-template-areas: 
+            "header"
+            "photos"
+            "details"
+            "bio";
+        grid-template-columns: 1fr;
     }
 }
 
-.top {
+.header {
     @include flex-row(space-between, center);
     width: 100%;
+    grid-area: header;
 }
 
-.topInfo {
+.details {
     @include flex-column(start, start);
-
-    > h1 {
-        text-decoration: underline;
-        margin-bottom: 1rem;
-    }
-}
-
-.topInfoItem {
-    @include flex-row(start, center);
     gap: 1rem;
-
-    p {
-        @include text-body;
-    }
+    grid-area: details;
 }
 
-.userInfo {
-    @include flex-row(start, center);
-    gap: 1rem;
-}
-
-.userInfoLink {
-    @include flex-row(start, center);
-    gap: 0.5rem;
-    text-decoration: underline;
-    color: inherit;
+.photos {
+    grid-area: photos;
 
     img {
-        width: 3rem;
-        height: 3rem;
-        border-radius: 50%;
-        object-fit: cover;
+        border-radius: 1rem;
     }
 }
 
-.editContainer {
-    margin-top: 1rem;
-    @include flex-column(start, center);
+.bio {
+    grid-area: bio;
+}
+
+.detail {
+    @include flex-column(start, start);
     gap: 1rem;
-    width: 100%;
-}
 
-.editLink {
-    line-height: 1;
-    width: 100%;
-    @include flex-row(center, center);
-    @include text-body-bold;
-    color: $color-text-light;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    background-color: $color-button-edit-light;
-    border-radius: 0.5rem;
-
-    &.dark {
-        background-color: $color-button-edit-dark;
-    }
-}
-
-.deleteForm {
-    width: 100%;
-    
-    button {
-        width: 100%;
-        border: none;
-        @include text-body-bold;
-        color: $color-text-light;
-        text-decoration: none;
-        padding: 0.5rem 1rem;
-        background-color: $color-button-delete-light;
-        border-radius: 0.5rem;
-
-        &.dark {
-            background-color: $color-button-delete-dark;
-        }
+    strong {
+        @include text-heading-bold;
     }
 }

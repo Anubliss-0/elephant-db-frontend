@@ -1,4 +1,4 @@
-@font-face {
+    @font-face {
     font-family: 'parkinsans';
     src: url('../assets/fonts/Parkinsans-Regular.ttf') format('truetype');
     font-weight: 100 900;
@@ -26,7 +26,7 @@ $font-primary: 'parkinsans', sans-serif;
     font-family: $font-primary;
     font-weight: 700;
     font-size: 1.5rem;
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 @mixin text-style-h3 {
