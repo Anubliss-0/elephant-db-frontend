@@ -1,0 +1,14 @@
+@import '../../../styles/utilities.scss';
+
+.login {
+    @include responsive-flex($outlet-small-width);
+    @include flex-column(center, start);
+    width: 100%;
+    gap: 1rem;
+}
+
+.loginForm {
+    @include flex-column(center, start);
+    width: 100%;
+    gap: 1rem;
+}
