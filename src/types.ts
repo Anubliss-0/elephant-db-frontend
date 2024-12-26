@@ -61,3 +61,14 @@ export type PhotoFormData = {
   thumbnail_url: string
   previous_position: number | null
 }
+
+export type ProfileShowData = {
+  user_id: string
+  name: string
+  gender: string
+  location: string
+  profileimage_url: string
+  elephants_count: number
+  created_at: string
+  can_edit: boolean
+}

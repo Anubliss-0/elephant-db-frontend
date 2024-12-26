@@ -44,6 +44,11 @@ export const logOutUser = async () => {
   return axios.delete(`${baseURL}/logout`)
 }
 
+// Get current user
+export const getCurrentUser = async () => {
+  return axios.get(`${baseURL}/current_user`)
+}
+
 // Get profile by ID
 export const getProfileById = async (id: string) => {
   return axios.get(`${baseURL}/profiles/${id}`, {
