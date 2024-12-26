@@ -5,8 +5,12 @@ import { useTheme } from '../../../../contexts/ThemeContext'
 import { useTranslation } from 'react-i18next'
 import Button from '../../../../components/Button/Button'
 
-function ProfilePhotoUpload() {
-    const [imageSrc, setImageSrc] = useState<string | null>(null)
+interface ProfilePhotoUploadProps {
+    imageUrl: string
+}
+
+function ProfilePhotoUpload({ imageUrl }: ProfilePhotoUploadProps) {
+    const [imageSrc, setImageSrc] = useState<string | null>(imageUrl)
     const { theme } = useTheme()
     const { t } = useTranslation()
 
@@ -22,9 +26,11 @@ function ProfilePhotoUpload() {
     }
 
     return (
-        <label className={styles.photoUploadContainer}>
-            {t('profiles.profile_photo')}
-            <div className={classNames(styles.photoUpload, styles[theme])}>
+        <div className={styles.photoUpload}>
+            <label htmlFor="profileImageInput">
+                {t('profiles.profile_photo')}
+            </label>
+            <div className={classNames(styles.inputContainer, styles[theme])}>
                 <div className={styles.imagePreview}>
                     {imageSrc && <img src={imageSrc} alt="Profile Preview" />}
                 </div>
@@ -34,19 +40,17 @@ function ProfilePhotoUpload() {
                     name="profile[profileimage]"
                     accept="image/*"
                     onChange={handleImageChange}
-                    className={styles.imageInput}
+                    className={styles.hiddenInput}
                 />
-                <div className={styles.uploadButtonContainer}>
-                    <Button
-                        type="button"
-                        className={styles.uploadButton}
-                        onClick={() => document.getElementById('profileImageInput')?.click()}
-                    >
-                        Upload
-                    </Button>
-                </div>
+                <Button
+                    type="button"
+                    className={styles.uploadButton}
+                    onClick={() => document.getElementById('profileImageInput')?.click()}
+                >
+                    Upload
+                </Button>
             </div>
-        </label>
+        </div>
     )
 }
 

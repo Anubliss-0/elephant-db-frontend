@@ -31,7 +31,7 @@ function Edit() {
                     <Input name="profile[location]" label={t('profiles.location')} type="text" defaultValue={profile.location} required />
                 </div>
                 <div className={styles.image}>
-                    <ProfilePhotoUpload />
+                    <ProfilePhotoUpload imageUrl={profile.profileimage_url} />
                 </div>
                 <div className={styles.submit}>
                     <Button type="submit">{t('profiles.save')}</Button>
