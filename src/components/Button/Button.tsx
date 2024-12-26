@@ -11,14 +11,16 @@ type ButtonProps = {
   to?: string
   state?: any
   className?: string
+  danger?: boolean
 }
 
-function Button({ children, onClick, disabled = false, type = 'button', to, state, className }: ButtonProps) {
+function Button({ children, onClick, disabled = false, type = 'button', to, state, className, danger = false }: ButtonProps) {
   const { theme } = useTheme()
   
   const buttonClasses = classNames(
     styles.button,
     { [styles.disabled]: disabled },
+    { [styles.danger]: danger },
     styles[theme],
     className
   )
