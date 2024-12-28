@@ -1,7 +1,6 @@
 import Cookies from "js-cookie"
 import axios from "axios"
 
-// This will probably go after sorting app load tokens
 export const setTokenCookies = (jwtToken: string) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`
 
@@ -25,12 +24,9 @@ export const removeTokenCookies = () => {
 export const setTokenFromCookies = (): boolean => {
     const jwtToken = getTokenFromCookies()
     if (jwtToken) {
-        console.log("Token already exists")
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`
-        console.log("Token set in headers")
         return true
     } else {
-        console.log("Token does not exist")
         return false
     }
 }

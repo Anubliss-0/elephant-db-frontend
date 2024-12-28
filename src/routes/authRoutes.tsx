@@ -1,12 +1,11 @@
 import Signup from '../components/Auth/Signup/Signup'
 import { ActionFunctionArgs, redirect } from 'react-router-dom'
-import { handleSignup, handleLogin, handleLogout } from '../utils/auth'
+import { handleSignup } from '../utils/auth'
 import i18n from '../i18n'
 import { toast } from 'react-toastify'
 import Login from '../pages/Auth/Login/Login'
 import { loginUser } from '../utils/api'
 import { setTokenCookies } from '../utils/cookieManager'
-import { useUser } from '../contexts/UserContext'
 
 const authRoutes = [
   {
@@ -35,17 +34,6 @@ const authRoutes = [
       }
     },
   },
-  {
-    path: "logout",
-    action: async () => {
-      try {
-        await handleLogout()
-        return toast.success(i18n.t("sessions.signedOut"))
-      } catch (error: any) {
-        return toast.error(i18n.t(error.response.data))
-      }
-    },
-  }
-];
+]
 
 export default authRoutes

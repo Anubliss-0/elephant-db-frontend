@@ -14,9 +14,7 @@ function App() {
   const { setUser } = useUser()
 
   useEffect(() => {
-    if (loadedUser) {
-      setUser(loadedUser)
-    }
+    setUser(loadedUser)
   }, [loadedUser])
 
   return (
