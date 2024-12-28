@@ -63,6 +63,7 @@ export type PhotoFormData = {
 }
 
 export type ProfileShowData = {
+  id: number
   user_id: string
   name: string
   gender: string

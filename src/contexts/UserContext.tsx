@@ -2,29 +2,20 @@ import { createContext, useState, useContext, ReactNode } from 'react';
 import { ProfileShowData } from '../types';
 
 interface UserContextType {
-    user: ProfileShowData
-    setUser: (user: ProfileShowData) => void
-    isLoggedIn: boolean
-    setIsLoggedIn: (isLoggedIn: boolean) => void
+    user: ProfileShowData | null
+    setUser: (user: ProfileShowData | null) => void
+    isUserInfoOpen: boolean
+    setIsUserInfoOpen: (isUserInfoOpen: boolean) => void
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export function UserProvider({ children }: { children: ReactNode }) {
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [user, setUser] = useState<ProfileShowData>({
-        user_id: '',
-        name: '',
-        gender: '',
-        location: '',
-        profileimage_url: '',
-        elephants_count: 0,
-        created_at: '',
-        can_edit: false
-    })
+    const [isUserInfoOpen, setIsUserInfoOpen] = useState(false)
+    const [user, setUser] = useState<ProfileShowData | null>(null)
 
     return (
-        <UserContext.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn }}>
+        <UserContext.Provider value={{ user, setUser, isUserInfoOpen, setIsUserInfoOpen }}>
             {children}
         </UserContext.Provider>
     )

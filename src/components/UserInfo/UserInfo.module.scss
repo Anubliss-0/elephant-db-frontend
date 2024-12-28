@@ -1,0 +1,47 @@
+@import '../../styles/utilities.scss';
+@import '../../styles/variables.scss';
+@import '../../styles/typography.scss';
+
+.background {
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    z-index: 999;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.358);
+    transition: opacity 0.3s ease-in-out;
+
+    &.open {
+        @include flex-row(end, start);
+        opacity: 1;
+    }
+}
+
+.miniProfile {
+    @include flex-column(start, center);
+    @include text-body-bold;
+    z-index: 1000;
+    position: fixed;
+    top: 6rem;
+    right: -100%;
+    gap: 1rem;
+    color: white;
+    background-color: $accent-color-light;
+    transition: right 0.3s ease-in-out;
+
+    &.open {
+        right: 1rem;
+    }
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
+    &.dark {
+        background-color: $accent-color-dark;
+    }
+}
