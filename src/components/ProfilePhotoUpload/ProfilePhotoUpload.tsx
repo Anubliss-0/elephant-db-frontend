@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import styles from "./ProfilePhotoUpload.module.scss"
 import classNames from 'classnames'
-import { useTheme } from '../../../../contexts/ThemeContext'
+import { useTheme } from '../../contexts/ThemeContext'
 import { useTranslation } from 'react-i18next'
-import Button from '../../../../components/Button/Button'
+import Button from '../Button/Button'
 
 interface ProfilePhotoUploadProps {
     imageUrl: string
+    name: string
 }
 
-function ProfilePhotoUpload({ imageUrl }: ProfilePhotoUploadProps) {
+function ProfilePhotoUpload({ imageUrl, name }: ProfilePhotoUploadProps) {
     const [imageSrc, setImageSrc] = useState<string | null>(imageUrl)
     const { theme } = useTheme()
     const { t } = useTranslation()
@@ -37,7 +38,7 @@ function ProfilePhotoUpload({ imageUrl }: ProfilePhotoUploadProps) {
                 <input
                     type="file"
                     id="profileImageInput"
-                    name="profile[profileimage]"
+                    name={name}
                     accept="image/*"
                     onChange={handleImageChange}
                     className={styles.hiddenInput}

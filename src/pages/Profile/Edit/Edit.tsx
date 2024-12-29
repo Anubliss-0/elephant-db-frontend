@@ -2,7 +2,7 @@ import { useLocation, useFetcher } from "react-router-dom"
 import styles from "./Edit.module.scss"
 import Input from "../../../components/Inputs/Input"
 import Button from "../../../components/Button/Button"
-import ProfilePhotoUpload from "./ProfilePhotoUpload/ProfilePhotoUpload"
+import ProfilePhotoUpload from "../../../components/ProfilePhotoUpload/ProfilePhotoUpload"
 import { useTranslation } from "react-i18next"
 
 type ProfileShowData = {
@@ -31,7 +31,7 @@ function Edit() {
                     <Input name="profile[location]" label={t('profiles.location')} type="text" defaultValue={profile.location} required />
                 </div>
                 <div className={styles.image}>
-                    <ProfilePhotoUpload imageUrl={profile.profileimage_url} />
+                    <ProfilePhotoUpload imageUrl={profile.profileimage_url} name="profile[profileimage]" />
                 </div>
                 <div className={styles.submit}>
                     <Button type="submit">{t('profiles.save')}</Button>
