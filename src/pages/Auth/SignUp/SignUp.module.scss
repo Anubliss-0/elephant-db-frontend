@@ -1,0 +1,41 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/utilities.scss";
+
+.signup {
+    @include flex-column(center, start);
+    @include responsive-flex($outlet-small-width);
+    gap: 1rem;
+}
+
+.signupFormGrid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    grid-template-areas:
+        "details image"
+        "submit submit";
+
+    @include respond-to-phone {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "details"
+            "image"
+            "submit";
+    }
+}
+
+.detailsArea {
+    grid-area: details;
+    @include flex-column;
+    gap: 1rem;
+}
+
+.imageArea {
+    grid-area: image;
+}
+
+.submitArea {
+    grid-area: submit;
+}
