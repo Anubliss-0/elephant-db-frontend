@@ -19,10 +19,16 @@ export const getElephantById = async (id: string) => {
   return axios.get(`${baseURL}/elephants/${id}`)
 }
 
+export const retreiveAllElephants = async (page: number) => {
+  return axios.get(`${baseURL}/elephants`, {
+    params: { page }
+  })
+}
+
 // Update elephant by ID
 export const updateElephant = async (id: string, formData: FormData) => {
   return axios.patch(`${baseURL}/elephants/${id}`, formData);
-};
+}
 
 // Delete elephant by ID
 export const deleteElephant = async (id: string) => {

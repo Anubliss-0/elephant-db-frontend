@@ -1,4 +1,4 @@
-import { getElephantById, createElephant, deleteElephant, updateElephant, getAllElephants } from '../utils/api'
+import { getElephantById, createElephant, deleteElephant, updateElephant, getAllElephants, retreiveAllElephants } from '../utils/api'
 import { redirect, LoaderFunctionArgs, ActionFunctionArgs } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import i18n from '../i18n'
@@ -6,20 +6,38 @@ import ErrorPage from '../ErrorPage'
 import Index from '../pages/Elephant/Index/Index'
 import Edit from '../pages/Elephant/Edit/Edit'
 import Show from '../pages/Elephant/Show/Show'
+import NewIndex from '../pages/Elephant/Index/NewIndex'
 
 const elephantRoutes = [
   // Elephant Index
+  // {
+  //   path: "elephants",
+  //   element: <Index />,
+  //   action: async ({ request }: ActionFunctionArgs) => {
+  //     const formData = await request.formData()
+  //     const page = formData.get("page")
+  //     const habitat = formData.get("habitat")
+  //     const gender = formData.get("gender")
+  //     const species = formData.get("species")
+  //     const response = await getAllElephants(page as string, habitat as string, gender as string, species as string)
+  //     return response.data
+  //   },
+  //   errorElement: <ErrorPage />
+  // },
+
   {
     path: "elephants",
-    element: <Index />,
-    action: async ({ request }: ActionFunctionArgs) => {
-      const formData = await request.formData()
-      const page = formData.get("page")
-      const habitat = formData.get("habitat")
-      const gender = formData.get("gender")
-      const species = formData.get("species")
-      const response = await getAllElephants(page as string, habitat as string, gender as string, species as string)
-      return response.data
+    element: <NewIndex />,
+    loader: async ({ request }: LoaderFunctionArgs) => {
+      const url = new URL(request.url)
+      const page = url.searchParams.get("page")
+      const response = await retreiveAllElephants(Number(page))
+      return {
+        elephants: response.data.elephants.data,
+        currentPage: response.data.current_page,
+        hasMore: response.data.has_more,
+        totalElephants: response.data.total_elephants
+      }
     },
     errorElement: <ErrorPage />
   },
