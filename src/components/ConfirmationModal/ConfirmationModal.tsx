@@ -1,8 +1,8 @@
-import { useConfirmation } from '../../../contexts/ConfirmationContext'
-import { useTheme } from '../../../contexts/ThemeContext'
+import { useConfirmation } from '../../contexts/ConfirmationContext'
+import { useTheme } from '../../contexts/ThemeContext'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
-import Button from '../../Button/Button'
+import Button from '../Button/Button'
 import styles from './ConfirmationModal.module.scss'
 
 function ConfirmationModal() {

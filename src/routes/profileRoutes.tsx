@@ -36,12 +36,6 @@ const profileRoutes = [
         },
         errorElement: <ErrorPage />
     },
-
-    // Signup
-    {
-        path: "signup",
-        element: <Signup />
-    }
 ]
 
 export default profileRoutes

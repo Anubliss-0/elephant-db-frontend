@@ -1,5 +1,5 @@
-@import '../../../styles/variables.scss';
-@import '../../../styles/utilities.scss';
+@import '../../styles/variables.scss';
+@import '../../styles/utilities.scss';
 
 .confirmationModalContainer {
     @include flex-column(center, center);

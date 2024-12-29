@@ -1,6 +1,6 @@
 import { Outlet, useLoaderData } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import ConfirmationModal from './components/Shared/ConfirmationModal/ConfirmationModal'
+import ConfirmationModal from './components/ConfirmationModal/ConfirmationModal'
 import 'react-toastify/dist/ReactToastify.css'
 import PageContainer from './components/PageContainer/PageContainer'
 import NavBar from './components/NavbarThree/NavBar'
