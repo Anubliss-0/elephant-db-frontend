@@ -50,7 +50,10 @@ function UserInfo() {
                     <Toggle icons={false} onChange={toggleTheme} />
                 </div>
                 {!user && (
-                    <Button type="button" to="/login" onClick={handleCloseUserInfo}>Login</Button>
+                    <>
+                        <Button type="button" to="/login" onClick={handleCloseUserInfo}>Login</Button>
+                        <Link to="/signup" onClick={handleCloseUserInfo}>Signup</Link>
+                    </>
                 )}
                 {user && (
                     <Form method="post">
