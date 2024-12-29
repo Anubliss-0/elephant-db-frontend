@@ -1,0 +1,19 @@
+.elephantImage {
+    width: 400px;
+    height: 400px;
+}
+
+.debug {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: red;
+    font-size: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: white;
+    max-width: 300px;
+    padding: 10px;
+}

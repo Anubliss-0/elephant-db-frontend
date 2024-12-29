@@ -31,12 +31,19 @@ const elephantRoutes = [
     loader: async ({ request }: LoaderFunctionArgs) => {
       const url = new URL(request.url)
       const page = url.searchParams.get("page")
-      const response = await retreiveAllElephants(Number(page))
+      const habitat = url.searchParams.get("habitat")
+      const gender = url.searchParams.get("gender")
+      const species = url.searchParams.get("species")
+      const response = await retreiveAllElephants(Number(page), habitat as string, gender as string, species as string)
+      console.log(response.data)
       return {
         elephants: response.data.elephants.data,
         currentPage: response.data.current_page,
         hasMore: response.data.has_more,
-        totalElephants: response.data.total_elephants
+        totalElephants: response.data.total_elephants,
+        habitatOptions: response.data.habitat_options,
+        genderOptions: response.data.gender_options,
+        speciesOptions: response.data.species_options
       }
     },
     errorElement: <ErrorPage />

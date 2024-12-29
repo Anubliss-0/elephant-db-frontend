@@ -19,9 +19,9 @@ export const getElephantById = async (id: string) => {
   return axios.get(`${baseURL}/elephants/${id}`)
 }
 
-export const retreiveAllElephants = async (page: number) => {
+export const retreiveAllElephants = async (page: number, habitat: string, gender: string, species: string) => {
   return axios.get(`${baseURL}/elephants`, {
-    params: { page }
+    params: { page, habitat, gender, species }
   })
 }
 
