@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import i18n from '../i18n'
 import ErrorPage from '../ErrorPage'
 import Index from '../pages/Elephant/Index/Index'
-import Edit from '../pages/Elephant/ElephantManagement/Edit'
+import Edit from '../pages/Elephant/Edit/Edit'
 import Show from '../pages/Elephant/Show/Show'
 
 const elephantRoutes = [

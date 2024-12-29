@@ -12,17 +12,13 @@ export const setTokenCookies = (jwtToken: string) => {
     })
 }
 
-export const getTokenFromCookies = () => {
-    return Cookies.get('token')
-}
-
 export const removeTokenCookies = () => {
     Cookies.remove('token', { path: '/' })
     delete axios.defaults.headers.common['Authorization']
 }
 
 export const setTokenFromCookies = (): boolean => {
-    const jwtToken = getTokenFromCookies()
+    const jwtToken = Cookies.get('token')
     if (jwtToken) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`
         return true
